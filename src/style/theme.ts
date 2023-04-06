@@ -156,7 +156,7 @@ export const theme = extendTheme({
         ...feedback,
         ...colorsRandomProfile
     },
-    fonts: {
+    textStyle: {
         ...typography
     }
 });

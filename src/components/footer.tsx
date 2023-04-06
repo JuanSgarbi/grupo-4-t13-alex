@@ -1,0 +1,13 @@
+import { IconButton, Text, Flex } from "@chakra-ui/react"
+import {ChevronUpIcon} from "@chakra-ui/icons"
+import logoFooter from "../assets/logoFooter.svg"
+
+export const Footer = () => {
+  return (
+    <Flex marginTop={"200px"} w={"100vw"} h={{base: "200px", md: "140px"}} justifyContent={"space-between"} alignItems={"center"} p={{md: "50px"}} paddingTop={{base: "40px"}} paddingBottom={{base: "40px"}}bg={"grey0"} flexDirection={{base: "column", md: "row"}} gap={{base: "25px", md: "0px"}}>
+      <img src={logoFooter}/>
+      <Text color={"whiteFixed"} textStyle={"body_2_400"} w={"100%"} textAlign={"center"}>© 2022 -  Todos os direitos reservados.</Text>
+      <IconButton aria-label="Up" icon={<ChevronUpIcon color={"whiteFixed"}/>} bg={"grey1"} border={"1px solid transparent"} _hover={{bg: "grey1", borderColor: "whiteFixed"}}/>
+    </Flex>
+  )
+}
