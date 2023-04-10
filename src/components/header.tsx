@@ -1,26 +1,19 @@
 import { Box, IconButton, Text, Flex, useDisclosure, HStack, Button, Menu, MenuButton, MenuList, MenuItem, Icon } from "@chakra-ui/react"
 import { HamburgerIcon, CloseIcon} from '@chakra-ui/icons';
-import logoHeader from "../assets/logoHeader.svg"
+import logoHeader from "../assets/logoHeader.svg";
+import { ProfilePic } from "./profilePic";
 
 
 interface iHeaderProps {
-  name?: string;
+  user: string;
   isLogged?: boolean;
 }
 
-export const Avatar = () => {
-  return (
-    <Flex bg={"brand1"} w={"25px"} h={"25px"} borderRadius={"50%"} fontSize={{base: "sm", md: "md"}} alignItems={"center"} justifyContent={"center"} p={{base: "15px", md: "17px"}} color={"whiteFixed"}>
-      GO
-    </Flex>
-  )
-}
-
-export const Header = ({name, isLogged}: iHeaderProps) => {
+export const Header = ({user, isLogged}: iHeaderProps) => {
   const { isOpen, onOpen, onClose } = useDisclosure();
   return (
     <>
-      <Flex alignItems={"center"} w={"100vw"} h={"80px"} borderBottom={"2px solid"} borderColor={"grey6"} justifyContent={"space-between"} bg={"grey10"} paddingRight={{base: "10px", md: "50px"}} paddingLeft={{base: "10px", md: "50px"}}>
+      <Flex alignItems={"center"} w={"100vw"} h={"80px"} borderBottom={"2px solid"} borderColor={"grey.6"} justifyContent={"space-between"} bg={"grey.10"} paddingRight={{base: "10px", md: "50px"}} paddingLeft={{base: "10px", md: "50px"}}>
         <img src={logoHeader}/>
         {
           isLogged ?
@@ -28,8 +21,8 @@ export const Header = ({name, isLogged}: iHeaderProps) => {
             <>
             <Box h={"100%"} display={{ base: 'none', md: 'flex' }}>
               <Menu>
-                <MenuButton as={Button} cursor={'pointer'} h={"100%"} borderLeft={"2px solid"} borderColor={"grey6"} borderRadius={"none"} paddingLeft={"50px"} bg={"grey10"} _hover={{bg: "grey10"}} leftIcon={<Avatar/>} textStyle={"body_1_400"} fontSize={{base: "sm", md: "md"}}>
-                  Gabriel Ogawa
+                <MenuButton variant={"unstyled"} as={Button} cursor={'pointer'} h={"100%"} border={"none"} borderLeft={"2px solid "} borderColor={"grey.6"} borderRadius={"none"} paddingLeft={"50px"} bg={"grey.10"} _hover={{bg: "grey.10"}} leftIcon={<ProfilePic user={user}/>} textStyle={"body_2_500"} fontSize={{base: "sm", md: "md"}}>
+                  {user}
                 </MenuButton>
                 <MenuList>
                     <MenuItem>Editar Perfil</MenuItem>
@@ -40,6 +33,8 @@ export const Header = ({name, isLogged}: iHeaderProps) => {
               </Menu>
             </Box>
               <IconButton
+              variant={"unstyled"}
+              border={"none"}
               size={'md'}
               icon={isOpen ? <CloseIcon boxSize={3}/> : <HamburgerIcon />}
               aria-label={'Open Menu'}
@@ -52,6 +47,8 @@ export const Header = ({name, isLogged}: iHeaderProps) => {
         : (
           <>
               <IconButton
+                variant={"unstyled"}
+                border={"none"}
                 size={'md'}
                 icon={isOpen ? <CloseIcon /> : <HamburgerIcon />}
                 aria-label={'Open Menu'}
@@ -59,9 +56,9 @@ export const Header = ({name, isLogged}: iHeaderProps) => {
                 onClick={isOpen ? onClose : onOpen}
                 bg={"whiteFixed"}
               />
-              <HStack spacing={8} h={"100%"} borderLeft={"2px solid"} borderColor={"grey6"} display={{ base: 'none', md: 'flex' }} alignItems={'center'} paddingLeft={"44px"} >
-                <Button bg={"whiteFixed"}>Fazer Login</Button>
-                <Button>Cadastrar</Button>
+              <HStack spacing={8} h={"100%"} borderLeft={"2px solid"} borderColor={"grey.6"} display={{ base: 'none', md: 'flex' }} alignItems={'center'} paddingLeft={"44px"} >
+                <Button bg={"whiteFixed"} variant={"link"} border={"none"} textStyle={"body_1_600"}>Fazer Login</Button>
+                <Button variant={"outline2"}>Cadastrar</Button>
               </HStack>
             </>
         )}
@@ -69,7 +66,7 @@ export const Header = ({name, isLogged}: iHeaderProps) => {
       {isOpen ? !isLogged ? (
           <Box pb={4} display={{ md: 'none' }}>
             <Flex as={'nav'} color={'white'} flexDirection={"column"} alignItems={"center"} gap={"20px"}>
-              <Button color={"black"} bg={"whiteFixed"} alignSelf={"start"} paddingTop={"30px"} paddingBottom={"40px"}>Fazer Login</Button>
+              <Button color={"black"} variant={"link"} border={"none"} textStyle={"body_1_600"} bg={"whiteFixed"} alignSelf={"start"} paddingLeft={"10px"} paddingTop={"30px"} paddingBottom={"40px"} >Fazer Login</Button>
               <Button color={"black"} p={"10px"} w={"90%"} bg={"whiteFixed"} border={"1.5px solid"} borderColor={"grey4"} borderRadius={"4px"} >Cadastrar</Button>
             </Flex>
           </Box>
@@ -77,10 +74,10 @@ export const Header = ({name, isLogged}: iHeaderProps) => {
       {
         isOpen ? isLogged ? (
           <Box h={"100%"} display={{ base: 'flex', md: 'none' }} flexDirection={"column"}>
-            <Button bg={"whiteFixed"}>Editar Perfil</Button>
-            <Button bg={"whiteFixed"}>Editar endereço</Button>
-            <Button bg={"whiteFixed"}>Meus anúncios</Button>
-            <Button bg={"whiteFixed"}>Sair</Button>
+            <Button bg={"whiteFixed"} variant={"link"} border={"none"} p={"10px"}>Editar Perfil</Button>
+            <Button bg={"whiteFixed"} variant={"link"} border={"none"} p={"10px"}>Editar endereço</Button>
+            <Button bg={"whiteFixed"} variant={"link"} border={"none"} p={"10px"}>Meus anúncios</Button>
+            <Button bg={"whiteFixed"} variant={"link"} border={"none"} p={"10px"}>Sair</Button>
           </Box>
         )
         : null : null } 
