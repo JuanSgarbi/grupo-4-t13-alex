@@ -300,16 +300,16 @@ const buttons = {
 };
 
 export const theme = extendTheme({
-  colors: {
-    ...brand,
-    ...greyScale,
-    ...feedback,
-    ...colorsRandomProfile,
-  },
-  fonts: {
-    ...typography,
-  },
-
+    colors: {
+        ...brand,
+        ...greyScale,
+        ...feedback,
+        ...colorsRandomProfile
+    },
+    textStyle: {
+        ...typography
+    }
+}),
   components: {
     Button: {
       ...buttons,
