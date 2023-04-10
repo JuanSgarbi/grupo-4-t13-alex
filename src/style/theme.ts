@@ -40,7 +40,7 @@ const feedback = {
 };
 
 const colorsRandomProfile = {
-  rendom: {
+  random: {
     1: "#E34D8C",
     2: "#C04277",
     3: "#7D2A4D",
@@ -306,7 +306,7 @@ export const theme = extendTheme({
     ...feedback,
     ...colorsRandomProfile,
   },
-  textStyle: {
+  textStyles: {
     ...typography,
   },
   components: {
