@@ -1,5 +1,19 @@
-import { Box, IconButton, Text, Flex, useDisclosure, HStack, Button, Menu, MenuButton, MenuList, MenuItem, Icon } from "@chakra-ui/react"
-import { HamburgerIcon, CloseIcon} from '@chakra-ui/icons';
+
+import {
+  Box,
+  IconButton,
+  Text,
+  Flex,
+  useDisclosure,
+  HStack,
+  Button,
+  Menu,
+  MenuButton,
+  MenuList,
+  MenuItem,
+  Icon,
+} from "@chakra-ui/react";
+import { HamburgerIcon, CloseIcon } from "@chakra-ui/icons";
 import logoHeader from "../assets/logoHeader.svg";
 import { ProfilePic } from "./profilePic";
 
@@ -9,11 +23,12 @@ interface iHeaderProps {
   isLogged?: boolean;
 }
 
+
 export const Header = ({user, isLogged}: iHeaderProps) => {
   const { isOpen, onOpen, onClose } = useDisclosure();
   return (
     <>
-      <Flex alignItems={"center"} w={"100vw"} h={"80px"} borderBottom={"2px solid"} borderColor={"grey.6"} justifyContent={"space-between"} bg={"grey.10"} paddingRight={{base: "10px", md: "50px"}} paddingLeft={{base: "10px", md: "50px"}}>
+      <Flex position={"absolute"} top={"0"} alignItems={"center"} w={"100%"} h={"80px"} borderBottom={"2px solid"} borderColor={"grey.6"} justifyContent={"space-between"} bg={"grey.10"} paddingRight={{base: "10px", md: "50px"}} paddingLeft={{base: "10px", md: "50px"}}>
         <img src={logoHeader}/>
         {
           isLogged ?
@@ -23,15 +38,17 @@ export const Header = ({user, isLogged}: iHeaderProps) => {
               <Menu>
                 <MenuButton variant={"unstyled"} as={Button} cursor={'pointer'} h={"100%"} border={"none"} borderLeft={"2px solid "} borderColor={"grey.6"} borderRadius={"none"} paddingLeft={"50px"} bg={"grey.10"} _hover={{bg: "grey.10"}} leftIcon={<ProfilePic user={user}/>} textStyle={"body_2_500"} fontSize={{base: "sm", md: "md"}}>
                   {user}
+
                 </MenuButton>
                 <MenuList>
-                    <MenuItem>Editar Perfil</MenuItem>
-                    <MenuItem>Editar endereço</MenuItem>
-                    <MenuItem>Meus anúncios</MenuItem>
-                    <MenuItem>Sair</MenuItem>
+                  <MenuItem>Editar Perfil</MenuItem>
+                  <MenuItem>Editar endereço</MenuItem>
+                  <MenuItem>Meus anúncios</MenuItem>
+                  <MenuItem>Sair</MenuItem>
                 </MenuList>
               </Menu>
             </Box>
+
               <IconButton
               variant={"unstyled"}
               border={"none"}
@@ -43,9 +60,9 @@ export const Header = ({user, isLogged}: iHeaderProps) => {
               bg={"whiteFixed"}
             />
           </>
-          )
-        : (
+        ) : (
           <>
+
               <IconButton
                 variant={"unstyled"}
                 border={"none"}
@@ -78,9 +95,10 @@ export const Header = ({user, isLogged}: iHeaderProps) => {
             <Button bg={"whiteFixed"} variant={"link"} border={"none"} p={"10px"}>Editar endereço</Button>
             <Button bg={"whiteFixed"} variant={"link"} border={"none"} p={"10px"}>Meus anúncios</Button>
             <Button bg={"whiteFixed"} variant={"link"} border={"none"} p={"10px"}>Sair</Button>
+
           </Box>
-        )
-        : null : null } 
+        ) : null
+      ) : null}
     </>
-  )
-}
+  );
+};
