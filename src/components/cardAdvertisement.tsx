@@ -1,4 +1,4 @@
-import { Box, Button, ButtonGroup, Card, CardBody, CardFooter, Divider, Flex, Heading, Image, Stack, Text } from "@chakra-ui/react"
+import { Box, Button, Card, CardBody, CardFooter, Flex, Heading, Image, Stack, Text } from "@chakra-ui/react"
 import { EditAnnouncementModal } from "./editAnnouncementModal";
 import { useNavigate } from 'react-router-dom';
 import { ProfilePic } from "./profilePic";
@@ -10,10 +10,13 @@ export interface iCardProps{
   km: string;
   year: string;
   price: string;
-  isAdvertiser: boolean;
+  image: string;
+  isGoodBuy: boolean;
+  isActive: boolean;
+  isHomePage: boolean;
 }
 
-export const CardAdvertisement = ({title, description, owner, km, year, price, isAdvertiser}: iCardProps) => {
+export const CardAdvertisement = ({title, description, owner, km, year, price, image, isGoodBuy, isActive, isHomePage}: iCardProps) => {
   const navigate = useNavigate();
 
   const handleClick = () => {
@@ -26,7 +29,7 @@ export const CardAdvertisement = ({title, description, owner, km, year, price, i
           <CardBody>
             <Box position={"relative"}>
               <Image
-                src='https://static.vakinha.com.br/uploads/vakinha/image/712805/fusca-poa.jpg?ims=700x410'
+                src={image}
                 alt='Green double couch with wooden legs'
                 border={"2px solid transparent"}
                 borderRadius={"2px"}
@@ -34,7 +37,21 @@ export const CardAdvertisement = ({title, description, owner, km, year, price, i
                 transition={"border 0.5s ease"} 
                 _hover={{borderColor: "brand.1"}}
               />
-              <Text position={"absolute"} top={"2px"} right={"2px"} color={"whiteFixed"} bg={"random.7"} paddingRight={"2.5px"} paddingLeft={"2.5px"} borderRadius={"2px"}>$</Text>
+              {
+                isGoodBuy ? (
+                  <Text position={"absolute"} top={"2px"} right={"2px"} color={"whiteFixed"} bg={"random.7"} paddingRight={"2.5px"} paddingLeft={"2.5px"} borderRadius={"2px"}>$</Text>
+                ) : null
+              }
+              {
+                !isHomePage ? isActive ? (
+                  <Text position={"absolute"} top={"8px"} left={"8px"} color={"whiteFixed"} bg={"brand.1"} p={"0px 6px"} textStyle={"body_2_500"}>Ativo</Text>
+                ) : null : null
+              }
+              {
+                !isHomePage ? !isActive ? (
+                  <Text position={"absolute"} top={"8px"} left={"8px"} color={"whiteFixed"} bg={"grey.4"} p={"0px 6px"} textStyle={"body_2_500"}>Inativo</Text>
+                ) : null : null
+              }
             </Box>
             <Stack spacing='16px'>
               <Heading size='md'>{title}</Heading>
@@ -55,9 +72,9 @@ export const CardAdvertisement = ({title, description, owner, km, year, price, i
                 <Text textStyle={"heading_7_500"}>R$ {price},00</Text>
               </Flex>
             {
-              isAdvertiser ? 
+              !isHomePage ? 
               (
-                <Flex marginTop={"30px"} gap={"15px"} w={"100%"}>
+                <Flex marginTop={"15px"} gap={"15px"} w={"100%"}>
                   <EditAnnouncementModal/>
                   <Button variant={"outline1"} size={{base: "medium", md: "big"}}>Ver detalhes</Button>
                 </Flex>
