@@ -10,7 +10,6 @@ export const ButtonFilter = (props: iButtonName) => {
       onClick={() => console.log(props.buttonName)}
       variant={"link"}
       justifyContent={"flex-start"}
-      fontFamily={"roboto"}
       textStyle={"heading_6_500"}
       color={"grey.3"}
       lineHeight={"25px"}

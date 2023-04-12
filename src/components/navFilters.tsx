@@ -80,6 +80,7 @@ export const NavFilters = () => {
           textStyle={"heading_7_600"}
           border={"none"}
           borderRadius={"none"}
+          focusBorderColor="transparent"
         ></Input>
         <Input
           placeholder={"Máxima"}
@@ -100,6 +101,7 @@ export const NavFilters = () => {
           textStyle={"heading_7_600"}
           border={"none"}
           borderRadius={"none"}
+          focusBorderColor="transparent"
         ></Input>
         <Input
           placeholder={"Máxima"}
@@ -107,6 +109,7 @@ export const NavFilters = () => {
           textStyle={"heading_7_600"}
           border={"none"}
           borderRadius={"none"}
+          focusBorderColor="transparent"
         ></Input>
       </Flex>
       <Button margin={"0 auto"} marginY={"1rem"} w={"90%"}>
