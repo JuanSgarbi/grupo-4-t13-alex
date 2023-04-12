@@ -19,13 +19,18 @@ export interface iCardProps{
 export const CardAdvertisement = ({title, description, owner, km, year, price, image, isGoodBuy, isActive, isHomePage}: iCardProps) => {
   const navigate = useNavigate();
 
-  const handleClick = () => {
-    navigate('/teste');
+  const handleClickCard = () => {
+    if (isHomePage) {
+      navigate('/teste');
+    }
   }
 
+  const handleClickButton = () => {
+    navigate('/teste');
+  }
   return (
     <>
-          <Card maxW='312px' cursor={"pointer"} onClick={handleClick} boxShadow="none">
+          <Card maxW='312px' cursor={"pointer"} onClick={handleClickCard} boxShadow="none">
           <CardBody>
             <Box position={"relative"}>
               <Image
@@ -38,9 +43,9 @@ export const CardAdvertisement = ({title, description, owner, km, year, price, i
                 _hover={{borderColor: "brand.1"}}
               />
               {
-                isGoodBuy ? (
+                isHomePage ? isGoodBuy ? (
                   <Text position={"absolute"} top={"2px"} right={"2px"} color={"whiteFixed"} bg={"random.7"} paddingRight={"2.5px"} paddingLeft={"2.5px"} borderRadius={"2px"}>$</Text>
-                ) : null
+                ) : null : null
               }
               {
                 !isHomePage ? isActive ? (
@@ -76,7 +81,7 @@ export const CardAdvertisement = ({title, description, owner, km, year, price, i
               (
                 <Flex marginTop={"15px"} gap={"15px"} w={"100%"}>
                   <EditAnnouncementModal/>
-                  <Button variant={"outline1"} size={{base: "medium", md: "big"}}>Ver detalhes</Button>
+                  <Button variant={"outline1"} size={{base: "medium", md: "big"}} onClick={handleClickButton}>Ver detalhes</Button>
                 </Flex>
               ) : null }
             </Box>
