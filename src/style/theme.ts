@@ -40,7 +40,7 @@ const feedback = {
 };
 
 const colorsRandomProfile = {
-  rendom: {
+  random: {
     1: "#E34D8C",
     2: "#C04277",
     3: "#7D2A4D",
@@ -121,6 +121,11 @@ const typography = {
     fontFamily: "Inter",
     fontWeight: "400",
     fontSize: "16px",
+  },
+  body_1_500: {
+    fontFamily: "Inter",
+    fontWeight: "500",
+    fontSize: "36px",
   },
   body_1_600: {
     fontFamily: "Inter",

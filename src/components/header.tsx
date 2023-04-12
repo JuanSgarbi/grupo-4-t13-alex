@@ -14,7 +14,7 @@ import {
 } from "@chakra-ui/react";
 import { HamburgerIcon, CloseIcon } from "@chakra-ui/icons";
 import logoHeader from "../assets/logoHeader.svg";
-//import { ProfilePic } from "./profilePic";
+import { ProfilePic } from "./profilePic";
 
 interface iHeaderProps {
   user: string;
@@ -54,9 +54,8 @@ export const Header = ({ user, isLogged }: iHeaderProps) => {
                   paddingLeft={"50px"}
                   bg={"grey.10"}
                   _hover={{ bg: "grey.10" }}
-                  /*leftIcon={<ProfilePic user={user}/>}*/ textStyle={
-                    "body_2_500"
-                  }
+                  leftIcon={<ProfilePic user={user} />}
+                  textStyle={"body_2_500"}
                   fontSize={{ base: "sm", md: "md" }}
                 >
                   {user}
@@ -102,14 +101,7 @@ export const Header = ({ user, isLogged }: iHeaderProps) => {
               alignItems={"center"}
               paddingLeft={"44px"}
             >
-              <Button
-                bg={"whiteFixed"}
-                variant={"link"}
-                border={"none"}
-                textStyle={"body_1_600"}
-              >
-                Fazer Login
-              </Button>
+              <Button variant={"link"}>Fazer Login</Button>
               <Button variant={"outline2"}>Cadastrar</Button>
             </HStack>
           </>
@@ -117,7 +109,16 @@ export const Header = ({ user, isLogged }: iHeaderProps) => {
       </Flex>
       {isOpen ? (
         !isLogged ? (
-          <Box pb={4} display={{ md: "none" }}>
+          <Box
+            position={"absolute"}
+            right={5}
+            top={"60px"}
+            pb={4}
+            display={{ md: "none" }}
+            bg={"grey.9"}
+            p={"20px"}
+            borderRadius={"4px"}
+          >
             <Flex
               as={"nav"}
               color={"white"}
@@ -125,30 +126,9 @@ export const Header = ({ user, isLogged }: iHeaderProps) => {
               alignItems={"center"}
               gap={"20px"}
             >
-              <Button
-                color={"black"}
-                variant={"link"}
-                border={"none"}
-                textStyle={"body_1_600"}
-                bg={"whiteFixed"}
-                alignSelf={"start"}
-                paddingLeft={"10px"}
-                paddingTop={"30px"}
-                paddingBottom={"40px"}
-              >
-                Fazer Login
-              </Button>
-              <Button
-                color={"black"}
-                p={"10px"}
-                w={"90%"}
-                bg={"whiteFixed"}
-                border={"1.5px solid"}
-                borderColor={"grey4"}
-                borderRadius={"4px"}
-              >
-                Cadastrar
-              </Button>
+
+              <Button variant={"link"}>Fazer Login</Button>
+              <Button variant={"outline2"}>Cadastrar</Button>
             </Flex>
           </Box>
         ) : null
