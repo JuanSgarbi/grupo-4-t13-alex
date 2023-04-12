@@ -1,7 +1,6 @@
 import {
   Box,
   IconButton,
-  Text,
   Flex,
   useDisclosure,
   HStack,
@@ -10,7 +9,6 @@ import {
   MenuButton,
   MenuList,
   MenuItem,
-  Icon,
 } from "@chakra-ui/react";
 import { HamburgerIcon, CloseIcon } from "@chakra-ui/icons";
 import logoHeader from "../assets/logoHeader.svg";
@@ -26,6 +24,7 @@ export const Header = ({ user, isLogged }: iHeaderProps) => {
   return (
     <>
       <Flex
+        position={"absolute"}
         top={"0"}
         alignItems={"center"}
         w={"100%"}

@@ -1,12 +1,4 @@
-import {
-  Box,
-  Button,
-  Flex,
-  Image,
-  Input,
-  Text,
-  useDisclosure,
-} from "@chakra-ui/react";
+import { Box, Flex, Image, Text } from "@chakra-ui/react";
 import { Footer } from "../components/footer";
 import { Header } from "../components/header";
 import carBackground from "../assets/carBackground.svg";
@@ -14,11 +6,15 @@ import { NavFilters } from "../components/navFilters";
 import { ModalNavFilter } from "../components/filtersModal";
 
 export const Home = () => {
-  const { isOpen, onOpen, onClose } = useDisclosure();
   return (
-    <>
+    <Flex h={"max-content"} w={"100%"}>
       <Header user={"Christian"} isLogged={true} />
-      <Box>
+      <Box
+        mt={"80px"}
+        mb={{ base: "220px", md: "150px" }}
+        w={"100%"}
+        h={"max-contenct"}
+      >
         <Flex
           w="100%"
           position="relative"
@@ -68,9 +64,9 @@ export const Home = () => {
         <Box display={{ base: "none", md: "flex" }}>
           <NavFilters />
         </Box>
+        <ModalNavFilter />
       </Box>
-      <ModalNavFilter />
       <Footer />
-    </>
+    </Flex>
   );
 };
