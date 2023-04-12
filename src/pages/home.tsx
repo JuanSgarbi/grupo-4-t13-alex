@@ -1,11 +1,18 @@
-import { Box, Flex, Image, Text } from "@chakra-ui/react";
+import { Box, Button, Flex, Image, Text } from "@chakra-ui/react";
 import { Footer } from "../components/footer";
 import { Header } from "../components/header";
 import carBackground from "../assets/carBackground.svg";
 import { NavFilters } from "../components/navFilters";
 import { ModalNavFilter } from "../components/filtersModal";
+import { useState } from "react";
+import { CardAdvertisement, iCardProps } from "../components/cardAdvertisement";
+import { advertisementsCars } from "../../mocked";
 
 export const Home = () => {
+  const [advertisements, setAdvertisements] = useState<iCardProps[]>([
+    ...advertisementsCars,
+  ]);
+
   return (
     <Flex h={"max-content"} w={"100%"}>
       <Header user={"Christian"} isLogged={true} />
@@ -61,10 +68,61 @@ export const Home = () => {
             </Text>
           </Box>
         </Flex>
-        <Box display={{ base: "none", md: "flex" }}>
-          <NavFilters />
-        </Box>
+        <Flex flexDirection={"row"}>
+          <Box display={{ base: "none", md: "flex" }}>
+            <NavFilters />
+          </Box>
+          <Flex
+            wrap={{ base: "nowrap", md: "wrap" }}
+            h={"100%"}
+            alignContent={"flex-end"}
+            mt={"1rem"}
+            overflowX={{ base: "auto", md: "hidden" }}
+          >
+            {!!advertisements.length &&
+              advertisements.map((advertisement) => (
+                <Flex
+                  w={{ base: "100%", md: "50%", xl: "33%" }}
+                  justifyContent={"flex-end"}
+                  mb={"2rem"}
+                >
+                  <CardAdvertisement
+                    key={advertisement.id}
+                    title={advertisement.title}
+                    description={advertisement.description}
+                    owner={advertisement.owner}
+                    km={advertisement.km}
+                    year={advertisement.year}
+                    price={advertisement.price}
+                    image={advertisement.image}
+                    isGoodBuy={advertisement.isGoodBuy}
+                    isActive={advertisement.isActive}
+                    isHomePage={advertisement.isHomePage}
+                  />
+                </Flex>
+              ))}
+          </Flex>
+        </Flex>
         <ModalNavFilter />
+        <Flex
+          justifyContent={"center"}
+          alignItems={"center"}
+          w={"100%"}
+          marginY={"2rem"}
+          gap={{ base: "1rem", md: "2rem" }}
+          flexDirection={{ base: "column", md: "row" }}
+        >
+          <Text textStyle={"heading_5_600"} color={"grey.3"}>
+            1 de 2
+          </Text>
+          <Button
+            color={"brand.2"}
+            textStyle={"heading_5_600"}
+            variant={"link"}
+          >
+            {"Seguinte >"}
+          </Button>
+        </Flex>
       </Box>
       <Footer />
     </Flex>

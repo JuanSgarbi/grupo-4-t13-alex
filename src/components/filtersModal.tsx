@@ -29,6 +29,7 @@ export const ModalNavFilter = () => {
         marginY={"1rem"}
         display={{ base: "flex", md: "none" }}
         onClick={onOpen}
+        w={"70%"}
       >
         Filtros
       </Button>
