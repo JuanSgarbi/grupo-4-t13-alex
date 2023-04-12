@@ -66,7 +66,7 @@ export const CardAdvertisement = ({title, description, owner, km, year, price, i
           <CardFooter paddingTop={"0"}>
             <Box w={"100%"}>
               <Flex gap={"8px"} alignItems={"center"} marginBottom={"16px"}>
-                <ProfilePic user={owner}/>
+                <ProfilePic user={owner} isLarge={false}/>
                 <Text>{owner}</Text>
               </Flex>
               <Flex justifyContent={"space-between"} w={"100%"}>

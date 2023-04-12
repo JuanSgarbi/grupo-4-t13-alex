@@ -122,6 +122,11 @@ const typography = {
     fontWeight: "400",
     fontSize: "16px",
   },
+  body_1_500: {
+    fontFamily: "Inter",
+    fontWeight: "500",
+    fontSize: "36px",
+  },
   body_1_600: {
     fontFamily: "Inter",
     fontWeight: "600",
