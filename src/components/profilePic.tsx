@@ -3,8 +3,9 @@ import { useEffect, useState } from "react"
 
 interface iProfilePicProps {
   user: string;
+  isLarge: boolean;
 }
-export const ProfilePic = ({user}: iProfilePicProps) => {
+export const ProfilePic = ({user, isLarge}: iProfilePicProps) => {
   const [avatar, setAvatar] = useState<string>("")
   const [color, setColor] = useState<string>("")
 
@@ -36,10 +37,10 @@ export const ProfilePic = ({user}: iProfilePicProps) => {
   return (
     <Flex 
     bg={color} 
-    w={"25px"} 
-    h={"25px"} 
+    w={isLarge ? "104px" : "32px"} 
+    h={isLarge ? "104px" : "32px"} 
     borderRadius={"50%"} 
-    textStyle={"body_2_500"} 
+    textStyle={isLarge ? "body_1_500" : "body_2_500"} 
     alignItems={"center"} 
     justifyContent={"center"} 
     p={{base: "15px", md: "17px"}} 

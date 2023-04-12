@@ -196,7 +196,7 @@ export const AnnouncementDetail = () => {
               alignItems={"center"}
               gap={4}
             >
-              <ProfilePic user="Danilo Cardoso" />
+              <ProfilePic user="Danilo Cardoso" isLarge={true}/>
               <Text textStyle={"heading_6_600"}>Danilo Cardoso</Text>
               <Text textStyle={"body_1_400"}>
                 Lorem ipsum dolor sit amet consectetur adipisicing elit. Hic
@@ -224,7 +224,7 @@ export const AnnouncementDetail = () => {
               <Flex direction={"column"} gap={"1rem"}>
                 <Flex>
                   <Flex flex="1" gap="4" alignItems="center">
-                    <ProfilePic user="Juan Sgarbi" />
+                    <ProfilePic user="Juan Sgarbi" isLarge={false}/>
 
                     <Flex>
                       <Text textStyle={"body_2_500"}>Juan Sgarbi</Text>
@@ -249,7 +249,7 @@ export const AnnouncementDetail = () => {
               <Flex direction={"column"} gap={"1rem"}>
                 <Flex>
                   <Flex flex="1" gap="4" alignItems="center">
-                    <ProfilePic user="Danilo Cardoso" />
+                    <ProfilePic user="Danilo Cardoso" isLarge={false}/>
 
                     <Flex>
                       <Text textStyle={"body_2_500"}>Danilo Cardoso</Text>
@@ -274,7 +274,7 @@ export const AnnouncementDetail = () => {
               <Flex direction={"column"} gap={"1rem"}>
                 <Flex>
                   <Flex flex="1" gap="4" alignItems="center">
-                    <ProfilePic user="Gabriel Ogawa" />
+                    <ProfilePic user="Gabriel Ogawa" isLarge={false}/>
 
                     <Flex>
                       <Text textStyle={"body_2_500"}>Gabriel Ogawa</Text>
@@ -306,7 +306,7 @@ export const AnnouncementDetail = () => {
               gap={"2rem"}
             >
               <Flex alignItems={"center"} gap={4}>
-                <ProfilePic user="Juan Sgarbi" />
+                <ProfilePic user="Juan Sgarbi" isLarge={false}/>
                 <Text textStyle={"body_2_500"}>Juan Sgarbi</Text>
               </Flex>
               <Box
