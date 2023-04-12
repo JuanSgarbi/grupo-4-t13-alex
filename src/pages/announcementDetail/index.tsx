@@ -2,7 +2,8 @@ import { Box, Container, Flex, Text } from "@chakra-ui/layout";
 import { Footer } from "../../components/footer";
 import { Header } from "../../components/header";
 import { Image } from "@chakra-ui/image";
-import { Button } from "@chakra-ui/react";
+import { Button, Textarea } from "@chakra-ui/react";
+import { ProfilePic } from "../../components/profilePic";
 
 export const AnnouncementDetail = () => {
   return (
@@ -13,7 +14,7 @@ export const AnnouncementDetail = () => {
         bgGradient="linear(to-b, brand.1 600px,grey.8 0%)"
         justifyContent={"center"}
       >
-        <Header />
+        <Header user="Juan Sgarbi" />
         <Flex
           mt={"150px"}
           mb={{ base: "220px", md: "150px" }}
@@ -92,7 +93,7 @@ export const AnnouncementDetail = () => {
                 <Text textStyle={"heading_7_500"}>R$130.000,00</Text>
               </Flex>
               <Box>
-                <Button variant={"brandDisable"}>Comprar</Button>
+                <Button variant={"default"}>Comprar</Button>
               </Box>
             </Flex>
             <Flex
@@ -126,20 +127,89 @@ export const AnnouncementDetail = () => {
           </Flex>
           <Flex
             w={{ base: "95%", md: "30%" }}
-            h={"350px"}
-            bg={"grey.10"}
-            borderRadius={"4px"}
-            py="36px"
-            px="44px"
+            maxW={{ base: "95%", md: "430px" }}
+            direction={"column"}
+            gap={4}
           >
-            <Text textStyle={"heading_6_600"}>Fotos</Text>
-            {/* <Image src="https://jorlan.com/bh/uploads/products/versions/chevrolet-tracker-turboltz12-vermelho-carmim-min.png" />
-            <Image src="https://www.autodashboard.com.br/wp-content/uploads/2020/04/novo-tracker-pcd-2021.jpg" />
-            <Image src="https://vitalliveiculos.com.br/wp-content/uploads/2022/09/DSC_0008-1280x848-1.jpg" />
-            <Image src="https://www.automaistv.com.br/wp-content/uploads/2022/07/Chevrolet-Tracker-Premier-9_edited-990x594.jpg" />
-            <Image src="https://cdn.salaodocarro.com.br/_upload/carros/2021/08/13/chevrolet-tracker-2022-vermelho-254351-0.jpg" />
-            <Image src="https://www.autoo.com.br/fotos/2022/4/1280_960/interiortracker1_28042022_71323_1280_960.jpg" /> */}
+            <Flex
+              h={"max-content"}
+              bg={"grey.10"}
+              borderRadius={"4px"}
+              py="36px"
+              px="44px"
+              direction={"column"}
+              gap={2}
+            >
+              <Text textStyle={"heading_6_600"}>Fotos</Text>
+              <Flex wrap={"wrap"} gap={2}>
+                <Image
+                  minW={"90px"}
+                  minH={"90px"}
+                  maxW={"108px"}
+                  maxH={"108px"}
+                  src="https://jorlan.com/bh/uploads/products/versions/chevrolet-tracker-turboltz12-vermelho-carmim-min.png"
+                />
+                <Image
+                  minW={"90px"}
+                  minH={"90px"}
+                  maxW={"108px"}
+                  maxH={"108px"}
+                  src="https://www.autodashboard.com.br/wp-content/uploads/2020/04/novo-tracker-pcd-2021.jpg"
+                />
+                <Image
+                  minW={"90px"}
+                  minH={"90px"}
+                  maxW={"108px"}
+                  maxH={"108px"}
+                  src="https://vitalliveiculos.com.br/wp-content/uploads/2022/09/DSC_0008-1280x848-1.jpg"
+                />
+                <Image
+                  minW={"90px"}
+                  minH={"90px"}
+                  maxW={"108px"}
+                  maxH={"108px"}
+                  src="https://www.automaistv.com.br/wp-content/uploads/2022/07/Chevrolet-Tracker-Premier-9_edited-990x594.jpg"
+                />
+                <Image
+                  minW={"90px"}
+                  minH={"90px"}
+                  maxW={"108px"}
+                  maxH={"108px"}
+                  src="https://cdn.salaodocarro.com.br/_upload/carros/2021/08/13/chevrolet-tracker-2022-vermelho-254351-0.jpg"
+                />
+                <Image
+                  minW={"90px"}
+                  minH={"90px"}
+                  maxW={"108px"}
+                  maxH={"108px"}
+                  src="https://www.autoo.com.br/fotos/2022/4/1280_960/interiortracker1_28042022_71323_1280_960.jpg"
+                />
+              </Flex>
+            </Flex>
+            <Flex
+              bg={"grey.10"}
+              borderRadius={"4px"}
+              py="36px"
+              px="44px"
+              direction={"column"}
+              justifyContent={"center"}
+              alignItems={"center"}
+              gap={4}
+            >
+              <ProfilePic user="Danilo Cardoso" />
+              <Text textStyle={"heading_6_600"}>Danilo Cardoso</Text>
+              <Text textStyle={"body_1_400"}>
+                Lorem ipsum dolor sit amet consectetur adipisicing elit. Hic
+                dolor odit esse. Reiciendis, laudantium. Necessitatibus
+                quibusdam eveniet velit blanditiis impedit deleniti tempora, non
+                ut enim illo provident rem accusantium omnis!
+              </Text>
+              <Button variant={"grey1"} size={"medium"}>
+                Ver todos anúncios
+              </Button>
+            </Flex>
           </Flex>
+
           <Flex direction={"column"} w={{ base: "95%", md: "65%" }}>
             <Flex
               bg={"grey.10"}
@@ -147,10 +217,166 @@ export const AnnouncementDetail = () => {
               py="36px"
               px="44px"
               mt={{ base: "unset", md: "1.5rem" }}
+              direction={"column"}
+              gap={"2rem"}
             >
               <Text textStyle={"heading_6_600"}>Comentários</Text>
+              <Flex direction={"column"} gap={"1rem"}>
+                <Flex>
+                  <Flex flex="1" gap="4" alignItems="center">
+                    <ProfilePic user="Juan Sgarbi" />
+
+                    <Flex>
+                      <Text textStyle={"body_2_500"}>Juan Sgarbi</Text>
+                      <Text ml={"2"} textStyle={"body_2_400"} color={"grey.3"}>
+                        •
+                      </Text>
+                      <Text ml={"2"} textStyle={"body_2_400"} color={"grey.3"}>
+                        há 3 dias
+                      </Text>
+                    </Flex>
+                  </Flex>
+                </Flex>
+
+                <Text>
+                  Lorem ipsum dolor sit amet consectetur adipisicing elit. Nam,
+                  dolorem, ipsum molestias illo veritatis alias explicabo
+                  architecto suscipit, in ullam sunt repellendus expedita quod
+                  cum facilis quaerat corrupti iste nostrum?
+                </Text>
+              </Flex>
+
+              <Flex direction={"column"} gap={"1rem"}>
+                <Flex>
+                  <Flex flex="1" gap="4" alignItems="center">
+                    <ProfilePic user="Danilo Cardoso" />
+
+                    <Flex>
+                      <Text textStyle={"body_2_500"}>Danilo Cardoso</Text>
+                      <Text ml={"2"} textStyle={"body_2_400"} color={"grey.3"}>
+                        •
+                      </Text>
+                      <Text ml={"2"} textStyle={"body_2_400"} color={"grey.3"}>
+                        há 2 semanas
+                      </Text>
+                    </Flex>
+                  </Flex>
+                </Flex>
+
+                <Text>
+                  Lorem ipsum dolor sit amet consectetur adipisicing elit. Nam,
+                  dolorem, ipsum molestias illo veritatis alias explicabo
+                  architecto suscipit, in ullam sunt repellendus expedita quod
+                  cum facilis quaerat corrupti iste nostrum?
+                </Text>
+              </Flex>
+
+              <Flex direction={"column"} gap={"1rem"}>
+                <Flex>
+                  <Flex flex="1" gap="4" alignItems="center">
+                    <ProfilePic user="Gabriel Ogawa" />
+
+                    <Flex>
+                      <Text textStyle={"body_2_500"}>Gabriel Ogawa</Text>
+                      <Text ml={"2"} textStyle={"body_2_400"} color={"grey.3"}>
+                        •
+                      </Text>
+                      <Text ml={"2"} textStyle={"body_2_400"} color={"grey.3"}>
+                        há 1 mês
+                      </Text>
+                    </Flex>
+                  </Flex>
+                </Flex>
+
+                <Text>
+                  Lorem ipsum dolor sit amet consectetur adipisicing elit. Nam,
+                  dolorem, ipsum molestias illo veritatis alias explicabo
+                  architecto suscipit, in ullam sunt repellendus expedita quod
+                  cum facilis quaerat corrupti iste nostrum?
+                </Text>
+              </Flex>
             </Flex>
-            <Flex></Flex>
+            <Flex
+              bg={"grey.10"}
+              borderRadius={"4px"}
+              py="36px"
+              px="44px"
+              mt={{ base: "unset", md: "1.5rem" }}
+              direction={"column"}
+              gap={"2rem"}
+            >
+              <Flex alignItems={"center"} gap={4}>
+                <ProfilePic user="Juan Sgarbi" />
+                <Text textStyle={"body_2_500"}>Juan Sgarbi</Text>
+              </Flex>
+              <Box
+                position={"relative"}
+                border={"1.5px solid"}
+                borderColor={"grey.7"}
+                borderRadius={"4px"}
+                h={"170px"}
+              >
+                <Textarea
+                  resize={"none"}
+                  focusBorderColor="transparent"
+                  borderColor={"transparent"}
+                  w={"100%"}
+                  placeholder="Carro muito confortável, foi uma ótima experiência de compra..."
+                />
+                <Button
+                  position={"absolute"}
+                  bottom={2}
+                  right={2}
+                  variant={"default"}
+                >
+                  Comentar
+                </Button>
+              </Box>
+              <Flex gap={2} wrap={"wrap"}>
+                <Button
+                  variant={"unset"}
+                  borderColor={"grey.7"}
+                  color={"grey.3"}
+                  fontFamily={"Inter"}
+                  fontWeight={"500"}
+                  fontSize={"12px"}
+                  lineHeight={2}
+                  bg={"grey.7"}
+                  p={"0 12px"}
+                  borderRadius={"24px"}
+                >
+                  Gostei muito!
+                </Button>
+                <Button
+                  variant={"unset"}
+                  borderColor={"grey.7"}
+                  color={"grey.3"}
+                  fontFamily={"Inter"}
+                  fontWeight={"500"}
+                  fontSize={"12px"}
+                  lineHeight={2}
+                  bg={"grey.7"}
+                  p={"0 12px"}
+                  borderRadius={"24px"}
+                >
+                  Incírivel
+                </Button>
+                <Button
+                  variant={"unset"}
+                  borderColor={"grey.7"}
+                  color={"grey.3"}
+                  fontFamily={"Inter"}
+                  fontWeight={"500"}
+                  fontSize={"12px"}
+                  lineHeight={2}
+                  bg={"grey.7"}
+                  p={"0 12px"}
+                  borderRadius={"24px"}
+                >
+                  Recomendarei para meus amigos!
+                </Button>
+              </Flex>
+            </Flex>
           </Flex>
         </Flex>
 
