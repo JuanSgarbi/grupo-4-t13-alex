@@ -26,7 +26,6 @@ export const Header = ({ user, isLogged }: iHeaderProps) => {
   return (
     <>
       <Flex
-        position={"absolute"}
         top={"0"}
         alignItems={"center"}
         w={"100%"}
@@ -127,6 +126,7 @@ export const Header = ({ user, isLogged }: iHeaderProps) => {
               alignItems={"center"}
               gap={"20px"}
             >
+
               <Button variant={"link"}>Fazer Login</Button>
               <Button variant={"outline2"}>Cadastrar</Button>
             </Flex>

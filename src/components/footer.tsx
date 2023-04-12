@@ -5,7 +5,6 @@ import logoFooter from "../assets/logoFooter.svg";
 export const Footer = () => {
   return (
     <Flex
-      position={"absolute"}
       bottom={"0"}
       w={"100%"}
       h={{ base: "200px", md: "100px" }}
