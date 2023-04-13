@@ -136,9 +136,14 @@ export const Header = ({ user, isLogged }: iHeaderProps) => {
       {isOpen ? (
         isLogged ? (
           <Box
-            h={"100%"}
+            position={"absolute"}
+            right={5}
+            top={"60px"}
+            h={"max-content"}
+            borderRadius={4}
             display={{ base: "flex", md: "none" }}
             flexDirection={"column"}
+            bg={"whiteFixed"}
           >
             <Button
               bg={"whiteFixed"}

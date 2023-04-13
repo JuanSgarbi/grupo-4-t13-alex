@@ -145,7 +145,7 @@ const typography = {
   button_medium_text: {
     fontFamily: "Inter",
     fontWeight: "600",
-    fontSize: "16px",
+    fontSize: "14px",
   },
   input_placeholder: {
     fontFamily: "Inter",

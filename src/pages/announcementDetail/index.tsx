@@ -4,6 +4,7 @@ import { Header } from "../../components/header";
 import { Image } from "@chakra-ui/image";
 import { Button, Textarea } from "@chakra-ui/react";
 import { ProfilePic } from "../../components/profilePic";
+import { CreateAnnouncementModal } from "../../components/createAnnouncementModal";
 
 export const AnnouncementDetail = () => {
   return (
@@ -14,7 +15,7 @@ export const AnnouncementDetail = () => {
         bgGradient="linear(to-b, brand.1 600px,grey.8 0%)"
         justifyContent={"center"}
       >
-        <Header user="Juan Sgarbi" />
+        <Header user="Juan Sgarbi" isLogged />
         <Flex
           mt={"150px"}
           mb={{ base: "220px", md: "150px" }}
@@ -141,7 +142,7 @@ export const AnnouncementDetail = () => {
               gap={2}
             >
               <Text textStyle={"heading_6_600"}>Fotos</Text>
-              <Flex wrap={"wrap"} gap={2}>
+              <Flex justifyContent={"space-evenly"} overflowX={"auto"}>
                 <Image
                   minW={"90px"}
                   minH={"90px"}
@@ -207,6 +208,7 @@ export const AnnouncementDetail = () => {
               <Button variant={"grey1"} size={"medium"}>
                 Ver todos anúncios
               </Button>
+              <CreateAnnouncementModal />
             </Flex>
           </Flex>
 
