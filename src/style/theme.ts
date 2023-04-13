@@ -122,6 +122,11 @@ const typography = {
     fontWeight: "400",
     fontSize: "16px",
   },
+  body_1_500: {
+    fontFamily: "Inter",
+    fontWeight: "500",
+    fontSize: "36px",
+  },
   body_1_600: {
     fontFamily: "Inter",
     fontWeight: "600",
@@ -299,6 +304,23 @@ const buttons = {
   },
 };
 
+const inputs = {
+  variants: {
+    filter: {
+      bg: "grey.5",
+      borderColor: "grey.5",
+      _hover: {
+        borderColor: "grey.3",
+      },
+      _focus: {
+        borderColor: "grey.7",
+        boxShadow: "none",
+      },
+    },
+  },
+}
+
+
 export const theme = extendTheme({
   colors: {
     ...brand,
@@ -313,5 +335,11 @@ export const theme = extendTheme({
     Button: {
       ...buttons,
     },
+    Input: {
+      ...inputs,
+    }
   },
+  breakpoints: {
+    sm2: "450px",
+  }
 });

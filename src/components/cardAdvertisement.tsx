@@ -15,6 +15,9 @@ import { useNavigate } from "react-router-dom";
 import { ProfilePic } from "./profilePic";
 
 export interface iCardProps {
+
+  id?: string;
+
   title: string;
   description: string;
   owner: string;
@@ -41,17 +44,27 @@ export const CardAdvertisement = ({
 }: iCardProps) => {
   const navigate = useNavigate();
 
-  const handleClick = () => {
-    navigate("/announcement");
+
+  const handleClickCard = () => {
+    if (isHomePage) {
+      navigate("/announcement");
+    }
+
   };
 
+  const handleClickButton = () => {
+    navigate("/teste");
+  };
   return (
     <>
       <Card
         maxW="312px"
         cursor={"pointer"}
-        onClick={handleClick}
+
+        onClick={handleClickCard}
         boxShadow="none"
+        w={{ base: "300px", md: "100%" }}
+
       >
         <CardBody>
           <Box position={"relative"}>
@@ -64,19 +77,23 @@ export const CardAdvertisement = ({
               transition={"border 0.5s ease"}
               _hover={{ borderColor: "brand.1" }}
             />
-            {isGoodBuy ? (
-              <Text
-                position={"absolute"}
-                top={"2px"}
-                right={"2px"}
-                color={"whiteFixed"}
-                bg={"random.7"}
-                paddingRight={"2.5px"}
-                paddingLeft={"2.5px"}
-                borderRadius={"2px"}
-              >
-                $
-              </Text>
+
+            {isHomePage ? (
+              isGoodBuy ? (
+                <Text
+                  position={"absolute"}
+                  top={"2px"}
+                  right={"2px"}
+                  color={"whiteFixed"}
+                  bg={"random.7"}
+                  paddingRight={"2.5px"}
+                  paddingLeft={"2.5px"}
+                  borderRadius={"2px"}
+                >
+                  $
+                </Text>
+              ) : null
+
             ) : null}
             {!isHomePage ? (
               isActive ? (
@@ -117,7 +134,9 @@ export const CardAdvertisement = ({
         <CardFooter paddingTop={"0"}>
           <Box w={"100%"}>
             <Flex gap={"8px"} alignItems={"center"} marginBottom={"16px"}>
-              <ProfilePic user={owner} />
+
+              <ProfilePic user={owner} isLarge={false} />
+
               <Text>{owner}</Text>
             </Flex>
             <Flex justifyContent={"space-between"} w={"100%"}>
@@ -149,6 +168,9 @@ export const CardAdvertisement = ({
                 <Button
                   variant={"outline1"}
                   size={{ base: "medium", md: "big" }}
+
+                  onClick={handleClickButton}
+
                 >
                   Ver detalhes
                 </Button>
