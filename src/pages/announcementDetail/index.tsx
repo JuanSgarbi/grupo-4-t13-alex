@@ -142,7 +142,7 @@ export const AnnouncementDetail = () => {
               gap={2}
             >
               <Text textStyle={"heading_6_600"}>Fotos</Text>
-              <Flex justifyContent={"space-evenly"} overflowX={"auto"}>
+              <Flex wrap={"wrap"} gap={2}>
                 <Image
                   minW={"90px"}
                   minH={"90px"}
