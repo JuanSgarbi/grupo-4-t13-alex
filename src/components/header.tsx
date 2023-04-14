@@ -142,6 +142,7 @@ export const Header = ({ user, isLogged }: iHeaderProps) => {
             display={{ base: "flex", md: "none" }}
             flexDirection={"column"}
             bg={"whiteFixed"}
+            zIndex={"2"}
           >
             <Button
               bg={"whiteFixed"}
