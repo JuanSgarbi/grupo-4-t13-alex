@@ -53,7 +53,7 @@ export const Header = ({ user, isLogged }: iHeaderProps) => {
                   paddingLeft={"50px"}
                   bg={"grey.10"}
                   _hover={{ bg: "grey.10" }}
-                  leftIcon={<ProfilePic user={user} />}
+                  leftIcon={<ProfilePic user={user} isLarge={false} />}
                   textStyle={"body_2_500"}
                   fontSize={{ base: "sm", md: "md" }}
                 >

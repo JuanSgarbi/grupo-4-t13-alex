@@ -22,8 +22,9 @@ import {
   Textarea,
   useDisclosure,
 } from "@chakra-ui/react";
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useState } from "react";
 import { api, fipeApi } from "../services/axios";
+import { iAnnouncement, useAuth } from "../context/announcements.context";
 
 interface IFipeData {
   id: string;
@@ -74,6 +75,7 @@ export const CreateAnnouncementModal = () => {
   const [carModel, setCarModel] = useState<IFipeData[] | null>(null);
   const [price, setPrice] = useState("");
   const [imgInputs, setImgInputs] = useState<IInputImage[] | null>(null);
+  const { createAnnouncements } = useAuth();
   const [isModalCreate, setIsModalCreate] = useState(true);
 
   useEffect(() => {
@@ -95,12 +97,12 @@ export const CreateAnnouncementModal = () => {
   const formSchema = yup.object().shape({
     brand: yup.string().required("Este campo é obrigatório"),
     model: yup.string().required("Este campo é obrigatório"),
-    year: yup.string().required("Este campo é obrigatório"),
+    year: yup.number().required("Este campo é obrigatório"),
     fuel: yup.string().required("Este campo é obrigatório"),
-    odometer: yup.string().required("Este campo é obrigatório"),
+    odometer: yup.number().required("Este campo é obrigatório"),
     color: yup.string().required("Este campo é obrigatório"),
     fipe: yup.string().required("Este campo é obrigatório"),
-    price: yup.string().required("Este campo é obrigatório"),
+    price: yup.number().required("Este campo é obrigatório"),
     description: yup.string().required("Este campo é obrigatório"),
     images: yup.array().of(
       yup.object().shape({
@@ -108,6 +110,12 @@ export const CreateAnnouncementModal = () => {
       })
     ),
   });
+
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+  } = useForm<ICreateAnnouncement>({ resolver: yupResolver(formSchema) });
 
   const handleSelectModel = (event: any) => {
     const model = carModelList?.filter((el) => el.name === event.target!.value);
@@ -119,25 +127,15 @@ export const CreateAnnouncementModal = () => {
     }
   };
 
-  const {
-    register,
-    handleSubmit,
-    formState: { errors },
-  } = useForm<ICreateAnnouncement>({ resolver: yupResolver(formSchema) });
-
-  const onSubmitFunction = async (formSchema: any) => {
+  const onSubmitFunction = async (formSchema: iAnnouncement) => {
+    console.log(formSchema);
     try {
-      formSchema.isPublished = true;
       const { data } = await api.post("/advertise", formSchema);
-
       setIsModalCreate(false);
-
       return data;
     } catch (error) {
       console.error(error);
     }
-
-    console.log(formSchema);
   };
 
   const clickAddImg = () => {
@@ -153,6 +151,8 @@ export const CreateAnnouncementModal = () => {
   };
 
   const openModal = () => {
+    setSelectBrand(null);
+    setCarModel(null);
     setIsModalCreate(true);
     onOpen();
   };
