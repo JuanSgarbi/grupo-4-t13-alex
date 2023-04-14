@@ -1,163 +1,148 @@
-import React, { useContext } from "react";
-import {
-  useState,
-  createContext,
-  useCallback,
-  useMemo,
-  ReactNode,
-} from "react";
-import { useToast } from "@chakra-ui/react";
+import React, { createContext, useContext, useCallback, useEffect, ReactNode } from "react";
 import { api } from "../services/axios";
+import { useToast } from "@chakra-ui/react";
 
-interface iImg {
-  img: string;
+interface iImage {
+    img: string;
 }
 
 export interface iAnnouncement {
-  id?: string;
-  brand: string;
-  model: string;
-  year: number;
-  fuel: string;
-  odometer: number;
-  color: string;
-  fipe: string;
-  price: number;
-  description: string;
-  isPublished?: boolean;
-  createdAt?: string;
-  updatedAt?: string;
-  images: iImg[];
+    id?: string;
+    brand: string,
+    model: string,
+    year: string,
+    fuel: string,
+    odometer: string,
+    color: string,
+    fipe: number,
+    price: number,
+    description: string,
+    isPublished: boolean,
+    images: iImage[],
+    createdAt: Date,
+    updatedAt: Date
 }
 
-interface iAnnouncementsContext {
-  announcements: iAnnouncement[];
-  getAnnouncements: () => Promise<void>;
-  createAnnouncements: (data: iAnnouncement) => Promise<void>;
-  updateAnnouncements: (id: string, data: iAnnouncement) => Promise<void>;
-  deleteAnnouncements: (id: string) => Promise<void>;
-  displayAnnouncement: (id: string) => Promise<void>;
-  targetAd: iAnnouncement;
+interface iContext {
+    announcements: iAnnouncement[];
+    getAnnouncements: () => Promise<void>;
+    createAnnouncement: (payload: iAnnouncement) => Promise<void>;
+    editAnnouncement: (id: string, payload: iAnnouncement) => Promise<void>;
+    deleteAnnouncement: (id: string) => Promise<void>;
+    listAnnouncement: (id: string) => Promise<iAnnouncement | void>
 }
 
-export const AdContext = createContext({
-  announcements: [] as iAnnouncement[],
-  getAnnouncements: () => Promise.resolve(),
-  createAnnouncements: (data: iAnnouncement) => Promise.resolve(),
-  updateAnnouncements: (id: string, data: iAnnouncement) => Promise.resolve(),
-  deleteAnnouncements: (id: string) => Promise.resolve(),
-  displayAnnouncement: (id: string) => Promise.resolve(),
-  targetAd: {} as iAnnouncement,
-} as iAnnouncementsContext);
+export const AdContext = createContext({} as iContext);
 
-export default function AnnouncementsProvider({
-  children,
-}: {
-  children: ReactNode;
-}): JSX.Element {
-  const toast = useToast();
-  const [announcements, setAnnouncements] = useState<iAnnouncement[]>([]);
-  const [targetAd, setTargetAd] = useState<iAnnouncement>({} as iAnnouncement);
-  const token: string = "alterar qdo fizer o contexto de usuário";
+export const AdProvider = ({ children }: { children: ReactNode }): JSX.Element => {
 
-  //Já passa o Token automaticamente nas requisições.
-  api.defaults.headers.common["Authorization"] = `Bearer ${token}`;
+    const toast = useToast();
+    const [announcements, setAnnouncements] = React.useState<iAnnouncement[]>([]);
+    const [page, setPage] = React.useState(1);
 
-  const getAnnouncements = useCallback(async () => {
-    try {
-      const { data } = await api.get("/advertise");
-      setAnnouncements(data);
-    } catch (err) {
-      toast({
-        title: "Erro",
-        description: "Não foi possível carregar os anúncios",
-        status: "error",
-        duration: 9000,
-        isClosable: true,
-      });
-    }
-  }, []);
+    useEffect(() => {
+        getAnnouncements();
+    }, [])
 
-  const createAnnouncements = useCallback(async (data: iAnnouncement) => {
-    try {
-      const { data: response } = await api.post("/advertise", data);
-      setAnnouncements([...announcements, response]);
-    } catch (err) {
-      toast({
-        title: "Erro",
-        description: "Não foi possível criar o anúncio",
-        status: "error",
-        duration: 9000,
-        isClosable: true,
-      });
-    }
-  }, []);
+    const getAnnouncements = useCallback(async () => {
+        try {
+            const { data } = await api.get(`/advertise?page=${page}`);
+            setAnnouncements(Object.values(data.announcement));
+            setPage(data.page)
+        } catch (error) {
+            console.log(error)
+            toast({
+                title: "Erro ao carregar anúncios",
+                description: "Tente novamente mais tarde",
+                status: "error",
+                duration: 9000,
+                isClosable: true,
+            });
+        }
+    }, [])
 
-  const updateAnnouncements = useCallback(
-    async (id: string, data: iAnnouncement) => {
-      try {
-        const { data: response } = await api.put(`/advertise/${id}`, data);
-        setAnnouncements(
-          announcements.map((announcement) =>
-            announcement.id === id ? response : announcement
-          )
-        );
-      } catch (err) {
-        toast({
-          title: "Erro",
-          description: "Não foi possível atualizar o anúncio",
-          status: "error",
-          duration: 9000,
-          isClosable: true,
-        });
-      }
-    },
-    []
-  );
+    const createAnnouncement = useCallback(async (payload: iAnnouncement) => {
+        try {
+            const { data } = await api.post('/advertise', payload);
+            const { announcement } = data as { announcement: iAnnouncement };
+            setAnnouncements([...announcements, announcement]);
+        } catch (err) {
+            toast({
+                title: "Erro ao carregar anúncios",
+                description: "Verifique os campos inseridos e tente novamente!",
+                status: "error",
+                duration: 9000,
+                isClosable: true,
+            });
+            return;
+        }
+    }, [])
 
-  const deleteAnnouncements = useCallback(async (id: string) => {
-    try {
-      await api.delete(`/advertise/${id}`);
-      setAnnouncements(
-        announcements.filter((announcement) => announcement.id !== id)
-      );
-    } catch (err) {
-      toast({
-        title: "Erro",
-        description: "Não foi possível deletar o anúncio",
-        status: "error",
-        duration: 9000,
-        isClosable: true,
-      });
-    }
-  }, []);
+    const editAnnouncement = useCallback(async (id: string, payload: iAnnouncement) => {
+        try {
+            const { data } = await api.patch(`/advertise/${id}`, payload);
+            const { announcement } = data as { announcement: iAnnouncement };
+            const newAnnouncements = announcements.map(announcement => {
+                if (announcement.id === id) {
+                    return announcement;
+                }
+                return announcement;
+            })
+            setAnnouncements(newAnnouncements);
+        } catch (err) {
+            toast({
+                title: "Erro ao carregar anúncios",
+                description: "Verifique os campos inseridos e tente novamente!",
+                status: "error",
+                duration: 9000,
+                isClosable: true,
+            });
+        }
+    }, [])
 
-  const displayAnnouncement = useCallback(async (id: string) => {
-    try {
-      const { data } = await api.get(`/advertise/${id}`);
-      setTargetAd(data);
-    } catch (err) {
-      toast({
-        title: "Erro",
-        description: "Não foi possível carregar o anúncio",
-        status: "error",
-        duration: 9000,
-        isClosable: true,
-      });
-    }
-  }, []);
+    const deleteAnnouncement = useCallback(async (id: string) => {
+        try {
+            await api.delete(`/advertise/${id}`);
+            const newAnnouncements = announcements.filter(announcement => announcement.id !== id);
+            setAnnouncements(newAnnouncements);
+        } catch (err) {
+            toast({
+                title: "Erro ao carregar anúncios",
+                description: "Verifique o anúncio selecionado e tente novamente!",
+                status: "error",
+                duration: 9000,
+                isClosable: true,
+            });
+        }
+    }, [])
 
-  const value = useMemo(() => {
-    return {
-      announcements,
-      getAnnouncements,
-      createAnnouncements,
-      updateAnnouncements,
-      deleteAnnouncements,
-      displayAnnouncement,
-      targetAd,
-    };
-  }, [announcements, targetAd]);
+    const listAnnouncement = useCallback(async (id: string) => {
+        try {
+            const { data } = await api.get(`/advertise/${id}`) as { data: iAnnouncement };
+            return data;
+        } catch (err) {
+            toast({
+                title: "Erro ao carregar anúncios",
+                description: "Verifique o anúncio selecionado e tente novamente!",
+                status: "error",
+                duration: 9000,
+                isClosable: true,
+            });
+        }
+    }, [])
 
-  return <AdContext.Provider value={value}>{children}</AdContext.Provider>;
-}
+    return (
+        <AdContext.Provider value={{
+            announcements, createAnnouncement,
+            editAnnouncement, deleteAnnouncement,
+            listAnnouncement, getAnnouncements
+
+        }}>
+            {children}
+        </AdContext.Provider>
+    )
+};
+
+export const useAd = (): iContext => useContext(AdContext);
+
+export default AdProvider;

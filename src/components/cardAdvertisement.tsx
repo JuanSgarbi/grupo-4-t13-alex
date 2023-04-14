@@ -31,6 +31,7 @@ export interface iCardProps {
 }
 
 export const CardAdvertisement = ({
+  id,
   title,
   description,
   owner,
@@ -47,13 +48,13 @@ export const CardAdvertisement = ({
 
   const handleClickCard = () => {
     if (isHomePage) {
-      navigate("/announcement");
+      navigate(`/announcement/${id}`);
     }
 
   };
 
   const handleClickButton = () => {
-    navigate("/teste");
+    navigate(`/announcement/${id}`);
   };
   return (
     <>
