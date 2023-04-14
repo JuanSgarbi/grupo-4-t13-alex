@@ -1,12 +1,15 @@
 import { Box, Button, Flex, Image, Text } from "@chakra-ui/react";
-import { Footer } from "../components/footer";
-import { Header } from "../components/header";
-import carBackground from "../assets/carBackground.svg";
-import { NavFilters } from "../components/navFilters";
-import { ModalNavFilter } from "../components/filtersModal";
+import { Footer } from "../../components/footer";
+import { Header } from "../../components/header";
+import carBackground from "../../assets/carBackground.svg";
+import { NavFilters } from "../../components/navFilters";
+import { ModalNavFilter } from "../../components/filtersModal";
 import { useState } from "react";
-import { CardAdvertisement, iCardProps } from "../components/cardAdvertisement";
-import { advertisementsCars } from "../../mocked";
+import {
+  CardAdvertisement,
+  iCardProps,
+} from "../../components/cardAdvertisement";
+import { advertisementsCars } from "../../../mocked";
 
 export const Home = () => {
   const [advertisements, setAdvertisements] = useState<iCardProps[]>([
