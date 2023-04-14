@@ -4,8 +4,13 @@ import { Header } from "../components/header";
 import { useContext } from "react";
 import { CreateAnnouncementModal } from "../components/createAnnouncementModal";
 import { ProfilePic } from "../components/profilePic";
+import { AdContext } from "../context/announcements.context";
+import { CardAdvertisement } from "../components/cardAdvertisement";
 
 export const Profile = () => {
+
+  const { announcements } = useContext(AdContext);
+
   return (
     <>
       <Flex
@@ -13,11 +18,12 @@ export const Profile = () => {
         w={"100%"}
         bgGradient="linear(to-b, brand.1 400px,grey.8 0%)"
         justifyContent={"center"}
+        direction={"column"}
+        alignItems={"center"}
       >
         <Header user="Felipe Holanda" isLogged={true} />
         <Flex
           mt={"182px"}
-          mb={{ base: "220px", md: "150px" }}
           w={{ base: "95%", md: "80%" }}
           h={"max-content"}
           justifyContent={{ base: "unset", md: "space-between" }}
@@ -65,11 +71,40 @@ export const Profile = () => {
             justifyContent={"space-evenly"}
             wrap={"wrap"}
           >
-            <Box>
-              <Text>teste</Text>
-            </Box>
           </Flex>
         </Flex>
+        <Box
+          w={"95%"}
+        >
+          <Flex
+            wrap={"wrap"}
+            gap={"1rem"}
+            direction={"row"}
+            justifyContent={"space-between"}
+            mb={{ base: "220px", md: "150px" }}
+
+          >
+            {
+              announcements.map((ad): JSX.Element => {
+                return (
+                  <CardAdvertisement
+                    key={ad.id} id={ad.id}
+                    title={`${ad.brand} ${ad.model}`}
+                    description={ad.description}
+                    km={ad.odometer}
+                    isActive={ad.isPublished}
+                    owner={"Felipe Holanda"}
+                    price={`${ad.price}`}
+                    isHomePage={false}
+                    image={""}
+                    isGoodBuy={ad.price <= ad.fipe ? true : false}
+                    year={ad.year}
+                  />
+                )
+              })
+            }
+          </Flex>
+        </Box>
         <Footer />
       </Flex>
     </>
