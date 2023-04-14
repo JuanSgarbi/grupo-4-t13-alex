@@ -83,11 +83,12 @@ export const Home = () => {
             overflowX={{ base: "auto", md: "hidden" }}
           >
             {!!advertisements.length &&
-              advertisements.map((advertisement) => (
+              advertisements.map((advertisement, i) => (
                 <Flex
                   w={{ base: "100%", md: "50%", xl: "33%" }}
                   justifyContent={"flex-end"}
                   mb={"2rem"}
+                  key={i}
                 >
                   <CardAdvertisement
                     key={advertisement.id}
