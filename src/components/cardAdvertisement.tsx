@@ -15,7 +15,9 @@ import { useNavigate } from "react-router-dom";
 import { ProfilePic } from "./profilePic";
 
 export interface iCardProps {
+
   id?: string;
+
   title: string;
   description: string;
   owner: string;
@@ -43,10 +45,12 @@ export const CardAdvertisement = ({
 }: iCardProps) => {
   const navigate = useNavigate();
 
+
   const handleClickCard = () => {
     if (isHomePage) {
       navigate(`/announcement/${id}`);
     }
+
   };
 
   const handleClickButton = () => {
@@ -57,9 +61,11 @@ export const CardAdvertisement = ({
       <Card
         maxW="312px"
         cursor={"pointer"}
+
         onClick={handleClickCard}
         boxShadow="none"
         w={{ base: "300px", md: "100%" }}
+
       >
         <CardBody>
           <Box position={"relative"}>
@@ -72,6 +78,7 @@ export const CardAdvertisement = ({
               transition={"border 0.5s ease"}
               _hover={{ borderColor: "brand.1" }}
             />
+
             {isHomePage ? (
               isGoodBuy ? (
                 <Text
@@ -87,6 +94,7 @@ export const CardAdvertisement = ({
                   $
                 </Text>
               ) : null
+
             ) : null}
             {!isHomePage ? (
               isActive ? (
@@ -127,7 +135,9 @@ export const CardAdvertisement = ({
         <CardFooter paddingTop={"0"}>
           <Box w={"100%"}>
             <Flex gap={"8px"} alignItems={"center"} marginBottom={"16px"}>
+
               <ProfilePic user={owner} isLarge={false} />
+
               <Text>{owner}</Text>
             </Flex>
             <Flex justifyContent={"space-between"} w={"100%"}>
@@ -159,7 +169,9 @@ export const CardAdvertisement = ({
                 <Button
                   variant={"outline1"}
                   size={{ base: "medium", md: "big" }}
+
                   onClick={handleClickButton}
+
                 >
                   Ver detalhes
                 </Button>

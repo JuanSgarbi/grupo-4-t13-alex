@@ -3,7 +3,6 @@ import { Home } from "../pages/home";
 import { AnnouncementDetail } from "../pages/announcementDetail";
 import { Profile } from "../pages/profile";
 
-
 export default function MakeRoutes(): JSX.Element {
   return (
     <Routes>
