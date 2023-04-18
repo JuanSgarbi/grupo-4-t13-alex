@@ -96,7 +96,7 @@ export const Profile = () => {
                     owner={"Felipe Holanda"}
                     price={`${ad.price}`}
                     isHomePage={false}
-                    image={""}
+                    image={ad.images[0]?.img}
                     isGoodBuy={ad.price <= ad.fipe ? true : false}
                     year={ad.year}
                   />

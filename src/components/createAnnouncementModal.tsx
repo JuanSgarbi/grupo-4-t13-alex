@@ -24,7 +24,7 @@ import {
 } from "@chakra-ui/react";
 import { useEffect, useState } from "react";
 import { api, fipeApi } from "../services/axios";
-import { iAnnouncement, useAuth } from "../context/announcements.context";
+import { iAnnouncement, useAd } from "../context/announcements.context";
 
 interface IFipeData {
   id: string;
@@ -75,7 +75,7 @@ export const CreateAnnouncementModal = () => {
   const [carModel, setCarModel] = useState<IFipeData[] | null>(null);
   const [price, setPrice] = useState("");
   const [imgInputs, setImgInputs] = useState<IInputImage[] | null>(null);
-  const { createAnnouncements } = useAuth();
+  const { createAnnouncement } = useAd();
   const [isModalCreate, setIsModalCreate] = useState(true);
 
   useEffect(() => {
@@ -127,8 +127,8 @@ export const CreateAnnouncementModal = () => {
     }
   };
 
-  const onSubmitFunction = async (formSchema: iAnnouncement) => {
-    console.log(formSchema);
+  const onSubmitFunction = async () => {
+
     try {
       const { data } = await api.post("/advertise", formSchema);
       setIsModalCreate(false);
@@ -266,8 +266,8 @@ export const CreateAnnouncementModal = () => {
                             ? carModel[0].fuel === 1
                               ? "Flex"
                               : carModel[0].fuel === 2
-                              ? "Hibrido"
-                              : "Elétrico"
+                                ? "Hibrido"
+                                : "Elétrico"
                             : "0000"
                         }
                       />

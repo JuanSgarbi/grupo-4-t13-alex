@@ -2,12 +2,49 @@ import { Box, Container, Flex, Text } from "@chakra-ui/layout";
 import { Footer } from "../../components/footer";
 import { Header } from "../../components/header";
 import { Image } from "@chakra-ui/image";
-import { Button, Textarea } from "@chakra-ui/react";
+import { Button, Textarea, AspectRatio } from "@chakra-ui/react";
 import { ProfilePic } from "../../components/profilePic";
-import { CreateAnnouncementModal } from "../../components/createAnnouncementModal";
 import { EditAnnouncementModal } from "../../components/editAnnouncementModal";
+import { useAd } from "../../context/announcements.context";
+import { useState, useEffect } from "react";
+import { useParams } from "react-router-dom"
+
+interface iImages {
+  id: string;
+  img: string;
+}
+
+interface iAnnouncement {
+  id: string;
+  brand: string;
+  model: string;
+  year: string;
+  fuel: string;
+  odometer: string;
+  color: string;
+  fipe: string;
+  price: number;
+  description: string;
+  images: iImages[];
+  isPublished: boolean;
+  createdAt: Date;
+  updatedAt: Date;
+}
 
 export const AnnouncementDetail = () => {
+  const { id } = useParams();
+  const { listAnnouncement } = useAd();
+  const [announcement, setAnnouncement] = useState<any>({});
+
+  useEffect(() => {
+    const getAnnouncement = async () => {
+      const response = await listAnnouncement(id!);
+      console.log(response);
+      setAnnouncement(response);
+    };
+    getAnnouncement();
+  }, [])
+
   return (
     <>
       <Flex
@@ -47,7 +84,7 @@ export const AnnouncementDetail = () => {
                 maxW={"540px"}
                 maxH={"280px"}
                 objectFit={{ base: "cover", md: "unset" }}
-                src="https://media.seudinheiro.com/uploads/2023/01/Blazer-EV-foto-Chevrolet.jpg"
+                src={announcement.images?.[0].img}
               />
             </Flex>
             <Flex
@@ -60,7 +97,7 @@ export const AnnouncementDetail = () => {
               gap={"2rem"}
             >
               <Text textStyle={"heading_6_600"}>
-                TRACKER PREMIER 1.2 TURBO AT 2021
+                {announcement.brand} {announcement.model}
               </Text>
               <Flex
                 justifyContent={"space-between"}
@@ -80,7 +117,7 @@ export const AnnouncementDetail = () => {
                     color={"brand.1"}
                     borderRadius={"4px"}
                   >
-                    2023
+                    {announcement.year}
                   </Text>
                   <Text
                     textStyle={"body_2_500"}
@@ -89,10 +126,10 @@ export const AnnouncementDetail = () => {
                     color={"brand.1"}
                     borderRadius={"4px"}
                   >
-                    O KM
+                    {announcement.odometer}KM
                   </Text>
                 </Flex>
-                <Text textStyle={"heading_7_500"}>R$130.000,00</Text>
+                <Text textStyle={"heading_7_500"}>R${announcement.price}</Text>
               </Flex>
               <Box>
                 <Button variant={"default"}>Comprar</Button>
@@ -109,21 +146,7 @@ export const AnnouncementDetail = () => {
             >
               <Text textStyle={"heading_6_600"}>Descrição</Text>
               <Text textStyle={"body_1_400"}>
-                Lorem ipsum dolor sit amet consectetur adipisicing elit. Libero
-                fugit dolore sit minima odit nihil, vitae accusantium, porro
-                neque quasi, quaerat quidem mollitia. Corporis quam quaerat
-                debitis possimus, ullam excepturi.Lorem ipsum dolor sit amet
-                consectetur adipisicing elit. Libero fugit dolore sit minima
-                odit nihil, vitae accusantium, porro neque quasi, quaerat quidem
-                mollitia. Corporis quam quaerat debitis possimus, ullam
-                excepturi.Lorem ipsum dolor sit amet consectetur adipisicing
-                elit. Libero fugit dolore sit minima odit nihil, vitae
-                accusantium, porro neque quasi, quaerat quidem mollitia.
-                Corporis quam quaerat debitis possimus, ullam excepturi.Lorem
-                ipsum dolor sit amet consectetur adipisicing elit. Libero fugit
-                dolore sit minima odit nihil, vitae accusantium, porro neque
-                quasi, quaerat quidem mollitia. Corporis quam quaerat debitis
-                possimus, ullam excepturi.
+                {announcement.description}
               </Text>
             </Flex>
           </Flex>
@@ -138,54 +161,21 @@ export const AnnouncementDetail = () => {
               bg={"grey.10"}
               borderRadius={"4px"}
               py="36px"
-              px="44px"
+              px="30px"
               direction={"column"}
               gap={2}
             >
               <Text textStyle={"heading_6_600"}>Fotos</Text>
               <Flex wrap={"wrap"} gap={2}>
-                <Image
-                  minW={"90px"}
-                  minH={"90px"}
-                  maxW={"108px"}
-                  maxH={"108px"}
-                  src="https://jorlan.com/bh/uploads/products/versions/chevrolet-tracker-turboltz12-vermelho-carmim-min.png"
-                />
-                <Image
-                  minW={"90px"}
-                  minH={"90px"}
-                  maxW={"108px"}
-                  maxH={"108px"}
-                  src="https://www.autodashboard.com.br/wp-content/uploads/2020/04/novo-tracker-pcd-2021.jpg"
-                />
-                <Image
-                  minW={"90px"}
-                  minH={"90px"}
-                  maxW={"108px"}
-                  maxH={"108px"}
-                  src="https://vitalliveiculos.com.br/wp-content/uploads/2022/09/DSC_0008-1280x848-1.jpg"
-                />
-                <Image
-                  minW={"90px"}
-                  minH={"90px"}
-                  maxW={"108px"}
-                  maxH={"108px"}
-                  src="https://www.automaistv.com.br/wp-content/uploads/2022/07/Chevrolet-Tracker-Premier-9_edited-990x594.jpg"
-                />
-                <Image
-                  minW={"90px"}
-                  minH={"90px"}
-                  maxW={"108px"}
-                  maxH={"108px"}
-                  src="https://cdn.salaodocarro.com.br/_upload/carros/2021/08/13/chevrolet-tracker-2022-vermelho-254351-0.jpg"
-                />
-                <Image
-                  minW={"90px"}
-                  minH={"90px"}
-                  maxW={"108px"}
-                  maxH={"108px"}
-                  src="https://www.autoo.com.br/fotos/2022/4/1280_960/interiortracker1_28042022_71323_1280_960.jpg"
-                />
+                {announcement.images?.map((img: iImages) => (
+                  <AspectRatio key={img.id} ratio={1} w={"100px"} h={"100px"}>
+                    <Image
+                      w={"60%"}
+                      objectFit="contain"
+                      src={img.img}
+                    />
+                  </AspectRatio>
+                ))}
               </Flex>
             </Flex>
             <Flex

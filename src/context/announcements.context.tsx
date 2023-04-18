@@ -1,6 +1,7 @@
 import React, { createContext, useContext, useCallback, useEffect, ReactNode } from "react";
 import { api } from "../services/axios";
 import { useToast } from "@chakra-ui/react";
+import { useNavigate } from "react-router-dom"
 
 interface iImage {
     img: string;
@@ -35,7 +36,7 @@ interface iContext {
 export const AdContext = createContext({} as iContext);
 
 export const AdProvider = ({ children }: { children: ReactNode }): JSX.Element => {
-
+    const navigate = useNavigate();
     const toast = useToast();
     const [announcements, setAnnouncements] = React.useState<iAnnouncement[]>([]);
     const [page, setPage] = React.useState(1);
@@ -116,7 +117,30 @@ export const AdProvider = ({ children }: { children: ReactNode }): JSX.Element =
         }
     }, [])
 
-    const listAnnouncement = useCallback(async (id: string) => {
+    const listAnnouncement = useCallback(async (id: any) => {
+
+        if (typeof id !== 'string') {
+            toast({
+                title: "Erro ao carregar anúncios",
+                description: "Verifique o anúncio selecionado e tente novamente!",
+                status: "error",
+                duration: 9000,
+                isClosable: true,
+            });
+            navigate(-1);
+            return;
+        } else if (id === 'undefined') {
+            toast({
+                title: "Erro ao carregar anúncios",
+                description: "Verifique o anúncio selecionado e tente novamente!",
+                status: "error",
+                duration: 9000,
+                isClosable: true,
+            });
+            navigate(-1);
+            return;
+        }
+
         try {
             const { data } = await api.get(`/advertise/${id}`) as { data: iAnnouncement };
             return data;
@@ -128,6 +152,7 @@ export const AdProvider = ({ children }: { children: ReactNode }): JSX.Element =
                 duration: 9000,
                 isClosable: true,
             });
+            navigate(-1);
         }
     }, [])
 
