@@ -7,3 +7,7 @@ export const api = axios.create({
 export const fipeApi = axios.create({
   baseURL: "https://kenzie-kars.herokuapp.com",
 });
+
+export const cepApi = axios.create({
+  baseURL: "https://viacep.com.br/ws/",
+});

@@ -184,6 +184,10 @@ const buttons = {
       px: "20px",
       textStyle: "button_medium_text",
     },
+    small: {
+      py: "0px",
+      px: "0px",
+    },
   },
   variants: {
     default: {
@@ -235,6 +239,15 @@ const buttons = {
       bg: "grey.5",
       borderColor: "grey.5",
       color: "whiteFixed",
+    },
+    ghost: {
+      bg: "transparent",
+      borderColor: "transparent",
+      color: "grey.0",
+      _hover: {
+        bg: "transparent",
+        borderColor: "transparent",
+      },
     },
     brandOpacity: {
       bg: "brand.4",
@@ -318,8 +331,7 @@ const inputs = {
       },
     },
   },
-}
-
+};
 
 export const theme = extendTheme({
   colors: {
@@ -337,9 +349,9 @@ export const theme = extendTheme({
     },
     Input: {
       ...inputs,
-    }
+    },
   },
   breakpoints: {
     sm2: "450px",
-  }
+  },
 });
