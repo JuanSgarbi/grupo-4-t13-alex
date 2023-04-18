@@ -199,7 +199,6 @@ export const AnnouncementDetail = () => {
               <Button variant={"grey1"} size={"medium"}>
                 Ver todos anúncios
               </Button>
-              <EditAnnouncementModal />
             </Flex>
           </Flex>
 

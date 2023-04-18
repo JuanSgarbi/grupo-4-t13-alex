@@ -26,6 +26,7 @@ import { useEffect, useState } from "react";
 import { api, fipeApi } from "../services/axios";
 import { iAnnouncement, useAd } from "../context/announcements.context";
 
+
 interface IFipeData {
   id: string;
   name: string;
@@ -76,6 +77,7 @@ export const CreateAnnouncementModal = () => {
   const [price, setPrice] = useState("");
   const [imgInputs, setImgInputs] = useState<IInputImage[] | null>(null);
   const { createAnnouncement } = useAd();
+
   const [isModalCreate, setIsModalCreate] = useState(true);
 
   useEffect(() => {
@@ -115,7 +117,7 @@ export const CreateAnnouncementModal = () => {
     register,
     handleSubmit,
     formState: { errors },
-  } = useForm<ICreateAnnouncement>({ resolver: yupResolver(formSchema) });
+  } = useForm<iAnnouncement>({ resolver: yupResolver(formSchema) });
 
   const handleSelectModel = (event: any) => {
     const model = carModelList?.filter((el) => el.name === event.target!.value);
