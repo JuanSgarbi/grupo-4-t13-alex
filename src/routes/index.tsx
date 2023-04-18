@@ -9,8 +9,7 @@ export default function MakeRoutes(): JSX.Element {
   return (
     <Routes>
       <Route path="/" element={<Home />} />
-      <Route path="/announcement" element={<AnnouncementDetail />} />
-      <Route path="/announcement/:id" element={<h1>anuncio por id</h1>} />
+      <Route path="/announcement/:id" element={<AnnouncementDetail />} />
       <Route path="/profile" element={<Profile />} />
       <Route path="/register" element={<RegisterUser />} />
       <Route path="/login" element={<LoginUser />} />
