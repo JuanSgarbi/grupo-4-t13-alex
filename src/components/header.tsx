@@ -14,10 +14,12 @@ import { HamburgerIcon, CloseIcon } from "@chakra-ui/icons";
 import logoHeader from "../assets/logoHeader.svg";
 import { ProfilePic } from "./profilePic";
 import { useUser } from "../context/user.context";
+import { useNavigate } from "react-router";
 
 export const Header = () => {
   const { isOpen, onOpen, onClose } = useDisclosure();
   const { isLogged, user, logout } = useUser();
+  const navigate = useNavigate();
 
   return (
     <>
@@ -34,7 +36,7 @@ export const Header = () => {
         paddingRight={{ base: "10px", md: "50px" }}
         paddingLeft={{ base: "10px", md: "50px" }}
       >
-        <img src={logoHeader} />
+        <img src={logoHeader} onClick={() => navigate("/")} />
         {isLogged ? (
           <>
             <Box h={"100%"} display={{ base: "none", md: "flex" }}>
@@ -100,8 +102,15 @@ export const Header = () => {
               alignItems={"center"}
               paddingLeft={"44px"}
             >
-              <Button variant={"link"}>Fazer Login</Button>
-              <Button variant={"outline2"}>Cadastrar</Button>
+              <Button variant={"link"} onClick={() => navigate("/login")}>
+                Fazer Login
+              </Button>
+              <Button
+                variant={"outline2"}
+                onClick={() => navigate("/register")}
+              >
+                Cadastrar
+              </Button>
             </HStack>
           </>
         )}
@@ -125,8 +134,15 @@ export const Header = () => {
               alignItems={"center"}
               gap={"20px"}
             >
-              <Button variant={"link"}>Fazer Login</Button>
-              <Button variant={"outline2"}>Cadastrar</Button>
+              <Button variant={"link"} onClick={() => navigate("/login")}>
+                Fazer Login
+              </Button>
+              <Button
+                variant={"outline2"}
+                onClick={() => navigate("/register")}
+              >
+                Cadastrar
+              </Button>
             </Flex>
           </Box>
         ) : null
