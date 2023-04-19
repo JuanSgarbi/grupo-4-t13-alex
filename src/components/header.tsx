@@ -13,6 +13,7 @@ import {
 import { HamburgerIcon, CloseIcon } from "@chakra-ui/icons";
 import logoHeader from "../assets/logoHeader.svg";
 import { ProfilePic } from "./profilePic";
+import { useNavigate } from "react-router";
 
 interface iHeaderProps {
   user: string;
@@ -21,6 +22,9 @@ interface iHeaderProps {
 
 export const Header = ({ user, isLogged }: iHeaderProps) => {
   const { isOpen, onOpen, onClose } = useDisclosure();
+
+  const navigate = useNavigate();
+
   return (
     <>
       <Flex
@@ -36,7 +40,7 @@ export const Header = ({ user, isLogged }: iHeaderProps) => {
         paddingRight={{ base: "10px", md: "50px" }}
         paddingLeft={{ base: "10px", md: "50px" }}
       >
-        <img src={logoHeader} />
+        <img src={logoHeader} onClick={() => navigate("/")} />
         {isLogged ? (
           <>
             <Box h={"100%"} display={{ base: "none", md: "flex" }}>
@@ -100,8 +104,15 @@ export const Header = ({ user, isLogged }: iHeaderProps) => {
               alignItems={"center"}
               paddingLeft={"44px"}
             >
-              <Button variant={"link"}>Fazer Login</Button>
-              <Button variant={"outline2"}>Cadastrar</Button>
+              <Button variant={"link"} onClick={() => navigate("/login")}>
+                Fazer Login
+              </Button>
+              <Button
+                variant={"outline2"}
+                onClick={() => navigate("/register")}
+              >
+                Cadastrar
+              </Button>
             </HStack>
           </>
         )}
@@ -125,8 +136,15 @@ export const Header = ({ user, isLogged }: iHeaderProps) => {
               alignItems={"center"}
               gap={"20px"}
             >
-              <Button variant={"link"}>Fazer Login</Button>
-              <Button variant={"outline2"}>Cadastrar</Button>
+              <Button variant={"link"} onClick={() => navigate("/login")}>
+                Fazer Login
+              </Button>
+              <Button
+                variant={"outline2"}
+                onClick={() => navigate("/register")}
+              >
+                Cadastrar
+              </Button>
             </Flex>
           </Box>
         ) : null

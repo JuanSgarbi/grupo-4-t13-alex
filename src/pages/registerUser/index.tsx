@@ -89,7 +89,14 @@ export const RegisterUser = () => {
     cpf: yup.string().required("Este campo é obrigatório"),
     cellphone: yup.string().required("Este campo é obrigatório"),
     birthdate: yup.string().required("Este campo é obrigatório"),
-    password: yup.string().required("Este campo é obrigatório"),
+    password: yup
+      .string()
+      .matches(/[A-Z]/, "Deve conter ao menos 1 letra maiúscula")
+      .matches(/[a-z]/, "Deve conter ao menos 1 letra minúscula")
+      .matches(/(\d)/, "Deve conter ao menos um número")
+      .matches(/(\W)|_/, "Deve conter ao menos um caractere especial")
+      .min(8, "Deve conter no mínimo 8 caracteres")
+      .required("Este campo é obrigatório"),
     confirmPassword: yup
       .string()
       .oneOf(
@@ -97,7 +104,10 @@ export const RegisterUser = () => {
         "Confirmação de senha deve ser igual a senha"
       )
       .required("Este campo é obrigatório"),
-    email: yup.string().required("Este campo é obrigatório"),
+    email: yup
+      .string()
+      .email("Insira um email válido")
+      .required("Este campo é obrigatório"),
     bio: yup.string().required("Este campo é obrigatório"),
 
     address: addressSchema,
@@ -171,7 +181,7 @@ export const RegisterUser = () => {
           <FormControl mt={4} isInvalid={errors.email ? true : false}>
             <FormLabel textStyle={"input_label"}>Email</FormLabel>
             <Input
-              placeholder="Ex: juan@mail.com"
+              placeholder="Ex: mail@mail.com"
               focusBorderColor="brand.1"
               textStyle={"input_placeholder"}
               {...register("email")}
