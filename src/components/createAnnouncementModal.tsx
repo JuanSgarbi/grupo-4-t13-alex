@@ -26,7 +26,6 @@ import { useEffect, useState } from "react";
 import { api, fipeApi } from "../services/axios";
 import { iAnnouncement, useAd } from "../context/announcements.context";
 
-
 interface IFipeData {
   id: string;
   name: string;
@@ -74,8 +73,9 @@ export const CreateAnnouncementModal = () => {
   const [selectBrand, setSelectBrand] = useState<string | null>(null);
   const [carModelList, setCarModelList] = useState<IFipeData[] | null>(null);
   const [carModel, setCarModel] = useState<IFipeData[] | null>(null);
-  const [price, setPrice] = useState("");
   const [imgInputs, setImgInputs] = useState<IInputImage[] | null>(null);
+  const [price, setPrice] = useState("");
+
   const { createAnnouncement } = useAd();
 
   const [isModalCreate, setIsModalCreate] = useState(true);
@@ -99,13 +99,10 @@ export const CreateAnnouncementModal = () => {
   const formSchema = yup.object().shape({
     brand: yup.string().required("Este campo é obrigatório"),
     model: yup.string().required("Este campo é obrigatório"),
-    year: yup.number().required("Este campo é obrigatório"),
-    fuel: yup.string().required("Este campo é obrigatório"),
     odometer: yup.number().required("Este campo é obrigatório"),
     color: yup.string().required("Este campo é obrigatório"),
-    fipe: yup.string().required("Este campo é obrigatório"),
-    price: yup.number().required("Este campo é obrigatório"),
     description: yup.string().required("Este campo é obrigatório"),
+    price: yup.number().required("Este campo é obrigatório"),
     images: yup.array().of(
       yup.object().shape({
         img: yup.mixed().required("Este campo é obrigatório"),
@@ -117,7 +114,7 @@ export const CreateAnnouncementModal = () => {
     register,
     handleSubmit,
     formState: { errors },
-  } = useForm<iAnnouncement>({ resolver: yupResolver(formSchema) });
+  } = useForm<ICreateAnnouncement>({ resolver: yupResolver(formSchema) });
 
   const handleSelectModel = (event: any) => {
     const model = carModelList?.filter((el) => el.name === event.target!.value);
@@ -129,14 +126,23 @@ export const CreateAnnouncementModal = () => {
     }
   };
 
-  const onSubmitFunction = async () => {
-
-    try {
-      const { data } = await api.post("/advertise", formSchema);
-      setIsModalCreate(false);
-      return data;
-    } catch (error) {
-      console.error(error);
+  const onSubmitFunction = async (formSchema: ICreateAnnouncement) => {
+    if (carModel) {
+      formSchema.fipe = `R$${carModel[0].value},00`;
+      formSchema.fuel =
+        carModel[0].fuel === 1
+          ? "Flex"
+          : carModel[0].fuel === 2
+          ? "Hibrido"
+          : "Elétrico";
+      formSchema.year = Number(carModel[0].year);
+      try {
+        const { data } = await api.post("/advertise", formSchema);
+        setIsModalCreate(false);
+        return data;
+      } catch (error) {
+        console.error(error);
+      }
     }
   };
 
@@ -179,7 +185,7 @@ export const CreateAnnouncementModal = () => {
                   <Text textStyle="body_2_500" mb={"2rem"} fontWeight={"bold"}>
                     Informações do veículo
                   </Text>
-                  <FormControl>
+                  <FormControl isInvalid={errors.brand ? true : false}>
                     <FormLabel>Marca</FormLabel>
                     <Select
                       textStyle={"input_placeholder"}
@@ -207,7 +213,7 @@ export const CreateAnnouncementModal = () => {
                     )}
                   </FormControl>
 
-                  <FormControl mt={4}>
+                  <FormControl mt={4} isInvalid={errors.model ? true : false}>
                     <FormLabel textStyle={"input_label"}>Modelo</FormLabel>
                     <Select
                       textStyle={"input_placeholder"}
@@ -236,15 +242,18 @@ export const CreateAnnouncementModal = () => {
                   </FormControl>
 
                   <Flex justifyContent={"space-between"} wrap={"wrap"}>
-                    <FormControl mt={4} w="48%">
+                    <FormControl
+                      mt={4}
+                      w="48%"
+                      isInvalid={errors.year ? true : false}
+                    >
                       <FormLabel textStyle={"input_label"}>Ano</FormLabel>
                       <Input
                         textStyle={"input_placeholder"}
                         placeholder="Selecione o ano"
                         focusBorderColor="brand.1"
-                        isDisabled={false}
-                        {...register("year")}
-                        value={carModel ? carModel[0].year : "0000"}
+                        isDisabled={true}
+                        value={carModel ? carModel[0].year : ""}
                       />
                       {errors.year && (
                         <FormErrorMessage>
@@ -253,7 +262,11 @@ export const CreateAnnouncementModal = () => {
                       )}
                     </FormControl>
 
-                    <FormControl mt={4} w="48%">
+                    <FormControl
+                      mt={4}
+                      w="48%"
+                      isInvalid={errors.fuel ? true : false}
+                    >
                       <FormLabel textStyle={"input_label"}>
                         Combustível
                       </FormLabel>
@@ -261,16 +274,15 @@ export const CreateAnnouncementModal = () => {
                         textStyle={"input_placeholder"}
                         placeholder="Selecione o combustível"
                         focusBorderColor="brand.1"
-                        isDisabled={false}
-                        {...register("fuel")}
+                        isDisabled={true}
                         value={
                           carModel
                             ? carModel[0].fuel === 1
                               ? "Flex"
                               : carModel[0].fuel === 2
-                                ? "Hibrido"
-                                : "Elétrico"
-                            : "0000"
+                              ? "Hibrido"
+                              : "Elétrico"
+                            : ""
                         }
                       />
                       {errors.fuel && (
@@ -280,7 +292,11 @@ export const CreateAnnouncementModal = () => {
                       )}
                     </FormControl>
 
-                    <FormControl mt={4} w="48%">
+                    <FormControl
+                      mt={4}
+                      w="48%"
+                      isInvalid={errors.odometer ? true : false}
+                    >
                       <FormLabel textStyle={"input_label"}>
                         Quilometragem
                       </FormLabel>
@@ -297,7 +313,11 @@ export const CreateAnnouncementModal = () => {
                       )}
                     </FormControl>
 
-                    <FormControl mt={4} w="48%">
+                    <FormControl
+                      mt={4}
+                      w="48%"
+                      isInvalid={errors.color ? true : false}
+                    >
                       <FormLabel textStyle={"input_label"}>Cor</FormLabel>
                       <Input
                         placeholder="Branco"
@@ -312,7 +332,11 @@ export const CreateAnnouncementModal = () => {
                       )}
                     </FormControl>
 
-                    <FormControl mt={4} w="48%">
+                    <FormControl
+                      mt={4}
+                      w="48%"
+                      isInvalid={errors.fipe ? true : false}
+                    >
                       <FormLabel
                         textStyle={"input_label"}
                         overflow={"hidden"}
@@ -325,11 +349,8 @@ export const CreateAnnouncementModal = () => {
                         placeholder="40000"
                         focusBorderColor="brand.1"
                         textStyle={"input_placeholder"}
-                        isDisabled={false}
-                        {...register("fipe")}
-                        value={
-                          carModel ? `R$ ${carModel[0].value},00` : "0000000"
-                        }
+                        isDisabled={true}
+                        value={carModel ? `R$ ${carModel[0].value},00` : ""}
                       />
                       {errors.fipe && (
                         <FormErrorMessage>
@@ -338,7 +359,11 @@ export const CreateAnnouncementModal = () => {
                       )}
                     </FormControl>
 
-                    <FormControl mt={4} w="48%">
+                    <FormControl
+                      mt={4}
+                      w="48%"
+                      isInvalid={errors.price ? true : false}
+                    >
                       <FormLabel textStyle={"input_label"}>Preço</FormLabel>
 
                       <Input
@@ -359,7 +384,10 @@ export const CreateAnnouncementModal = () => {
                     </FormControl>
                   </Flex>
 
-                  <FormControl mt={4}>
+                  <FormControl
+                    mt={4}
+                    isInvalid={errors.description ? true : false}
+                  >
                     <FormLabel textStyle={"input_label"}>Descrição</FormLabel>
                     <Textarea
                       focusBorderColor="brand.1"
@@ -367,9 +395,14 @@ export const CreateAnnouncementModal = () => {
                       {...register("description")}
                       textStyle={"input_placeholder"}
                     />
+                    {errors.description && (
+                      <FormErrorMessage>
+                        {errors.description.message}
+                      </FormErrorMessage>
+                    )}
                   </FormControl>
 
-                  <FormControl mt={4}>
+                  <FormControl mt={4} isInvalid={errors.images ? true : false}>
                     <FormLabel textStyle={"input_label"}>
                       Imagem da capa
                     </FormLabel>
@@ -386,7 +419,7 @@ export const CreateAnnouncementModal = () => {
                     )}
                   </FormControl>
 
-                  <FormControl mt={4}>
+                  <FormControl mt={4} isInvalid={errors.images ? true : false}>
                     <FormLabel textStyle={"input_label"}>
                       1° Imagem da galeria
                     </FormLabel>
@@ -396,9 +429,14 @@ export const CreateAnnouncementModal = () => {
                       {...register("images.1.img")}
                       focusBorderColor="brand.1"
                     />
+                    {errors.images && (
+                      <FormErrorMessage>
+                        {errors.images.message}
+                      </FormErrorMessage>
+                    )}
                   </FormControl>
 
-                  <FormControl mt={4}>
+                  <FormControl mt={4} isInvalid={errors.images ? true : false}>
                     <FormLabel textStyle={"input_label"}>
                       2° Imagem da galeria
                     </FormLabel>
@@ -408,9 +446,14 @@ export const CreateAnnouncementModal = () => {
                       {...register("images.2.img")}
                       focusBorderColor="brand.1"
                     />
+                    {errors.images && (
+                      <FormErrorMessage>
+                        {errors.images.message}
+                      </FormErrorMessage>
+                    )}
                   </FormControl>
 
-                  <FormControl mt={4}>
+                  <FormControl mt={4} isInvalid={errors.images ? true : false}>
                     <FormLabel textStyle={"input_label"}>
                       3° Imagem da galeria
                     </FormLabel>
@@ -420,11 +463,19 @@ export const CreateAnnouncementModal = () => {
                       {...register("images.3.img")}
                       focusBorderColor="brand.1"
                     />
+                    {errors.images && (
+                      <FormErrorMessage>
+                        {errors.images.message}
+                      </FormErrorMessage>
+                    )}
                   </FormControl>
 
                   {imgInputs &&
                     imgInputs.map((el) => (
-                      <FormControl mt={4}>
+                      <FormControl
+                        mt={4}
+                        isInvalid={errors.images ? true : false}
+                      >
                         <FormLabel textStyle={"input_label"}>
                           {`${el.num}° Imagem da galeria `}
                         </FormLabel>
@@ -434,6 +485,11 @@ export const CreateAnnouncementModal = () => {
                           {...register(`images.${el.num}.img`)}
                           focusBorderColor="brand.1"
                         />
+                        {errors.images && (
+                          <FormErrorMessage>
+                            {errors.images.message}
+                          </FormErrorMessage>
+                        )}
                       </FormControl>
                     ))}
 
