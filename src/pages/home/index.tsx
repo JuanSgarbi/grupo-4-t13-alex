@@ -18,7 +18,7 @@ export const Home = () => {
 
   return (
     <Flex h={"max-content"} w={"100%"}>
-      <Header user={"Christian"} isLogged={true} />
+      <Header />
       <Box
         mt={"80px"}
         mb={{ base: "220px", md: "150px" }}

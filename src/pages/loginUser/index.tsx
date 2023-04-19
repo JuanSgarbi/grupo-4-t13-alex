@@ -16,7 +16,7 @@ export const LoginUser = () => {
       bg={"grey.8"}
       justifyContent={"center"}
     >
-      <Header user="Juan Sgarbi" />
+      <Header />
       <Flex
         p={"44px 48px"}
         mt={"150px"}

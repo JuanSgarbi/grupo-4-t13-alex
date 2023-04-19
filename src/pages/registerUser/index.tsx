@@ -32,7 +32,7 @@ interface ICreateAddress {
   complement?: string;
 }
 
-interface ICreateUser {
+export interface ICreateUser {
   fullName: string;
   cpf: string;
   cellphone: string;
@@ -136,7 +136,7 @@ export const RegisterUser = () => {
 
   return (
     <Flex h={"max-content"} bg={"grey.8"} justifyContent={"center"}>
-      <Header user="Juan Sgarbi" />
+      <Header />
       <Flex
         p={"44px 48px"}
         mt={"150px"}

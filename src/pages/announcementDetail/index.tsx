@@ -7,7 +7,7 @@ import { ProfilePic } from "../../components/profilePic";
 import { EditAnnouncementModal } from "../../components/editAnnouncementModal";
 import { useAd } from "../../context/announcements.context";
 import { useState, useEffect } from "react";
-import { useParams } from "react-router-dom"
+import { useParams } from "react-router-dom";
 
 interface iImages {
   id: string;
@@ -43,7 +43,7 @@ export const AnnouncementDetail = () => {
       setAnnouncement(response);
     };
     getAnnouncement();
-  }, [])
+  }, []);
 
   return (
     <>
@@ -53,7 +53,7 @@ export const AnnouncementDetail = () => {
         bgGradient="linear(to-b, brand.1 600px,grey.8 0%)"
         justifyContent={"center"}
       >
-        <Header user="Juan Sgarbi" isLogged />
+        <Header />
         <Flex
           mt={"150px"}
           mb={{ base: "220px", md: "150px" }}
@@ -145,9 +145,7 @@ export const AnnouncementDetail = () => {
               gap={"2rem"}
             >
               <Text textStyle={"heading_6_600"}>Descrição</Text>
-              <Text textStyle={"body_1_400"}>
-                {announcement.description}
-              </Text>
+              <Text textStyle={"body_1_400"}>{announcement.description}</Text>
             </Flex>
           </Flex>
           <Flex
@@ -169,11 +167,7 @@ export const AnnouncementDetail = () => {
               <Flex wrap={"wrap"} gap={2}>
                 {announcement.images?.map((img: iImages) => (
                   <AspectRatio key={img.id} ratio={1} w={"100px"} h={"100px"}>
-                    <Image
-                      w={"60%"}
-                      objectFit="contain"
-                      src={img.img}
-                    />
+                    <Image w={"60%"} objectFit="contain" src={img.img} />
                   </AspectRatio>
                 ))}
               </Flex>

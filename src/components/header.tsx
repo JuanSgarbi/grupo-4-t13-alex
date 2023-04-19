@@ -13,14 +13,12 @@ import {
 import { HamburgerIcon, CloseIcon } from "@chakra-ui/icons";
 import logoHeader from "../assets/logoHeader.svg";
 import { ProfilePic } from "./profilePic";
+import { useUser } from "../context/user.context";
 
-interface iHeaderProps {
-  user: string;
-  isLogged?: boolean;
-}
-
-export const Header = ({ user, isLogged }: iHeaderProps) => {
+export const Header = () => {
   const { isOpen, onOpen, onClose } = useDisclosure();
+  const { isLogged, user, logout } = useUser();
+
   return (
     <>
       <Flex
@@ -53,11 +51,13 @@ export const Header = ({ user, isLogged }: iHeaderProps) => {
                   paddingLeft={"50px"}
                   bg={"grey.10"}
                   _hover={{ bg: "grey.10" }}
-                  leftIcon={<ProfilePic user={user} isLarge={false} />}
+                  leftIcon={
+                    <ProfilePic user={user!.fullName} isLarge={false} />
+                  }
                   textStyle={"body_2_500"}
                   fontSize={{ base: "sm", md: "md" }}
                 >
-                  {user}
+                  {user!.fullName}
                 </MenuButton>
                 <MenuList>
                   <MenuItem>Editar Perfil</MenuItem>
@@ -172,6 +172,7 @@ export const Header = ({ user, isLogged }: iHeaderProps) => {
               variant={"link"}
               border={"none"}
               p={"10px"}
+              onClick={logout}
             >
               Sair
             </Button>

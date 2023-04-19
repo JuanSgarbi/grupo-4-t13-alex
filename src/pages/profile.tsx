@@ -8,7 +8,6 @@ import { AdContext } from "../context/announcements.context";
 import { CardAdvertisement } from "../components/cardAdvertisement";
 
 export const Profile = () => {
-
   const { announcements } = useContext(AdContext);
 
   return (
@@ -21,7 +20,7 @@ export const Profile = () => {
         direction={"column"}
         alignItems={"center"}
       >
-        <Header user="Felipe Holanda" isLogged={true} />
+        <Header />
         <Flex
           mt={"182px"}
           w={{ base: "95%", md: "80%" }}
@@ -70,39 +69,34 @@ export const Profile = () => {
             direction={"row"}
             justifyContent={"space-evenly"}
             wrap={"wrap"}
-          >
-          </Flex>
+          ></Flex>
         </Flex>
-        <Box
-          w={"95%"}
-        >
+        <Box w={"95%"}>
           <Flex
             wrap={"wrap"}
             gap={"1rem"}
             direction={"row"}
             justifyContent={"space-between"}
             mb={{ base: "220px", md: "150px" }}
-
           >
-            {
-              announcements.map((ad): JSX.Element => {
-                return (
-                  <CardAdvertisement
-                    key={ad.id} id={ad.id}
-                    title={`${ad.brand} ${ad.model}`}
-                    description={ad.description}
-                    km={ad.odometer}
-                    isActive={ad.isPublished}
-                    owner={"Felipe Holanda"}
-                    price={`${ad.price}`}
-                    isHomePage={false}
-                    image={ad.images[0]?.img}
-                    isGoodBuy={ad.price <= ad.fipe ? true : false}
-                    year={ad.year}
-                  />
-                )
-              })
-            }
+            {announcements.map((ad): JSX.Element => {
+              return (
+                <CardAdvertisement
+                  key={ad.id}
+                  id={ad.id}
+                  title={`${ad.brand} ${ad.model}`}
+                  description={ad.description}
+                  km={ad.odometer}
+                  isActive={ad.isPublished}
+                  owner={"Felipe Holanda"}
+                  price={`${ad.price}`}
+                  isHomePage={false}
+                  image={ad.images[0]?.img}
+                  isGoodBuy={ad.price <= ad.fipe ? true : false}
+                  year={ad.year}
+                />
+              );
+            })}
           </Flex>
         </Box>
         <Footer />
