@@ -16,6 +16,7 @@ import { Header } from "../../components/header";
 import { Footer } from "../../components/footer";
 import { ViewIcon, ViewOffIcon } from "@chakra-ui/icons";
 import { useState } from "react";
+import { useUser } from "../../context/user.context";
 
 interface ILogin {
   email: string;
@@ -26,6 +27,8 @@ export const LoginUser = () => {
   const [showPassword, setShowpassword] = useState(false);
   const [password, setPassword] = useState("");
   const [email, setEmail] = useState("");
+
+  const { loginUser } = useUser();
 
   const formSchema = yup.object().shape({
     password: yup.string().required("Este campo é obrigatório"),
@@ -40,10 +43,6 @@ export const LoginUser = () => {
     handleSubmit,
     formState: { errors },
   } = useForm<ILogin>({ resolver: yupResolver(formSchema) });
-
-  const onSubmit = (formSchema: ILogin) => {
-    console.log(formSchema);
-  };
 
   return (
     <Flex
@@ -65,7 +64,7 @@ export const LoginUser = () => {
       >
         <Text textStyle={"heading_5_500"}>Login</Text>
 
-        <form onSubmit={handleSubmit(onSubmit)}>
+        <form onSubmit={handleSubmit(loginUser)}>
           <FormControl mt={"1rem"} isInvalid={errors.email ? true : false}>
             <FormLabel textStyle={"input_label"}>Usuário</FormLabel>
             <Input

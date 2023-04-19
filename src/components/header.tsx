@@ -65,7 +65,7 @@ export const Header = () => {
                   <MenuItem>Editar Perfil</MenuItem>
                   <MenuItem>Editar endereço</MenuItem>
                   <MenuItem>Meus anúncios</MenuItem>
-                  <MenuItem>Sair</MenuItem>
+                  <MenuItem onClick={logout}>Sair</MenuItem>
                 </MenuList>
               </Menu>
             </Box>
