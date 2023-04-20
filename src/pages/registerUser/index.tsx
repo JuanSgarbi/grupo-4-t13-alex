@@ -22,6 +22,7 @@ import { useToast } from "@chakra-ui/react";
 import { useState } from "react";
 import { ViewIcon, ViewOffIcon } from "@chakra-ui/icons";
 import { useAd } from "../../context/announcements.context";
+import { useUser } from "../../context/user.context";
 
 interface ICreateAddress {
   zipCode: string;
@@ -32,7 +33,7 @@ interface ICreateAddress {
   complement?: string;
 }
 
-interface ICreateUser {
+export interface ICreateUser {
   fullName: string;
   cpf: string;
   cellphone: string;
@@ -75,6 +76,8 @@ export const RegisterUser = () => {
   const [complemento, setComplemento] = useState("");
 
   const toast = useToast();
+
+  const { registerUser } = useUser();
 
   const addressSchema = yup.object().shape({
     street: yup.string().required("Este campo é obrigatório"),
@@ -125,8 +128,8 @@ export const RegisterUser = () => {
       data.address.zipCode = addressData?.cep;
     }
 
-    console.log(data);
-    console.log(errors);
+    registerUser(data);
+    console.error(errors);
   };
 
   const myAddress = async (cep: string) => {
@@ -146,7 +149,7 @@ export const RegisterUser = () => {
 
   return (
     <Flex h={"max-content"} bg={"grey.8"} justifyContent={"center"}>
-      <Header user="Juan Sgarbi" />
+      <Header />
       <Flex
         p={"44px 48px"}
         mt={"150px"}

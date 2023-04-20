@@ -127,6 +127,8 @@ export const CreateAnnouncementModal = () => {
   };
 
   const onSubmitFunction = async (formSchema: ICreateAnnouncement) => {
+    const token = localStorage.getItem("@TOKEN");
+    api.defaults.headers.authorization = `Berear ${token}`;
     if (carModel) {
       formSchema.fipe = `R$${carModel[0].value},00`;
       formSchema.fuel =
