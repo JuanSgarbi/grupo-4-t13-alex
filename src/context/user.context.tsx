@@ -44,6 +44,7 @@ interface ILogin {
 }
 
 interface IUserContext {
+  loading: boolean;
   user: IUser | null;
   setUser: React.Dispatch<React.SetStateAction<IUser | null>>;
   isLogged: boolean;
@@ -61,8 +62,32 @@ export const UserProvider = ({
 }): JSX.Element => {
   const [user, setUser] = useState<IUser | null>(null);
   const [isLogged, setIsLogged] = useState<boolean>(false);
+  const [loading, setLoading] = useState<boolean>(false);
   const navigate = useNavigate();
   const toast = useToast();
+
+  useEffect(() => {
+    const loadUser = async () => {
+      const token = localStorage.getItem("@TOKEN");
+      if (token) {
+        setLoading(true);
+        try {
+          api.defaults.headers.authorization = `Berear ${token}`;
+          const data = await api.get("/users/profile");
+          setUser(data.data);
+          setIsLogged(true);
+        } catch (error) {
+          console.error(error);
+          localStorage.clear();
+          setIsLogged(false);
+          setUser(null);
+        }
+      }
+      setLoading(false);
+    };
+
+    loadUser();
+  }, []);
 
   const logout = () => {
     localStorage.clear();
@@ -124,7 +149,15 @@ export const UserProvider = ({
 
   return (
     <UserContext.Provider
-      value={{ user, setUser, isLogged, logout, registerUser, loginUser }}
+      value={{
+        loading,
+        user,
+        setUser,
+        isLogged,
+        logout,
+        registerUser,
+        loginUser,
+      }}
     >
       {children}
     </UserContext.Provider>
