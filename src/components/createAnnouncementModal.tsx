@@ -21,6 +21,7 @@ import {
   Text,
   Textarea,
   useDisclosure,
+  useToast,
 } from "@chakra-ui/react";
 import { useEffect, useState } from "react";
 import { api, fipeApi } from "../services/axios";
@@ -77,6 +78,8 @@ export const CreateAnnouncementModal = () => {
   const [price, setPrice] = useState("");
 
   const { createAnnouncement } = useAd();
+
+  const toast = useToast();
 
   const [isModalCreate, setIsModalCreate] = useState(true);
 
@@ -143,6 +146,13 @@ export const CreateAnnouncementModal = () => {
         setIsModalCreate(false);
         return data;
       } catch (error) {
+        toast({
+          title: "Erro ao criar anúncio",
+          description: "verifique se todos dados foram inseridos corretamente",
+          status: "error",
+          duration: 9000,
+          isClosable: true,
+        });
         console.error(error);
       }
     }
@@ -259,7 +269,7 @@ export const CreateAnnouncementModal = () => {
                       />
                       {errors.year && (
                         <FormErrorMessage>
-                          {errors.year.message}
+                          Selecione uma marca e modelo
                         </FormErrorMessage>
                       )}
                     </FormControl>
@@ -289,7 +299,7 @@ export const CreateAnnouncementModal = () => {
                       />
                       {errors.fuel && (
                         <FormErrorMessage>
-                          {errors.fuel.message}
+                          Selecione uma marca e modelo
                         </FormErrorMessage>
                       )}
                     </FormControl>
