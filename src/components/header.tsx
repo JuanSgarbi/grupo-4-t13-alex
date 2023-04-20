@@ -64,7 +64,9 @@ export const Header = () => {
                 <MenuList>
                   <MenuItem>Editar Perfil</MenuItem>
                   <MenuItem>Editar endereço</MenuItem>
-                  <MenuItem>Meus anúncios</MenuItem>
+                  <MenuItem onClick={() => navigate("/profile")}>
+                    Meus anúncios
+                  </MenuItem>
                   <MenuItem onClick={logout}>Sair</MenuItem>
                 </MenuList>
               </Menu>
@@ -180,6 +182,7 @@ export const Header = () => {
               variant={"link"}
               border={"none"}
               p={"10px"}
+              onClick={() => navigate("/profile")}
             >
               Meus anúncios
             </Button>
