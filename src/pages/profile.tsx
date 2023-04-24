@@ -8,7 +8,7 @@ import { AdContext } from "../context/announcements.context";
 import { CardAdvertisement } from "../components/cardAdvertisement";
 
 export const Profile = () => {
-  const { announcements } = useContext(AdContext);
+  const { profileAnnouncements } = useContext(AdContext);
 
   return (
     <>
@@ -79,24 +79,35 @@ export const Profile = () => {
             justifyContent={"space-between"}
             mb={{ base: "220px", md: "150px" }}
           >
-            {announcements.map((ad): JSX.Element => {
-              return (
-                <CardAdvertisement
-                  key={ad.id}
-                  id={ad.id}
-                  title={`${ad.brand} ${ad.model}`}
-                  description={ad.description}
-                  km={ad.odometer}
-                  isActive={ad.isPublished}
-                  owner={"Felipe Holanda"}
-                  price={`${ad.price}`}
-                  isHomePage={false}
-                  image={ad.images[0]?.img}
-                  isGoodBuy={ad.price <= ad.fipe ? true : false}
-                  year={ad.year}
-                />
-              );
-            })}
+            {profileAnnouncements.length > 0 ? (
+              profileAnnouncements.map((ad): JSX.Element => {
+                return (
+                  <CardAdvertisement
+                    key={ad.id}
+                    id={ad.id}
+                    title={`${ad.brand} ${ad.model}`}
+                    description={ad.description}
+                    km={ad.odometer}
+                    isActive={ad.isPublished}
+                    owner={"Felipe Holanda"}
+                    price={`${ad.price}`}
+                    isHomePage={false}
+                    image={ad.images[0]?.img}
+                    isGoodBuy={ad.price <= ad.fipe ? true : false}
+                    year={ad.year}
+                  />
+                );
+              })
+            ): (
+              <Flex
+                w={"100%"}
+                h={"100px"}
+                justifyContent={"center"}
+                alignItems={"center"}
+              >
+                <Text>Nenhum anúncio encontrado</Text>
+              </Flex>
+            )}
           </Flex>
         </Box>
         <Footer />

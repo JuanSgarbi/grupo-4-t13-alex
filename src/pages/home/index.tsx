@@ -84,7 +84,7 @@ export const Home = () => {
           >
             {!!advertisements.length &&
               advertisements.map((advertisement) => (
-                <Flex
+                <Flex key={advertisement.id}
                   w={{ base: "100%", md: "50%", xl: "33%" }}
                   justifyContent={"flex-end"}
                   mb={"2rem"}

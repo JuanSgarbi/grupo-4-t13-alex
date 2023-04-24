@@ -2,6 +2,7 @@ import React, { createContext, useContext, useCallback, useEffect, ReactNode } f
 import { api } from "../services/axios";
 import { useToast } from "@chakra-ui/react";
 import { useNavigate } from "react-router-dom"
+import { useUser } from "./user.context";
 
 interface iImage {
     img: string;
@@ -30,19 +31,26 @@ interface iContext {
     createAnnouncement: (payload: iAnnouncement) => Promise<void>;
     editAnnouncement: (id: string, payload: iAnnouncement) => Promise<void>;
     deleteAnnouncement: (id: string) => Promise<void>;
-    listAnnouncement: (id: string) => Promise<iAnnouncement | void>
+    listAnnouncement: (id: string) => Promise<iAnnouncement | void>;
+    profileAnnouncements: iAnnouncement[];
+    setAnnouncements: React.Dispatch<React.SetStateAction<iAnnouncement[]>>;
+    setProfileAnnouncements: React.Dispatch<React.SetStateAction<iAnnouncement[]>>;
 }
 
 export const AdContext = createContext({} as iContext);
 
 export const AdProvider = ({ children }: { children: ReactNode }): JSX.Element => {
+    const { user } = useUser();
     const navigate = useNavigate();
     const toast = useToast();
     const [announcements, setAnnouncements] = React.useState<iAnnouncement[]>([]);
+    const [profileAnnouncements, setProfileAnnouncements] = React.useState<iAnnouncement[]>([]);
     const [page, setPage] = React.useState(1);
+    api.defaults.headers.common['Authorization'] = `Bearer ${localStorage.getItem('@TOKEN')}`;
 
     useEffect(() => {
         getAnnouncements();
+        if(user) setProfileAnnouncements(user.announcements);
     }, [])
 
     const getAnnouncements = useCallback(async () => {
@@ -67,6 +75,7 @@ export const AdProvider = ({ children }: { children: ReactNode }): JSX.Element =
             const { data } = await api.post('/advertise', payload);
             const { announcement } = data as { announcement: iAnnouncement };
             setAnnouncements([...announcements, announcement]);
+            setProfileAnnouncements([...profileAnnouncements, announcement]);
         } catch (err) {
             toast({
                 title: "Erro ao carregar anúncios",
@@ -160,8 +169,9 @@ export const AdProvider = ({ children }: { children: ReactNode }): JSX.Element =
         <AdContext.Provider value={{
             announcements, createAnnouncement,
             editAnnouncement, deleteAnnouncement,
-            listAnnouncement, getAnnouncements
-
+            listAnnouncement, getAnnouncements,
+            profileAnnouncements, setAnnouncements,
+            setProfileAnnouncements
         }}>
             {children}
         </AdContext.Provider>

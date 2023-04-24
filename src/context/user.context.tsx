@@ -9,6 +9,7 @@ import { api } from "../services/axios";
 import { useToast } from "@chakra-ui/react";
 import { useNavigate } from "react-router-dom";
 import { ICreateUser } from "../pages/registerUser";
+import { iAnnouncement } from "./announcements.context";
 
 interface IUser {
   id?: string;
@@ -20,6 +21,7 @@ interface IUser {
   confirmPassword?: string;
   email: string;
   bio: string;
+  announcements: iAnnouncement[];
   address: IAddress;
   isAdvertise?: boolean;
 }
@@ -45,12 +47,13 @@ interface ILogin {
 
 interface IUserContext {
   loading: boolean;
-  user: IUser | null;
+  user: IUser;
   setUser: React.Dispatch<React.SetStateAction<IUser | null>>;
   isLogged: boolean;
   logout: () => void;
   registerUser: (payload: ICreateUser) => Promise<void>;
   loginUser: (payload: ILogin) => Promise<void>;
+  restoreRoutine: () => Promise<void>;
 }
 
 export const UserContext = createContext({} as IUserContext);
@@ -60,34 +63,22 @@ export const UserProvider = ({
 }: {
   children: ReactNode;
 }): JSX.Element => {
-  const [user, setUser] = useState<IUser | null>(null);
+  const [user, setUser] = useState<IUser| null>(null);
   const [isLogged, setIsLogged] = useState<boolean>(false);
   const [loading, setLoading] = useState<boolean>(false);
   const navigate = useNavigate();
   const toast = useToast();
 
-  useEffect(() => {
-    const loadUser = async () => {
-      const token = localStorage.getItem("@TOKEN");
-      if (token) {
-        setLoading(true);
-        try {
-          api.defaults.headers.authorization = `Berear ${token}`;
-          const data = await api.get("/users/profile");
-          setUser(data.data);
-          setIsLogged(true);
-        } catch (error) {
-          console.error(error);
-          localStorage.clear();
-          setIsLogged(false);
-          setUser(null);
-        }
-      }
-      setLoading(false);
-    };
-
-    loadUser();
-  }, []);
+  const restoreRoutine = async () => {
+    const token = localStorage.getItem("@TOKEN");
+    if (token) {
+      api.defaults.headers.authorization = `Berear ${token}`;
+      const userData = await api.get("/users/profile");
+      setUser(userData.data);
+      setIsLogged(true);
+    }
+    setLoading(false);
+  }
 
   const logout = () => {
     localStorage.clear();
@@ -157,6 +148,7 @@ export const UserProvider = ({
         logout,
         registerUser,
         loginUser,
+        restoreRoutine
       }}
     >
       {children}
