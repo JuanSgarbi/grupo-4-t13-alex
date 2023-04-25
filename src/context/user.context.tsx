@@ -53,7 +53,6 @@ interface IUserContext {
   logout: () => void;
   registerUser: (payload: ICreateUser) => Promise<void>;
   loginUser: (payload: ILogin) => Promise<void>;
-  restoreRoutine: () => Promise<void>;
 }
 
 export const UserContext = createContext({} as IUserContext);
@@ -63,22 +62,37 @@ export const UserProvider = ({
 }: {
   children: ReactNode;
 }): JSX.Element => {
-  const [user, setUser] = useState<IUser| null>(null);
+  const [user, setUser] = useState<IUser | null>(null);
   const [isLogged, setIsLogged] = useState<boolean>(false);
   const [loading, setLoading] = useState<boolean>(false);
   const navigate = useNavigate();
   const toast = useToast();
 
-  const restoreRoutine = async () => {
-    const token = localStorage.getItem("@TOKEN");
-    if (token) {
-      api.defaults.headers.authorization = `Berear ${token}`;
-      const userData = await api.get("/users/profile");
-      setUser(userData.data);
-      setIsLogged(true);
-    }
-    setLoading(false);
-  }
+  useEffect(() => {
+    const restoreRoutine = async () => {
+      setLoading(true);
+      const token = localStorage.getItem("@TOKEN");
+
+      if (token) {
+        try {
+          api.defaults.headers.authorization = `Berear ${token}`;
+          const userData = await api.get("/users/profile");
+          setUser(userData.data);
+          setIsLogged(true);
+        } catch (error) {
+          navigate("/login");
+          setLoading(false);
+        }
+      } else {
+        setIsLogged(false);
+        navigate("/login");
+        setLoading(false);
+      }
+      setLoading(false);
+    };
+
+    restoreRoutine();
+  }, []);
 
   const logout = () => {
     localStorage.clear();
@@ -148,7 +162,6 @@ export const UserProvider = ({
         logout,
         registerUser,
         loginUser,
-        restoreRoutine
       }}
     >
       {children}
