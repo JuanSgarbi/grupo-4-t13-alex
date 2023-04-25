@@ -77,7 +77,7 @@ export const CreateAnnouncementModal = () => {
   const [imgInputs, setImgInputs] = useState<IInputImage[] | null>(null);
   const [price, setPrice] = useState("");
 
-  const { createAnnouncement } = useAd();
+  const { setAnnouncements, setProfileAnnouncements } = useAd();
 
   const toast = useToast();
 
@@ -144,6 +144,8 @@ export const CreateAnnouncementModal = () => {
       try {
         const { data } = await api.post("/advertise", formSchema);
         setIsModalCreate(false);
+        setAnnouncements((prev) => [...prev, data]);
+        setProfileAnnouncements((prev) => [...prev, data]);
         return data;
       } catch (error) {
         toast({
@@ -213,7 +215,7 @@ export const CreateAnnouncementModal = () => {
                       }}
                     >
                       {fipeTableBrands.map((element) => (
-                        <option value={element}>
+                        <option value={element} key={element}>
                           {element[0].toUpperCase() + element.substring(1)}
                         </option>
                       ))}
@@ -237,7 +239,7 @@ export const CreateAnnouncementModal = () => {
                     >
                       {carModelList ? (
                         carModelList.map((element) => (
-                          <option value={element.name}>
+                          <option value={element.name} key={element.name}>
                             {element.name[0].toUpperCase() +
                               element.name.substring(1)}
                           </option>
@@ -487,6 +489,7 @@ export const CreateAnnouncementModal = () => {
                       <FormControl
                         mt={4}
                         isInvalid={errors.images ? true : false}
+                        key={el.num}
                       >
                         <FormLabel textStyle={"input_label"}>
                           {`${el.num}° Imagem da galeria `}

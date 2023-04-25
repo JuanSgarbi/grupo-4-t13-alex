@@ -23,7 +23,7 @@ import { pickBy } from "lodash";
 import { api } from "../services/axios";
 import { iAnnouncement } from "../context/announcements.context";
 
-export const EditAnnouncementModal = () => {
+export const EditAnnouncementModal = ({ idAnnouncement }: any) => {
   const { isOpen, onOpen, onClose } = useDisclosure();
   const [thisAnnouncement, setThisAnnouncement] =
     useState<iAnnouncement | null>(null);
@@ -44,9 +44,7 @@ export const EditAnnouncementModal = () => {
   useEffect(() => {
     const announcement = async () => {
       try {
-        const { data } = await api.get(
-          `/advertise/d2feac41-e5c0-48ba-b09f-1b61772cb49a`
-        );
+        const { data } = await api.get(`/advertise/${idAnnouncement}`);
         setThisAnnouncement(data);
         setIsPublished(data.isPublished);
         setColor(data.color);

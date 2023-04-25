@@ -9,6 +9,7 @@ import { api } from "../services/axios";
 import { useToast } from "@chakra-ui/react";
 import { useNavigate } from "react-router-dom";
 import { ICreateUser } from "../pages/registerUser";
+import { iAnnouncement } from "./announcements.context";
 
 interface IUser {
   id?: string;
@@ -20,6 +21,7 @@ interface IUser {
   confirmPassword?: string;
   email: string;
   bio: string;
+  announcements: iAnnouncement[];
   address: IAddress;
   isAdvertise?: boolean;
 }
@@ -45,7 +47,7 @@ interface ILogin {
 
 interface IUserContext {
   loading: boolean;
-  user: IUser | null;
+  user: IUser;
   setUser: React.Dispatch<React.SetStateAction<IUser | null>>;
   isLogged: boolean;
   logout: () => void;
@@ -67,26 +69,29 @@ export const UserProvider = ({
   const toast = useToast();
 
   useEffect(() => {
-    const loadUser = async () => {
+    const restoreRoutine = async () => {
+      setLoading(true);
       const token = localStorage.getItem("@TOKEN");
+
       if (token) {
-        setLoading(true);
         try {
           api.defaults.headers.authorization = `Berear ${token}`;
-          const data = await api.get("/users/profile");
-          setUser(data.data);
+          const userData = await api.get("/users/profile");
+          setUser(userData.data);
           setIsLogged(true);
         } catch (error) {
-          console.error(error);
-          localStorage.clear();
-          setIsLogged(false);
-          setUser(null);
+          navigate("/login");
+          setLoading(false);
         }
+      } else {
+        setIsLogged(false);
+        navigate("/login");
+        setLoading(false);
       }
       setLoading(false);
     };
 
-    loadUser();
+    restoreRoutine();
   }, []);
 
   const logout = () => {
