@@ -85,7 +85,6 @@ export const UserProvider = ({
         }
       } else {
         setIsLogged(false);
-        navigate("/login");
         setLoading(false);
       }
       setLoading(false);

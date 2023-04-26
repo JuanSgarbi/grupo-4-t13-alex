@@ -1,20 +1,27 @@
 import { Box, Flex, Text } from "@chakra-ui/layout";
 import { Footer } from "../components/footer";
 import { Header } from "../components/header";
-import { useContext } from "react";
+import { useEffect } from "react";
 import { CreateAnnouncementModal } from "../components/createAnnouncementModal";
 import { ProfilePic } from "../components/profilePic";
-import { AdContext } from "../context/announcements.context";
 import { CardAdvertisement } from "../components/cardAdvertisement";
 import { useUser } from "../context/user.context";
 import { Spinner } from "@chakra-ui/react";
+import { useNavigate } from "react-router-dom";
 
 export const Profile = () => {
-  const { user } = useUser();
+  const { user, isLogged } = useUser();
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    if (!isLogged) {
+      navigate("/login");
+    }
+  }, []);
 
   return (
     <>
-      {user ? (
+      {user && isLogged ? (
         <>
           <Flex
             h={"max-content"}
