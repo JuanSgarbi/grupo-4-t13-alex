@@ -11,7 +11,7 @@ import { useNavigate } from "react-router-dom";
 import { ICreateUser } from "../pages/registerUser";
 import { iAnnouncement } from "./announcements.context";
 
-interface IUser {
+export interface IUser {
   id?: string;
   fullName: string;
   cpf: string;
@@ -53,6 +53,7 @@ interface IUserContext {
   logout: () => void;
   registerUser: (payload: ICreateUser) => Promise<void>;
   loginUser: (payload: ILogin) => Promise<void>;
+  getProfile: (id: string) => Promise<IUser>;
 }
 
 export const UserContext = createContext({} as IUserContext);
@@ -80,7 +81,6 @@ export const UserProvider = ({
           setUser(userData.data);
           setIsLogged(true);
         } catch (error) {
-          navigate("/login");
           setLoading(false);
         }
       } else {
@@ -151,6 +151,22 @@ export const UserProvider = ({
     }
   };
 
+  const getProfile = async (id:string) => {
+    try {
+      const res = await api.get(`/users/${id}`);
+      return res.data;
+    } catch (error) {
+      navigate(-1)
+      toast({
+        title: "Erro ao buscar perfil!",
+        description: "Verifique se o usuário existe.",
+        status: "error",
+        duration: 5000,
+        isClosable: true,
+      })
+    }
+  }
+
   return (
     <UserContext.Provider
       value={{
@@ -161,6 +177,7 @@ export const UserProvider = ({
         logout,
         registerUser,
         loginUser,
+        getProfile
       }}
     >
       {children}
