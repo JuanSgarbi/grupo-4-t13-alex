@@ -54,7 +54,7 @@ export const Profile = () => {
                 <ProfilePic user={user.fullName} isLarge={true} />
                 <Flex direction={"row"} alignItems={"center"} gap={"1rem"}>
                   <Text fontWeight={"bold"}>{user.fullName}</Text>
-                  {user.isAdvertise && (
+                  {user.isAdvertise ? (
                     <Text
                       fontSize={"0.8rem"}
                       fontWeight={"bold"}
@@ -65,13 +65,28 @@ export const Profile = () => {
                     >
                       Anunciante
                     </Text>
+                  ) : (
+                    <Text
+                      fontSize={"0.8rem"}
+                      fontWeight={"bold"}
+                      padding={"0.2rem"}
+                      color={"brand.1"}
+                      backgroundColor={"brand.4"}
+                      borderRadius={".2em"}
+                    >
+                      Comprador
+                    </Text>
                   )}
                 </Flex>
                 <Text>{user.bio}</Text>
 
-                <Flex width={"30%"}>
-                  <CreateAnnouncementModal />
-                </Flex>
+                {
+                  user.isAdvertise && (
+                    <Flex width={"30%"}>
+                      <CreateAnnouncementModal />
+                    </Flex>   
+                  )
+                }
               </Flex>
               <Flex
                 w={"100%"}
@@ -114,7 +129,7 @@ export const Profile = () => {
                     justifyContent={"center"}
                     alignItems={"center"}
                   >
-                    <Text>Nenhum anúncio encontrado</Text>
+                    <Text>Você não possui anúncios</Text>
                   </Flex>
                 )}
               </Flex>
