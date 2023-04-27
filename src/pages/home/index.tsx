@@ -8,11 +8,9 @@ import { useEffect, useState } from "react";
 import {
   CardAdvertisement
 } from "../../components/cardAdvertisement";
-import { advertisementsCars } from "../../../mocked";
 import { useAd } from "../../context/announcements.context";
 
 export const Home = () => {
-
 
   const [filteredAnnouncements, setFilteredAnnouncements] = useState([])
   const [brands, setBrands] = useState(["General Motors", "Fiat", "Ford", "Honda", "Porsche", "Volkswagen"])
@@ -24,44 +22,31 @@ export const Home = () => {
   const { announcements } = useAd();
 
   useEffect(() => {
+
+    let listFiltered = announcements
     if (filteredAnnouncements.length > 0) {
-      filteredAnnouncements.map(elem => {
-        if (!brands.some(brand => brand.toLowerCase() === elem.brand.toLowerCase())) {
-          setBrands([...brands, elem.brand])
-        }
-        if (!models.some(model => model.toLowerCase() === elem.model.toLowerCase())) {
-          setModels([...models, elem.model])
-        }
-        if (!colors.some(color => color.toLowerCase() === elem.color.toLowerCase())) {
-          setColors([...colors, elem.color])
-        }
-        if (!years.includes(elem.year)) {
-          setYears([...years, elem.year])
-        }
-        if (!fuels.some(fuel => fuel.toLowerCase() === elem.fuel.toLowerCase())) {
-          setFuels([...fuels, elem.fuel])
-        }
-      })
-    } else {
-      announcements.map(elem => {
-        if (!brands.some(brand => brand.toLowerCase() === elem.brand.toLowerCase())) {
-          setBrands([...brands, elem.brand])
-        }
-        if (!models.some(model => model.toLowerCase() === elem.model.toLowerCase())) {
-          setModels([...models, elem.model])
-        }
-        if (!colors.some(color => color.toLowerCase() === elem.color.toLowerCase())) {
-          setColors([...colors, elem.color])
-        }
-        if (!years.includes(elem.year)) {
-          setYears([...years, elem.year])
-        }
-        if (!fuels.some(fuel => fuel.toLowerCase() === elem.fuel.toLowerCase())) {
-          setFuels([...fuels, elem.fuel])
-        }
-      })
+      listFiltered = filteredAnnouncements
     }
-  }, [filteredAnnouncements]);
+
+    listFiltered.map(elem => {
+      if (!brands.some(brand => brand.toLowerCase() === elem.brand.toLowerCase())) {
+        setBrands([...brands, elem.brand])
+      }
+      if (!models.some(model => model.toLowerCase() === elem.model.toLowerCase())) {
+        setModels([...models, elem.model])
+      }
+      if (!colors.some(color => color.toLowerCase() === elem.color.toLowerCase())) {
+        setColors([...colors, elem.color])
+      }
+      if (!years.includes(elem.year)) {
+        setYears([...years, elem.year])
+      }
+      if (!fuels.some(fuel => fuel.toLowerCase() === elem.fuel.toLowerCase())) {
+        setFuels([...fuels, elem.fuel])
+      }
+    })
+  },
+    [filteredAnnouncements]);
 
   const filtering = (category, characteristic) => {
 
@@ -74,6 +59,7 @@ export const Home = () => {
     }
 
     if (category == "year") {
+
       if (filteredAnnouncements.length == 0) {
         const filtereds = announcements.filter(elem => elem[category] == parseInt(characteristic));
         setFilteredAnnouncements(filtereds)
@@ -94,6 +80,30 @@ export const Home = () => {
         }
       }
     }
+  }
+
+  const filteringPriceKm = (kmMin, kmMax, priceMin, priceMax) => {
+    let listFiltered = announcements
+    if (filteredAnnouncements.length > 0) {
+      listFiltered = filteredAnnouncements
+    }
+    if (kmMin != "") {
+      const newFiltered = listFiltered.filter(elem => elem.odometer >= kmMin);
+      listFiltered = newFiltered
+    }
+    if (kmMax != "") {
+      const newFiltered = listFiltered.filter(elem => elem.odometer <= kmMax);
+      listFiltered = newFiltered
+    }
+    if (priceMin != "") {
+      const newFiltered = listFiltered.filter(elem => elem.price >= priceMin);
+      listFiltered = newFiltered
+    }
+    if (priceMax != "") {
+      const newFiltered = listFiltered.filter(elem => elem.price <= priceMax);
+      listFiltered = newFiltered
+    }
+    setFilteredAnnouncements(listFiltered)
   }
 
   return (
@@ -153,7 +163,7 @@ export const Home = () => {
         </Flex>
         <Flex flexDirection={"row"}>
           <Box display={{ base: "none", md: "flex" }}>
-            <NavFilters filtering={filtering} brands={brands} models={models} colors={colors} years={years} fuels={fuels} />
+            <NavFilters filtering={filtering} filteringPriceKm={filteringPriceKm} brands={brands} models={models} colors={colors} years={years} fuels={fuels} />
           </Box>
           <Flex
             wrap={{ base: "nowrap", md: "wrap" }}
@@ -212,7 +222,7 @@ export const Home = () => {
 
           </Flex>
         </Flex>
-        <ModalNavFilter filtering={filtering} brands={brands} models={models} colors={colors} years={years} fuels={fuels} />
+        <ModalNavFilter filtering={filtering} filteringPriceKm={filteringPriceKm} brands={brands} models={models} colors={colors} years={years} fuels={fuels} />
         <Flex
           justifyContent={"center"}
           alignItems={"center"}

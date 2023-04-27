@@ -1,7 +1,29 @@
 import { Button, Flex, Input, Text } from "@chakra-ui/react";
 import { ButtonFilter } from "./buttonFilter";
+import { useState } from "react";
 
-export const NavFilters = ({ filtering, brands, models, colors, years, fuels }) => {
+export const NavFilters = ({ filtering, filteringPriceKm, brands, models, colors, years, fuels }) => {
+  const [kmMin, setKmMin] = useState<string>("")
+  const [kmMax, setKmMax] = useState<string>("")
+  const [priceMin, setPriceMin] = useState<string>("")
+  const [priceMax, setPriceMax] = useState<string>("")
+
+  const setKmMinChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    setKmMin(event.target.value)
+  }
+
+  const setKmMaxChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    setKmMax(event.target.value)
+  }
+
+  const setPriceMinChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    setPriceMin(event.target.value)
+  }
+
+  const setPriceMaxChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    setPriceMax(event.target.value)
+  }
+
   return (
     <Flex
       flexDirection={"column"}
@@ -56,6 +78,8 @@ export const NavFilters = ({ filtering, brands, models, colors, years, fuels }) 
           border={"none"}
           borderRadius={"none"}
           focusBorderColor="transparent"
+          value={kmMin}
+          onChange={setKmMinChange}
         ></Input>
         <Input
           placeholder={"Máxima"}
@@ -64,6 +88,8 @@ export const NavFilters = ({ filtering, brands, models, colors, years, fuels }) 
           border={"none"}
           borderRadius={"none"}
           focusBorderColor="transparent"
+          value={kmMax}
+          onChange={setKmMaxChange}
         ></Input>
       </Flex>
       <Text color={"grey.0"} textStyle={"heading_4_600"} marginY={"1rem"}>
@@ -77,6 +103,8 @@ export const NavFilters = ({ filtering, brands, models, colors, years, fuels }) 
           border={"none"}
           borderRadius={"none"}
           focusBorderColor="transparent"
+          value={priceMin}
+          onChange={setPriceMinChange}
         ></Input>
         <Input
           placeholder={"Máxima"}
@@ -85,9 +113,11 @@ export const NavFilters = ({ filtering, brands, models, colors, years, fuels }) 
           border={"none"}
           borderRadius={"none"}
           focusBorderColor="transparent"
+          value={priceMax}
+          onChange={setPriceMaxChange}
         ></Input>
       </Flex>
-      <Button margin={"0 auto"} marginY={"1rem"} w={"90%"}>
+      <Button margin={"0 auto"} marginY={"1rem"} w={"90%"} onClick={() => filteringPriceKm(kmMin, kmMax, priceMin, priceMax)}>
         Ver anúncios
       </Button>
     </Flex>
