@@ -56,7 +56,7 @@ export const CardAdvertisement = ({
   return (
     <>
       <Card
-        maxW="312px"
+        maxW="350px"
         cursor={"pointer"}
         onClick={handleClickCard}
         boxShadow="none"

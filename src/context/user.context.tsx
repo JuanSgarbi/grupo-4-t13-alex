@@ -147,7 +147,7 @@ export const UserProvider = ({
     }
   };
 
-  const getProfile = async (id:string) => {
+  const getProfile = async (id: string) => {
     try {
       const res = await api.get(`/users/${id}`);
       return res.data;
