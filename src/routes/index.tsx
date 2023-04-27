@@ -8,6 +8,7 @@ import { LoginUser } from "../pages/loginUser";
 import { useEffect, useState } from "react";
 import { useUser } from "../context/user.context";
 import { Flex, Spinner } from "@chakra-ui/react";
+import { ResetPassword } from "../pages/resetPassword";
 
 export default function MakeRoutes(): JSX.Element {
   return (
@@ -18,6 +19,7 @@ export default function MakeRoutes(): JSX.Element {
         <Route path="/profile" element={<Profile />} />
         <Route path="/register" element={<RegisterUser />} />
         <Route path="/login" element={<LoginUser />} />
+        <Route path="/resetPassword/:id" element={<ResetPassword />} />
       </Routes>
     </>
   );
