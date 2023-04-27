@@ -157,6 +157,7 @@ export const Home = () => {
           </Box>
           <Flex
             wrap={{ base: "nowrap", md: "wrap" }}
+            w={"100%"}
             h={"100%"}
             alignContent={"flex-end"}
             mt={"1rem"}
@@ -165,8 +166,10 @@ export const Home = () => {
             filteredAnnouncements.map((advertisement) => (
               <Flex key={advertisement.id}
                 w={{ base: "100%", md: "50%", xl: "33%" }}
+                flexDirection={"row"}
                 justifyContent={"flex-end"}
                 mb={"2rem"}
+                minW={"33%"}
               >
                 <CardAdvertisement
                   key={advertisement.id}
@@ -229,8 +232,8 @@ export const Home = () => {
             {"Seguinte >"}
           </Button>
         </Flex>
-      </Box>
+      </Box >
       <Footer />
-    </Flex>
+    </Flex >
   );
 };
