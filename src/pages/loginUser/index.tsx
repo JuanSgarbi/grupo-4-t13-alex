@@ -17,6 +17,7 @@ import { Footer } from "../../components/footer";
 import { ViewIcon, ViewOffIcon } from "@chakra-ui/icons";
 import { useState } from "react";
 import { useUser } from "../../context/user.context";
+import { ForgotPasswordModal } from "../../components/forgotPasswordModal";
 
 interface ILogin {
   email: string;
@@ -108,7 +109,7 @@ export const LoginUser = () => {
           </FormControl>
 
           <Flex mt={4} justifyContent={"flex-end"}>
-            <Text textStyle={"body_2_400"}>Esqueci minha senha</Text>
+            <ForgotPasswordModal />
           </Flex>
 
           <Button mt={"1rem"} type="submit" variant={"default"} w={"100%"}>
