@@ -15,6 +15,8 @@ import logoHeader from "../assets/logoHeader.svg";
 import { ProfilePic } from "./profilePic";
 import { useUser } from "../context/user.context";
 import { useNavigate } from "react-router";
+import { UpdateUserModal } from "./updateUserModal";
+import { UpdateAddressModal } from "./updateAddressModal";
 
 export const Header = () => {
   const { isOpen, onOpen, onClose } = useDisclosure();
@@ -62,8 +64,12 @@ export const Header = () => {
                   {user!.fullName}
                 </MenuButton>
                 <MenuList>
-                  <MenuItem>Editar Perfil</MenuItem>
-                  <MenuItem>Editar endereço</MenuItem>
+                  <MenuItem>
+                    <UpdateUserModal />
+                  </MenuItem>
+                  <MenuItem>
+                    <UpdateAddressModal />
+                  </MenuItem>
                   <MenuItem onClick={() => navigate("/profile")}>
                     Meus anúncios
                   </MenuItem>
@@ -161,22 +167,8 @@ export const Header = () => {
             flexDirection={"column"}
             bg={"whiteFixed"}
           >
-            <Button
-              bg={"whiteFixed"}
-              variant={"link"}
-              border={"none"}
-              p={"10px"}
-            >
-              Editar Perfil
-            </Button>
-            <Button
-              bg={"whiteFixed"}
-              variant={"link"}
-              border={"none"}
-              p={"10px"}
-            >
-              Editar endereço
-            </Button>
+            <UpdateUserModal />
+            <UpdateAddressModal />
             <Button
               bg={"whiteFixed"}
               variant={"link"}

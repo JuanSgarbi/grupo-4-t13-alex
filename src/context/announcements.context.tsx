@@ -29,6 +29,10 @@ export interface iAnnouncement {
   images: iImage[];
   createdAt: Date;
   updatedAt: Date;
+  user?: {
+    id: string
+    fullName: string
+  }
 }
 
 interface iContext {

@@ -4,17 +4,107 @@ import { Header } from "../../components/header";
 import carBackground from "../../assets/carBackground.svg";
 import { NavFilters } from "../../components/navFilters";
 import { ModalNavFilter } from "../../components/filtersModal";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import {
-  CardAdvertisement,
-  iCardProps,
+  CardAdvertisement
 } from "../../components/cardAdvertisement";
-import { advertisementsCars } from "../../../mocked";
+import { useAd } from "../../context/announcements.context";
 
 export const Home = () => {
-  const [advertisements, setAdvertisements] = useState<iCardProps[]>([
-    ...advertisementsCars,
-  ]);
+
+  const [filteredAnnouncements, setFilteredAnnouncements] = useState([])
+  const [brands, setBrands] = useState(["General Motors", "Fiat", "Ford", "Honda", "Porsche", "Volkswagen"])
+  const [models, setModels] = useState(["Civic", "Corolla", "Cruze", "Fiat", "Gol", "Ka", "Onix", "Porsche 718"])
+  const [colors, setColors] = useState(["Azul", "Branca", "Cinza", "Prata", "Preta", "Verde"])
+  const [years, setYears] = useState(["2022", "2021", "2018", "2015", "2013", "2012", "2010"])
+  const [fuels, setFuels] = useState(["Diesel", "Etanol", "Gasolina", "Flex",])
+
+  const { announcements } = useAd();
+
+  useEffect(() => {
+
+    let listFiltered = announcements
+    if (filteredAnnouncements.length > 0) {
+      listFiltered = filteredAnnouncements
+    }
+
+    listFiltered.map(elem => {
+      if (!brands.some(brand => brand.toLowerCase() === elem.brand.toLowerCase())) {
+        setBrands([...brands, elem.brand])
+      }
+      if (!models.some(model => model.toLowerCase() === elem.model.toLowerCase())) {
+        setModels([...models, elem.model])
+      }
+      if (!colors.some(color => color.toLowerCase() === elem.color.toLowerCase())) {
+        setColors([...colors, elem.color])
+      }
+      if (!years.includes(elem.year)) {
+        setYears([...years, elem.year])
+      }
+      if (!fuels.some(fuel => fuel.toLowerCase() === elem.fuel.toLowerCase())) {
+        setFuels([...fuels, elem.fuel])
+      }
+    })
+  },
+    [filteredAnnouncements]);
+
+  const filtering = (category, characteristic) => {
+
+    if (filteredAnnouncements.length == 0) {
+      setBrands([])
+      setModels([])
+      setColors([])
+      setYears([])
+      setFuels([])
+    }
+
+    if (category == "year") {
+
+      if (filteredAnnouncements.length == 0) {
+        const filtereds = announcements.filter(elem => elem[category] == parseInt(characteristic));
+        setFilteredAnnouncements(filtereds)
+      } else {
+        const newFiltered = filteredAnnouncements.filter(elem => elem[category] == parseInt(characteristic));
+        if (newFiltered.length > 0) {
+          setFilteredAnnouncements(newFiltered)
+        }
+      }
+    } else {
+      if (filteredAnnouncements.length == 0) {
+        const filtereds = announcements.filter(elem => elem[category].toLowerCase() == characteristic.toLowerCase());
+        setFilteredAnnouncements(filtereds)
+      } else {
+        const newFiltered = filteredAnnouncements.filter(elem => elem[category].toLowerCase() == characteristic.toLowerCase());
+        if (newFiltered.length > 0) {
+          setFilteredAnnouncements(newFiltered)
+        }
+      }
+    }
+  }
+
+  const filteringPriceKm = (kmMin, kmMax, priceMin, priceMax) => {
+    let listFiltered = announcements
+    if (filteredAnnouncements.length > 0) {
+      listFiltered = filteredAnnouncements
+    }
+    if (kmMin != "") {
+      const newFiltered = listFiltered.filter(elem => elem.odometer >= kmMin);
+      listFiltered = newFiltered
+    }
+    if (kmMax != "") {
+      const newFiltered = listFiltered.filter(elem => elem.odometer <= kmMax);
+      listFiltered = newFiltered
+    }
+    if (priceMin != "") {
+      const newFiltered = listFiltered.filter(elem => elem.price >= priceMin);
+      listFiltered = newFiltered
+    }
+    if (priceMax != "") {
+      const newFiltered = listFiltered.filter(elem => elem.price <= priceMax);
+      listFiltered = newFiltered
+    }
+    setFilteredAnnouncements(listFiltered)
+  }
 
   return (
     <Flex h={"max-content"} w={"100%"}>
@@ -73,40 +163,66 @@ export const Home = () => {
         </Flex>
         <Flex flexDirection={"row"}>
           <Box display={{ base: "none", md: "flex" }}>
-            <NavFilters />
+            <NavFilters filtering={filtering} filteringPriceKm={filteringPriceKm} brands={brands} models={models} colors={colors} years={years} fuels={fuels} />
           </Box>
           <Flex
             wrap={{ base: "nowrap", md: "wrap" }}
+            w={"100%"}
             h={"100%"}
             alignContent={"flex-end"}
             mt={"1rem"}
             overflowX={{ base: "auto", md: "hidden" }}
-          >
-            {!!advertisements.length &&
-              advertisements.map((advertisement) => (
-                <Flex key={advertisement.id}
-                  w={{ base: "100%", md: "50%", xl: "33%" }}
-                  justifyContent={"flex-end"}
-                  mb={"2rem"}
-                >
-                  <CardAdvertisement
-                    key={advertisement.id}
-                    title={advertisement.title}
-                    description={advertisement.description}
-                    owner={advertisement.owner}
-                    km={advertisement.km}
-                    year={advertisement.year}
-                    price={advertisement.price}
-                    image={advertisement.image}
-                    isGoodBuy={advertisement.isGoodBuy}
-                    isActive={advertisement.isActive}
-                    isHomePage={advertisement.isHomePage}
-                  />
-                </Flex>
-              ))}
+          > {filteredAnnouncements.length > 0 ? (
+            filteredAnnouncements.map((advertisement) => (
+              <Flex key={advertisement.id}
+                w={{ base: "100%", md: "50%", xl: "33%" }}
+                flexDirection={"row"}
+                justifyContent={"flex-end"}
+                mb={"2rem"}
+                minW={"33%"}
+              >
+                <CardAdvertisement
+                  key={advertisement.id}
+                  title={advertisement.model}
+                  description={advertisement.description}
+                  owner={advertisement.user.fullName}
+                  km={advertisement.odometer}
+                  year={advertisement.year}
+                  price={advertisement.price.toString()}
+                  image={advertisement.images[0].img}
+                  isGoodBuy={advertisement.isPublished}
+                  isActive={true}
+                  isHomePage={true}
+                />
+              </Flex>
+            ))) : (
+            !!announcements.length &&
+            announcements.map((advertisement) => (
+              <Flex key={advertisement.id}
+                w={{ base: "100%", md: "50%", xl: "33%" }}
+                justifyContent={"flex-end"}
+                mb={"2rem"}
+              >
+                <CardAdvertisement
+                  key={advertisement.id}
+                  title={advertisement.model}
+                  description={advertisement.description}
+                  owner={advertisement.user.fullName}
+                  km={advertisement.odometer}
+                  year={advertisement.year}
+                  price={advertisement.price.toString()}
+                  image={advertisement.images[0].img}
+                  isGoodBuy={advertisement.isPublished}
+                  isActive={true}
+                  isHomePage={true}
+                />
+              </Flex>
+            ))
+          )}
+
           </Flex>
         </Flex>
-        <ModalNavFilter />
+        <ModalNavFilter filtering={filtering} filteringPriceKm={filteringPriceKm} brands={brands} models={models} colors={colors} years={years} fuels={fuels} />
         <Flex
           justifyContent={"center"}
           alignItems={"center"}
@@ -126,8 +242,8 @@ export const Home = () => {
             {"Seguinte >"}
           </Button>
         </Flex>
-      </Box>
+      </Box >
       <Footer />
-    </Flex>
+    </Flex >
   );
 };

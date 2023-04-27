@@ -46,7 +46,7 @@ export interface ICreateUser {
   isAdvertise?: boolean;
 }
 
-interface IAddressApi {
+export interface IAddressApi {
   cep: string;
   logradouro: string;
   complemento: string;

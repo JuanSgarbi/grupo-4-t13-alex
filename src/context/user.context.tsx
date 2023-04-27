@@ -28,16 +28,12 @@ export interface IUser {
 
 interface IAddress {
   id?: string;
-  cep: string;
-  logradouro: string;
-  complemento: string;
-  bairro: string;
-  localidade: string;
-  uf: string;
-  ibge: string;
-  gia: string;
-  ddd: string;
-  siafi: string;
+  zipCode: string;
+  street: string;
+  city: string;
+  state: string;
+  number: string;
+  complement?: string;
 }
 
 interface ILogin {
@@ -151,7 +147,7 @@ export const UserProvider = ({
     }
   };
 
-  const getProfile = async (id:string) => {
+  const getProfile = async (id: string) => {
     try {
       const res = await api.get(`/users/${id}`);
       return res.data;
