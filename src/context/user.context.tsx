@@ -50,6 +50,9 @@ interface IUserContext {
   registerUser: (payload: ICreateUser) => Promise<void>;
   loginUser: (payload: ILogin) => Promise<void>;
   getProfile: (id: string) => Promise<IUser>;
+  updateUser: (payload: any, id: any) => Promise<void>;
+  deleteUser: (id: string) => Promise<void>;
+  updateAddress: (payload: any, id: string) => Promise<void>;
 }
 
 export const UserContext = createContext({} as IUserContext);
@@ -147,21 +150,90 @@ export const UserProvider = ({
     }
   };
 
+  const updateUser = async (payload: any, id: any) => {
+    try {
+      const { data } = await api.patch(`/users/${id}`, payload);
+      toast({
+        title: "Dados Atualizados!",
+        status: "success",
+        duration: 2000,
+        isClosable: true,
+      });
+      setUser({ ...user, ...data });
+    } catch (error) {
+      toast({
+        title: "Algo deu errado!",
+        description: "Tente novamente.",
+        status: "error",
+        duration: 5000,
+        isClosable: true,
+      });
+      console.error(error);
+    }
+  };
+
+  const deleteUser = async (id: string) => {
+    try {
+      await api.delete(`/users/${id}`);
+      toast({
+        title: "Conta deletada!",
+        status: "success",
+        duration: 2000,
+        isClosable: true,
+      });
+      setIsLogged(false);
+      localStorage.clear();
+      navigate("/");
+    } catch (error) {
+      toast({
+        title: "Algo deu errado!",
+        description: "Tente novamente.",
+        status: "error",
+        duration: 5000,
+        isClosable: true,
+      });
+    }
+  };
+
+  const updateAddress = async (payload: any, id: string) => {
+    try {
+      const { data } = await api.patch(`/address/${id}`, payload);
+      toast({
+        title: "Dados Atualizados!",
+        status: "success",
+        duration: 2000,
+        isClosable: true,
+      });
+      const newUser = user;
+      newUser.address = data;
+      setUser(newUser);
+    } catch (error) {
+      console.error(error);
+      toast({
+        title: "Algo deu errado!",
+        description: "Tente novamente.",
+        status: "error",
+        duration: 5000,
+        isClosable: true,
+      });
+    }
+  };
+
   const getProfile = async (id: string) => {
     try {
       const res = await api.get(`/users/${id}`);
       return res.data;
     } catch (error) {
-      navigate(-1)
+      navigate(-1);
       toast({
         title: "Erro ao buscar perfil!",
         description: "Verifique se o usuário existe.",
         status: "error",
         duration: 5000,
         isClosable: true,
-      })
+      });
     }
-  }
+  };
 
   return (
     <UserContext.Provider
@@ -173,7 +245,10 @@ export const UserProvider = ({
         logout,
         registerUser,
         loginUser,
-        getProfile
+        getProfile,
+        updateUser,
+        deleteUser,
+        updateAddress,
       }}
     >
       {children}

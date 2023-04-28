@@ -36,7 +36,7 @@ interface IUpdateAddress {
 
 export const UpdateAddressModal = () => {
   const { isOpen, onOpen, onClose } = useDisclosure();
-  const { user } = useUser();
+  const { user, updateAddress } = useUser();
   const [cep, setCep] = useState(user.address.zipCode);
   const [numero, setNumero] = useState(user.address.number);
   const [complemento, setComplemento] = useState(user.address.complement);
@@ -75,14 +75,15 @@ export const UpdateAddressModal = () => {
 
   const onSubmit = (data: IUpdateAddress) => {
     if (addressData) {
-      data.zipCode = addressData?.cep;
+      data.zipCode = addressData.cep.replace("-", "");
       data.city = addressData.localidade;
       data.street = addressData.logradouro;
       data.state = addressData.uf;
     }
 
-    console.log(data);
-    console.error(errors);
+    updateAddress(data, user.address.id);
+
+    onClose();
   };
 
   return (
@@ -127,7 +128,7 @@ export const UpdateAddressModal = () => {
                     focusBorderColor="brand.1"
                     textStyle={"input_placeholder"}
                     {...register("state")}
-                    value={addressData ? addressData.uf : ""}
+                    value={addressData ? addressData.uf : user.address.state}
                   />
                 </FormControl>
 
@@ -138,7 +139,9 @@ export const UpdateAddressModal = () => {
                     focusBorderColor="brand.1"
                     textStyle={"input_placeholder"}
                     {...register("city")}
-                    value={addressData ? addressData.localidade : ""}
+                    value={
+                      addressData ? addressData.localidade : user.address.city
+                    }
                   />
                 </FormControl>
               </Flex>
@@ -150,7 +153,9 @@ export const UpdateAddressModal = () => {
                   focusBorderColor="brand.1"
                   textStyle={"input_placeholder"}
                   {...register("street")}
-                  value={addressData ? addressData.logradouro : ""}
+                  value={
+                    addressData ? addressData.logradouro : user.address.street
+                  }
                 />
               </FormControl>
 

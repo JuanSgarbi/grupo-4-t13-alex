@@ -125,7 +125,7 @@ export const RegisterUser = () => {
   const onSubmit = (data: ICreateUser) => {
     delete data.confirmPassword;
     if (addressData) {
-      data.address.zipCode = addressData?.cep;
+      data.address.zipCode = addressData.cep.replace("-", "");
     }
 
     registerUser(data);

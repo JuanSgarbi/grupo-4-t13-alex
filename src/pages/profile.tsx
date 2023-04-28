@@ -54,7 +54,9 @@ export const Profile = () => {
                 <ProfilePic user={user.fullName} isLarge={true} />
                 <Flex direction={"row"} alignItems={"center"} gap={"1rem"}>
                   <Text fontWeight={"bold"}>{user.fullName}</Text>
+
                   {user.isAdvertiser ? (
+
                     <Text
                       fontSize={"0.8rem"}
                       fontWeight={"bold"}
@@ -80,6 +82,7 @@ export const Profile = () => {
                 </Flex>
                 <Text>{user.bio}</Text>
 
+
                 {
                   user.isAdvertiser && (
                     <Flex width={"30%"}>
@@ -87,6 +90,7 @@ export const Profile = () => {
                     </Flex>   
                   )
                 }
+
               </Flex>
               <Flex
                 w={"100%"}

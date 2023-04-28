@@ -5,12 +5,11 @@ import carBackground from "../../assets/carBackground.svg";
 import { NavFilters } from "../../components/navFilters";
 import { ModalNavFilter } from "../../components/filtersModal";
 import { useEffect, useState } from "react";
-import {
-  CardAdvertisement
-} from "../../components/cardAdvertisement";
+import { CardAdvertisement } from "../../components/cardAdvertisement";
 import { useAd } from "../../context/announcements.context";
 
 export const Home = () => {
+
 
   const [filteredAnnouncements, setFilteredAnnouncements] = useState([])
   const [brands, setBrands] = useState(["General Motors", "Fiat", "Ford", "Honda", "Porsche", "Volkswagen"])
@@ -20,31 +19,46 @@ export const Home = () => {
   const [fuels, setFuels] = useState(["Diesel", "Etanol", "Gasolina", "Flex",])
   const [isFiltered, setIsFiltered] = useState<boolean>(false)
 
+
   const { announcements } = useAd();
 
   useEffect(() => {
-
-    let listFiltered = announcements
+    let listFiltered = announcements;
     if (filteredAnnouncements.length > 0) {
-      listFiltered = filteredAnnouncements
+      listFiltered = filteredAnnouncements;
     }
 
-    listFiltered.map(elem => {
-      if (!brands.some(brand => brand.toLowerCase() === elem.brand.toLowerCase())) {
-        setBrands([...brands, elem.brand])
+    listFiltered.map((elem) => {
+      if (
+        !brands.some(
+          (brand) => brand.toLowerCase() === elem.brand.toLowerCase()
+        )
+      ) {
+        setBrands([...brands, elem.brand]);
       }
-      if (!models.some(model => model.toLowerCase() === elem.model.toLowerCase())) {
-        setModels([...models, elem.model])
+      if (
+        !models.some(
+          (model) => model.toLowerCase() === elem.model.toLowerCase()
+        )
+      ) {
+        setModels([...models, elem.model]);
       }
-      if (!colors.some(color => color.toLowerCase() === elem.color.toLowerCase())) {
-        setColors([...colors, elem.color])
+      if (
+        !colors.some(
+          (color) => color.toLowerCase() === elem.color.toLowerCase()
+        )
+      ) {
+        setColors([...colors, elem.color]);
       }
       if (!years.includes(elem.year)) {
-        setYears([...years, elem.year])
+        setYears([...years, elem.year]);
       }
-      if (!fuels.some(fuel => fuel.toLowerCase() === elem.fuel.toLowerCase())) {
-        setFuels([...fuels, elem.fuel])
+      if (
+        !fuels.some((fuel) => fuel.toLowerCase() === elem.fuel.toLowerCase())
+      ) {
+        setFuels([...fuels, elem.fuel]);
       }
+
     })
   },
     [brands, models, colors, years, fuels, filteredAnnouncements]);
@@ -58,54 +72,64 @@ export const Home = () => {
     setYears([])
     setFuels([])
 
-    if (category == "year") {
 
+    if (category == "year") {
       if (filteredAnnouncements.length == 0) {
-        const filtereds = announcements.filter(elem => elem[category] == parseInt(characteristic));
-        setFilteredAnnouncements(filtereds)
+        const filtereds = announcements.filter(
+          (elem) => elem[category] == parseInt(characteristic)
+        );
+        setFilteredAnnouncements(filtereds);
       } else {
-        const newFiltered = filteredAnnouncements.filter(elem => elem[category] == parseInt(characteristic));
+        const newFiltered = filteredAnnouncements.filter(
+          (elem) => elem[category] == parseInt(characteristic)
+        );
         if (newFiltered.length > 0) {
-          setFilteredAnnouncements(newFiltered)
+          setFilteredAnnouncements(newFiltered);
         }
       }
     } else {
       if (filteredAnnouncements.length == 0) {
-        const filtereds = announcements.filter(elem => elem[category].toLowerCase() == characteristic.toLowerCase());
-        setFilteredAnnouncements(filtereds)
+        const filtereds = announcements.filter(
+          (elem) => elem[category].toLowerCase() == characteristic.toLowerCase()
+        );
+        setFilteredAnnouncements(filtereds);
       } else {
-        const newFiltered = filteredAnnouncements.filter(elem => elem[category].toLowerCase() == characteristic.toLowerCase());
+        const newFiltered = filteredAnnouncements.filter(
+          (elem) => elem[category].toLowerCase() == characteristic.toLowerCase()
+        );
         if (newFiltered.length > 0) {
-          setFilteredAnnouncements(newFiltered)
+          setFilteredAnnouncements(newFiltered);
         }
       }
     }
-  }
+  };
 
   const filteringPriceKm = (kmMin, kmMax, priceMin, priceMax) => {
-    let listFiltered = announcements
+    let listFiltered = announcements;
     if (filteredAnnouncements.length > 0) {
-      listFiltered = filteredAnnouncements
+      listFiltered = filteredAnnouncements;
     }
     if (kmMin != "") {
-      const newFiltered = listFiltered.filter(elem => elem.odometer >= kmMin);
-      listFiltered = newFiltered
+      const newFiltered = listFiltered.filter((elem) => elem.odometer >= kmMin);
+      listFiltered = newFiltered;
     }
     if (kmMax != "") {
-      const newFiltered = listFiltered.filter(elem => elem.odometer <= kmMax);
-      listFiltered = newFiltered
+      const newFiltered = listFiltered.filter((elem) => elem.odometer <= kmMax);
+      listFiltered = newFiltered;
     }
     if (priceMin != "") {
-      const newFiltered = listFiltered.filter(elem => elem.price >= priceMin);
-      listFiltered = newFiltered
+      const newFiltered = listFiltered.filter((elem) => elem.price >= priceMin);
+      listFiltered = newFiltered;
     }
     if (priceMax != "") {
-      const newFiltered = listFiltered.filter(elem => elem.price <= priceMax);
-      listFiltered = newFiltered
+      const newFiltered = listFiltered.filter((elem) => elem.price <= priceMax);
+      listFiltered = newFiltered;
     }
+
     setFilteredAnnouncements(listFiltered)
     setIsFiltered(true)
   }
+
 
   return (
     <Flex h={"max-content"} w={"100%"}>
@@ -164,7 +188,9 @@ export const Home = () => {
         </Flex>
         <Flex flexDirection={"row"}>
           <Box display={{ base: "none", md: "flex" }}>
+
             <NavFilters filtering={filtering} filteringPriceKm={filteringPriceKm} setFilteredAnnouncements={setFilteredAnnouncements} setIsFiltered={setIsFiltered} isFiltered={isFiltered} brands={brands} models={models} colors={colors} years={years} fuels={fuels} />
+
           </Box>
           <Flex
             wrap={{ base: "nowrap", md: "wrap" }}
@@ -173,57 +199,63 @@ export const Home = () => {
             alignContent={"flex-end"}
             mt={"1rem"}
             overflowX={{ base: "auto", md: "hidden" }}
-          > {filteredAnnouncements.length > 0 ? (
-            filteredAnnouncements.map((advertisement) => (
-              <Flex key={advertisement.id}
-                w={{ base: "100%", md: "50%", xl: "33%" }}
-                flexDirection={"row"}
-                justifyContent={"flex-end"}
-                mb={"2rem"}
-                minW={"33%"}
-              >
-                <CardAdvertisement
-                  key={advertisement.id}
-                  title={advertisement.model}
-                  description={advertisement.description}
-                  owner={advertisement.user.fullName}
-                  km={advertisement.odometer}
-                  year={advertisement.year}
-                  price={advertisement.price.toString()}
-                  image={advertisement.images[0].img}
-                  isGoodBuy={advertisement.isPublished}
-                  isActive={true}
-                  isHomePage={true}
-                />
-              </Flex>
-            ))) : (
-            !!announcements.length &&
-            announcements.map((advertisement) => (
-              <Flex key={advertisement.id}
-                w={{ base: "100%", md: "50%", xl: "33%" }}
-                justifyContent={"flex-end"}
-                mb={"2rem"}
-              >
-                <CardAdvertisement
-                  key={advertisement.id}
-                  title={advertisement.model}
-                  description={advertisement.description}
-                  owner={advertisement.user.fullName}
-                  km={advertisement.odometer}
-                  year={advertisement.year}
-                  price={advertisement.price.toString()}
-                  image={advertisement.images[0].img}
-                  isGoodBuy={advertisement.isPublished}
-                  isActive={true}
-                  isHomePage={true}
-                />
-              </Flex>
-            ))
-          )}
-
+          >
+            {" "}
+            {filteredAnnouncements.length > 0
+              ? filteredAnnouncements.map((advertisement) => (
+                  <Flex
+                    key={advertisement.id}
+                    w={{ base: "100%", md: "50%", xl: "33%" }}
+                    flexDirection={"row"}
+                    justifyContent={"flex-end"}
+                    mb={"2rem"}
+                    minW={"33%"}
+                  >
+                    <CardAdvertisement
+                      key={advertisement.id}
+                      id={advertisement.id}
+                      title={advertisement.model}
+                      description={advertisement.description}
+                      owner={advertisement.user.fullName}
+                      km={advertisement.odometer}
+                      year={advertisement.year}
+                      price={advertisement.price.toString()}
+                      image={advertisement.images[0]?.img}
+                      isGoodBuy={advertisement.isPublished}
+                      isActive={true}
+                      isHomePage={true}
+                    />
+                  </Flex>
+                ))
+              : !!announcements.length &&
+                announcements.map((advertisement) => (
+                  <Flex
+                    key={advertisement.id}
+                    w={{ base: "100%", md: "50%", xl: "33%" }}
+                    justifyContent={"flex-end"}
+                    mb={"2rem"}
+                  >
+                    <CardAdvertisement
+                      key={advertisement.id}
+                      id={advertisement.id}
+                      title={advertisement.model}
+                      description={advertisement.description}
+                      owner={advertisement.user.fullName}
+                      km={advertisement.odometer}
+                      year={advertisement.year}
+                      price={advertisement.price.toString()}
+                      image={advertisement.images[0]?.img}
+                      isGoodBuy={advertisement.isPublished}
+                      isActive={true}
+                      isHomePage={true}
+                    />
+                  </Flex>
+                ))}
           </Flex>
         </Flex>
+
         <ModalNavFilter filtering={filtering} filteringPriceKm={filteringPriceKm} setFilteredAnnouncements={setFilteredAnnouncements} setIsFiltered={setIsFiltered} isFiltered={isFiltered} brands={brands} models={models} colors={colors} years={years} fuels={fuels} />
+
         <Flex
           justifyContent={"center"}
           alignItems={"center"}
@@ -243,8 +275,8 @@ export const Home = () => {
             {"Seguinte >"}
           </Button>
         </Flex>
-      </Box >
+      </Box>
       <Footer />
-    </Flex >
+    </Flex>
   );
 };
