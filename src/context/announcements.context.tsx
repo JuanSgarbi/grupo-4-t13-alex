@@ -1,4 +1,11 @@
-import { useState, createContext, useContext, useCallback, useEffect, ReactNode} from "react";
+import {
+  useState,
+  createContext,
+  useContext,
+  useCallback,
+  useEffect,
+  ReactNode,
+} from "react";
 import { api } from "../services/axios";
 import { useToast } from "@chakra-ui/react";
 import { useNavigate } from "react-router-dom";
@@ -44,17 +51,24 @@ interface iContext {
 
 export const AdContext = createContext({} as iContext);
 
-export const AdProvider = ({children }: { children: ReactNode }): JSX.Element => {
-
+export const AdProvider = ({
+  children,
+}: {
+  children: ReactNode;
+}): JSX.Element => {
   const { user } = useUser();
   const navigate = useNavigate();
   const toast = useToast();
 
   const [announcements, setAnnouncements] = useState<iAnnouncement[]>([]);
-  const [profileAnnouncements, setProfileAnnouncements] = useState<iAnnouncement[]>([]);
+  const [profileAnnouncements, setProfileAnnouncements] = useState<
+    iAnnouncement[]
+  >([]);
   const [page, setPage] = useState(1);
 
-  api.defaults.headers.common["Authorization"] = `Bearer ${localStorage.getItem("@TOKEN")}`;
+  api.defaults.headers.common["Authorization"] = `Bearer ${localStorage.getItem(
+    "@TOKEN"
+  )}`;
 
   useEffect(() => {
     getAnnouncements();
@@ -121,23 +135,26 @@ export const AdProvider = ({children }: { children: ReactNode }): JSX.Element =>
     [announcements]
   );
 
-  const deleteAnnouncement = useCallback(async (id: string) => {
-    try {
-      await api.delete(`/advertise/${id}`);
-      const newAnnouncements = announcements.filter(
-        (announcement) => announcement.id !== id
-      );
-      setAnnouncements(newAnnouncements);
-    } catch (err) {
-      toast({
-        title: "Erro ao carregar anúncios",
-        description: "Verifique o anúncio selecionado e tente novamente!",
-        status: "error",
-        duration: 5000,
-        isClosable: true,
-      });
-    }
-  }, [announcements]);
+  const deleteAnnouncement = useCallback(
+    async (id: string) => {
+      try {
+        await api.delete(`/advertise/${id}`);
+        const newAnnouncements = announcements.filter(
+          (announcement) => announcement.id !== id
+        );
+        setAnnouncements(newAnnouncements);
+      } catch (err) {
+        toast({
+          title: "Erro ao carregar anúncios",
+          description: "Verifique o anúncio selecionado e tente novamente!",
+          status: "error",
+          duration: 5000,
+          isClosable: true,
+        });
+      }
+    },
+    [announcements]
+  );
 
   const listAnnouncement = useCallback(async (id: any) => {
     if (typeof id !== "string") {
@@ -163,7 +180,10 @@ export const AdProvider = ({children }: { children: ReactNode }): JSX.Element =>
     }
 
     try {
-      const { data } = await api.get(`/advertise/${id}`) satisfies {data: iAnnouncement;};
+      const { data } = (await api.get(`/advertise/${id}`)) satisfies {
+        data: iAnnouncement;
+      };
+
       return data;
     } catch (err) {
       toast({

@@ -15,12 +15,13 @@ export const AnnouncementDetail = () => {
   const { listAnnouncement } = useAd();
   const navigate = useNavigate();
 
-  const [announcement, setAnnouncement] = useState<iAnnouncement>({} as iAnnouncement);
+  const [announcement, setAnnouncement] = useState<iAnnouncement>(
+    {} as iAnnouncement
+  );
 
   useEffect(() => {
     const getAnnouncement = async () => {
       const response = await listAnnouncement(id);
-      console.log(response);
       setAnnouncement(response);
     };
     getAnnouncement();
@@ -164,11 +165,17 @@ export const AnnouncementDetail = () => {
               gap={4}
             >
               <ProfilePic user="Danilo Cardoso" isLarge={true} />
-              <Text textStyle={"heading_6_600"}>{announcement.user && announcement.user.fullName}</Text>
+              <Text textStyle={"heading_6_600"}>
+                {announcement.user && announcement.user.fullName}
+              </Text>
               <Text textStyle={"body_1_400"}>
                 {announcement.user && announcement.user.bio}
               </Text>
-              <Button variant={"grey1"} size={"medium"} onClick={()=> navigate(`/users/${announcement.user.id}`)}>
+              <Button
+                variant={"grey1"}
+                size={"medium"}
+                onClick={() => navigate(`/users/${announcement.user.id}`)}
+              >
                 Ver todos anúncios
               </Button>
             </Flex>

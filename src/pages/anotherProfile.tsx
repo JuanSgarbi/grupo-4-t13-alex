@@ -12,20 +12,20 @@ import { useParams } from "react-router-dom";
 import { IUser } from "../context/user.context";
 
 export const Users = () => {
-    const { user, getProfile } = useUser();
-    const navigate = useNavigate();
-    const [userProfile, setUserProfile] = useState<IUser | null>(null);
-    const [isLoaded, setIsLoaded] = useState(false);
-    const { id } = useParams();
+  const { user, getProfile } = useUser();
+  const navigate = useNavigate();
+  const [userProfile, setUserProfile] = useState<IUser | null>(null);
+  const [isLoaded, setIsLoaded] = useState(false);
+  const { id } = useParams();
 
-    useEffect(()=>{
-        if(!id) navigate(-1)
-        if(user && user.id === id) navigate("/profile")
-        getProfile(id).then((res) => {
-            setUserProfile(res);
-            setIsLoaded(true);
-        })
-    },[])
+  useEffect(() => {
+    if (!id) navigate(-1);
+    if (user && user.id === id) navigate("/profile");
+    getProfile(id).then((res) => {
+      setUserProfile(res);
+      setIsLoaded(true);
+    });
+  }, []);
 
   return (
     <>
@@ -62,7 +62,7 @@ export const Users = () => {
                 <ProfilePic user={userProfile.fullName} isLarge={true} />
                 <Flex direction={"row"} alignItems={"center"} gap={"1rem"}>
                   <Text fontWeight={"bold"}>{userProfile.fullName}</Text>
-                  {userProfile.isAdvertise === true ? (
+                  {userProfile.isAdvertiser === true ? (
                     <Text
                       fontSize={"0.8rem"}
                       fontWeight={"bold"}
@@ -103,48 +103,46 @@ export const Users = () => {
                 justifyContent={"space-between"}
                 mb={{ base: "220px", md: "150px" }}
               >
-                {
-                    userProfile.isAdvertise ? (
-                        userProfile.announcements.length > 0 ? (
-                            userProfile.announcements.map((ad): JSX.Element => {
-                              return (
-                                <CardAdvertisement
-                                  key={ad.id}
-                                  id={ad.id}
-                                  title={`${ad.brand} ${ad.model}`}
-                                  description={ad.description}
-                                  km={ad.odometer}
-                                  isActive={ad.isPublished}
-                                  owner={userProfile.fullName}
-                                  price={`${ad.price}`}
-                                  isHomePage={false}
-                                  image={ad.images[0].img}
-                                  isGoodBuy={ad.price <= ad.fipe ? true : false}
-                                  year={ad.year}
-                                />
-                              );
-                            })
-                          ) : (
-                            <Flex
-                              w={"100%"}
-                              h={"100px"}
-                              justifyContent={"center"}
-                              alignItems={"center"}
-                            >
-                              <Text>Nenhum anúncio encontrado</Text>
-                            </Flex>
-                          )
-                    ) : (
-                        <Flex
-                              w={"100%"}
-                              h={"100px"}
-                              justifyContent={"center"}
-                              alignItems={"center"}
-                            >
-                              <Text>Este usuário não é um anunciante.</Text>
-                            </Flex>
-                    )
-                }
+                {userProfile.isAdvertiser ? (
+                  userProfile.announcements.length > 0 ? (
+                    userProfile.announcements.map((ad): JSX.Element => {
+                      return (
+                        <CardAdvertisement
+                          key={ad.id}
+                          id={ad.id}
+                          title={`${ad.brand} ${ad.model}`}
+                          description={ad.description}
+                          km={ad.odometer}
+                          isActive={ad.isPublished}
+                          owner={userProfile.fullName}
+                          price={`${ad.price}`}
+                          isHomePage={false}
+                          image={ad.images[0]?.img}
+                          isGoodBuy={ad.price <= ad.fipe ? true : false}
+                          year={ad.year}
+                        />
+                      );
+                    })
+                  ) : (
+                    <Flex
+                      w={"100%"}
+                      h={"100px"}
+                      justifyContent={"center"}
+                      alignItems={"center"}
+                    >
+                      <Text>Nenhum anúncio encontrado</Text>
+                    </Flex>
+                  )
+                ) : (
+                  <Flex
+                    w={"100%"}
+                    h={"100px"}
+                    justifyContent={"center"}
+                    alignItems={"center"}
+                  >
+                    <Text>Este usuário não é um anunciante.</Text>
+                  </Flex>
+                )}
               </Flex>
             </Box>
             <Footer />
