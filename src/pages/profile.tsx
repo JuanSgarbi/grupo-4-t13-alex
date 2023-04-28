@@ -98,9 +98,10 @@ export const Profile = () => {
             <Box w={"95%"}>
               <Flex
                 wrap={"wrap"}
-                gap={"1rem"}
+                gap={"1.5rem"}
                 direction={"row"}
-                justifyContent={"space-between"}
+                w={"100%"}
+                justifyContent={"stretch"}
                 mb={{ base: "220px", md: "150px" }}
               >
                 {user.announcements.length > 0 ? (
