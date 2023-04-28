@@ -1,21 +1,17 @@
-import React, {
-  createContext,
-  useContext,
-  useCallback,
-  useEffect,
-  ReactNode,
-} from "react";
+import { useState, createContext, useContext, useCallback, useEffect, ReactNode} from "react";
 import { api } from "../services/axios";
 import { useToast } from "@chakra-ui/react";
 import { useNavigate } from "react-router-dom";
 import { useUser } from "./user.context";
+import { IUser } from "./user.context";
 
 interface iImage {
+  id: string;
   img: string;
 }
 
 export interface iAnnouncement {
-  id?: string;
+  id: string;
   brand: string;
   model: string;
   year: string;
@@ -29,10 +25,7 @@ export interface iAnnouncement {
   images: iImage[];
   createdAt: Date;
   updatedAt: Date;
-  user?: {
-    id: string
-    fullName: string
-  }
+  user: IUser;
 }
 
 interface iContext {
@@ -41,7 +34,7 @@ interface iContext {
   createAnnouncement: (payload: iAnnouncement) => Promise<void>;
   editAnnouncement: (id: string, payload: iAnnouncement) => Promise<void>;
   deleteAnnouncement: (id: string) => Promise<void>;
-  listAnnouncement: (id: string) => Promise<iAnnouncement | void>;
+  listAnnouncement: (id: string) => Promise<iAnnouncement>;
   profileAnnouncements: iAnnouncement[];
   setAnnouncements: React.Dispatch<React.SetStateAction<iAnnouncement[]>>;
   setProfileAnnouncements: React.Dispatch<
@@ -51,22 +44,17 @@ interface iContext {
 
 export const AdContext = createContext({} as iContext);
 
-export const AdProvider = ({
-  children,
-}: {
-  children: ReactNode;
-}): JSX.Element => {
+export const AdProvider = ({children }: { children: ReactNode }): JSX.Element => {
+
   const { user } = useUser();
   const navigate = useNavigate();
   const toast = useToast();
-  const [announcements, setAnnouncements] = React.useState<iAnnouncement[]>([]);
-  const [profileAnnouncements, setProfileAnnouncements] = React.useState<
-    iAnnouncement[]
-  >([]);
-  const [page, setPage] = React.useState(1);
-  api.defaults.headers.common["Authorization"] = `Bearer ${localStorage.getItem(
-    "@TOKEN"
-  )}`;
+
+  const [announcements, setAnnouncements] = useState<iAnnouncement[]>([]);
+  const [profileAnnouncements, setProfileAnnouncements] = useState<iAnnouncement[]>([]);
+  const [page, setPage] = useState(1);
+
+  api.defaults.headers.common["Authorization"] = `Bearer ${localStorage.getItem("@TOKEN")}`;
 
   useEffect(() => {
     getAnnouncements();
@@ -84,7 +72,7 @@ export const AdProvider = ({
         title: "Erro ao carregar anúncios",
         description: "Tente novamente mais tarde",
         status: "error",
-        duration: 9000,
+        duration: 5000,
         isClosable: true,
       });
     }
@@ -101,7 +89,7 @@ export const AdProvider = ({
         title: "Erro ao carregar anúncios",
         description: "Verifique os campos inseridos e tente novamente!",
         status: "error",
-        duration: 9000,
+        duration: 5000,
         isClosable: true,
       });
       return;
@@ -112,8 +100,8 @@ export const AdProvider = ({
     async (id: string, payload: iAnnouncement) => {
       try {
         const { data } = await api.patch(`/advertise/${id}`, payload);
-        const { announcement } = data as { announcement: iAnnouncement };
-        const newAnnouncements = announcements.map((announcement) => {
+        const { announcement } = data;
+        const newAnnouncements = announcement.map((announcement) => {
           if (announcement.id === id) {
             return announcement;
           }
@@ -125,12 +113,12 @@ export const AdProvider = ({
           title: "Erro ao carregar anúncios",
           description: "Verifique os campos inseridos e tente novamente!",
           status: "error",
-          duration: 9000,
+          duration: 5000,
           isClosable: true,
         });
       }
     },
-    []
+    [announcements]
   );
 
   const deleteAnnouncement = useCallback(async (id: string) => {
@@ -145,11 +133,11 @@ export const AdProvider = ({
         title: "Erro ao carregar anúncios",
         description: "Verifique o anúncio selecionado e tente novamente!",
         status: "error",
-        duration: 9000,
+        duration: 5000,
         isClosable: true,
       });
     }
-  }, []);
+  }, [announcements]);
 
   const listAnnouncement = useCallback(async (id: any) => {
     if (typeof id !== "string") {
@@ -157,7 +145,7 @@ export const AdProvider = ({
         title: "Erro ao carregar anúncios",
         description: "Verifique o anúncio selecionado e tente novamente!",
         status: "error",
-        duration: 9000,
+        duration: 5000,
         isClosable: true,
       });
       navigate(-1);
@@ -167,7 +155,7 @@ export const AdProvider = ({
         title: "Erro ao carregar anúncios",
         description: "Verifique o anúncio selecionado e tente novamente!",
         status: "error",
-        duration: 9000,
+        duration: 5000,
         isClosable: true,
       });
       navigate(-1);
@@ -175,16 +163,14 @@ export const AdProvider = ({
     }
 
     try {
-      const { data } = (await api.get(`/advertise/${id}`)) as {
-        data: iAnnouncement;
-      };
+      const { data } = await api.get(`/advertise/${id}`) satisfies {data: iAnnouncement;};
       return data;
     } catch (err) {
       toast({
         title: "Erro ao carregar anúncios",
         description: "Verifique o anúncio selecionado e tente novamente!",
         status: "error",
-        duration: 9000,
+        duration: 5000,
         isClosable: true,
       });
       navigate(-1);

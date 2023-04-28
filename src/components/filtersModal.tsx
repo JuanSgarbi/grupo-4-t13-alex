@@ -12,7 +12,7 @@ import {
 import { NavFilters } from "./navFilters";
 import { useEffect } from "react";
 
-export const ModalNavFilter = ({ filtering, filteringPriceKm, brands, models, colors, years, fuels }) => {
+export const ModalNavFilter = ({ filtering, filteringPriceKm, setFilteredAnnouncements, setIsFiltered, isFiltered, brands, models, colors, years, fuels }) => {
   const { isOpen, onOpen, onClose } = useDisclosure();
   const [isSmallerThanMd] = useMediaQuery("(max-width: 770px)");
 
@@ -42,7 +42,7 @@ export const ModalNavFilter = ({ filtering, filteringPriceKm, brands, models, co
           </ModalHeader>
           <ModalCloseButton />
           <ModalBody>
-            <NavFilters filtering={filtering} filteringPriceKm={filteringPriceKm} brands={brands} models={models} colors={colors} years={years} fuels={fuels} />
+            <NavFilters filtering={filtering} filteringPriceKm={filteringPriceKm} setFilteredAnnouncements={setFilteredAnnouncements} setIsFiltered={setIsFiltered} isFiltered={isFiltered} brands={brands} models={models} colors={colors} years={years} fuels={fuels} />
           </ModalBody>
         </ModalContent>
       </Modal>

@@ -2,7 +2,7 @@ import { Button, Flex, Input, Text } from "@chakra-ui/react";
 import { ButtonFilter } from "./buttonFilter";
 import { useState } from "react";
 
-export const NavFilters = ({ filtering, filteringPriceKm, brands, models, colors, years, fuels }) => {
+export const NavFilters = ({ filtering, filteringPriceKm, setFilteredAnnouncements, setIsFiltered, isFiltered, brands, models, colors, years, fuels }) => {
   const [kmMin, setKmMin] = useState<string>("")
   const [kmMax, setKmMax] = useState<string>("")
   const [priceMin, setPriceMin] = useState<string>("")
@@ -22,6 +22,19 @@ export const NavFilters = ({ filtering, filteringPriceKm, brands, models, colors
 
   const setPriceMaxChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setPriceMax(event.target.value)
+  }
+
+  const reseteFilters = () => {
+    setFilteredAnnouncements([])
+  }
+
+  const resetInputsFilter = () => {
+    setKmMin("")
+    setKmMax("")
+    setPriceMin("")
+    setPriceMax("")
+    setIsFiltered(false)
+    setFilteredAnnouncements([])
   }
 
   return (
@@ -67,6 +80,10 @@ export const NavFilters = ({ filtering, filteringPriceKm, brands, models, colors
         </Text>
         {fuels.map((fuel: string) => <ButtonFilter key={fuel} buttonName={fuel} category={"fuel"} filtering={filtering} />)}
       </Flex>
+      <Button variant={"link"} w={"100%"} mt={"2rem"} mb={"1rem"} color={"brand.2"}
+        textStyle={"heading_7_500"} onClick={() => reseteFilters()}>
+        Limpar filtros
+      </Button>
       <Text color={"grey.0"} textStyle={"heading_4_600"} marginY={"1rem"}>
         Km
       </Text>
@@ -117,9 +134,12 @@ export const NavFilters = ({ filtering, filteringPriceKm, brands, models, colors
           onChange={setPriceMaxChange}
         ></Input>
       </Flex>
-      <Button margin={"0 auto"} marginY={"1rem"} w={"90%"} onClick={() => filteringPriceKm(kmMin, kmMax, priceMin, priceMax)}>
+      {isFiltered == false ? (<Button margin={"0 auto"} marginY={"1rem"} w={"90%"} onClick={() => filteringPriceKm(kmMin, kmMax, priceMin, priceMax)}>
         Ver anúncios
-      </Button>
+      </Button>) : (<Button margin={"0 auto"} marginY={"1rem"} w={"90%"} onClick={() => resetInputsFilter()}>
+        Limpar filtros
+      </Button>)}
+
     </Flex>
   );
 };

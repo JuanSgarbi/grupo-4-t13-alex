@@ -12,7 +12,7 @@ import { ICreateUser } from "../pages/registerUser";
 import { iAnnouncement } from "./announcements.context";
 
 export interface IUser {
-  id?: string;
+  id: string;
   fullName: string;
   cpf: string;
   cellphone: string;
@@ -23,7 +23,7 @@ export interface IUser {
   bio: string;
   announcements: iAnnouncement[];
   address: IAddress;
-  isAdvertise?: boolean;
+  isAdvertiser: boolean;
 }
 
 interface IAddress {

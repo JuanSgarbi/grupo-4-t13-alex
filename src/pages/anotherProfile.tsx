@@ -62,7 +62,7 @@ export const Users = () => {
                 <ProfilePic user={userProfile.fullName} isLarge={true} />
                 <Flex direction={"row"} alignItems={"center"} gap={"1rem"}>
                   <Text fontWeight={"bold"}>{userProfile.fullName}</Text>
-                  {userProfile.isAdvertise ? (
+                  {userProfile.isAdvertise === true ? (
                     <Text
                       fontSize={"0.8rem"}
                       fontWeight={"bold"}

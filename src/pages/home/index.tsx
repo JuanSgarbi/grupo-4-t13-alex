@@ -9,43 +9,16 @@ import { CardAdvertisement } from "../../components/cardAdvertisement";
 import { useAd } from "../../context/announcements.context";
 
 export const Home = () => {
-  const [filteredAnnouncements, setFilteredAnnouncements] = useState([]);
-  const [brands, setBrands] = useState([
-    "General Motors",
-    "Fiat",
-    "Ford",
-    "Honda",
-    "Porsche",
-    "Volkswagen",
-  ]);
-  const [models, setModels] = useState([
-    "Civic",
-    "Corolla",
-    "Cruze",
-    "Fiat",
-    "Gol",
-    "Ka",
-    "Onix",
-    "Porsche 718",
-  ]);
-  const [colors, setColors] = useState([
-    "Azul",
-    "Branca",
-    "Cinza",
-    "Prata",
-    "Preta",
-    "Verde",
-  ]);
-  const [years, setYears] = useState([
-    "2022",
-    "2021",
-    "2018",
-    "2015",
-    "2013",
-    "2012",
-    "2010",
-  ]);
-  const [fuels, setFuels] = useState(["Diesel", "Etanol", "Gasolina", "Flex"]);
+
+
+  const [filteredAnnouncements, setFilteredAnnouncements] = useState([])
+  const [brands, setBrands] = useState(["General Motors", "Fiat", "Ford", "Honda", "Porsche", "Volkswagen"])
+  const [models, setModels] = useState(["Civic", "Corolla", "Cruze", "Fiat", "Gol", "Ka", "Onix", "Porsche 718"])
+  const [colors, setColors] = useState(["Azul", "Branca", "Cinza", "Prata", "Preta", "Verde"])
+  const [years, setYears] = useState(["2022", "2021", "2018", "2015", "2013", "2012", "2010"])
+  const [fuels, setFuels] = useState(["Diesel", "Etanol", "Gasolina", "Flex",])
+  const [isFiltered, setIsFiltered] = useState<boolean>(false)
+
 
   const { announcements } = useAd();
 
@@ -85,17 +58,20 @@ export const Home = () => {
       ) {
         setFuels([...fuels, elem.fuel]);
       }
-    });
-  }, [filteredAnnouncements]);
+
+    })
+  },
+    [brands, models, colors, years, fuels, filteredAnnouncements]);
+
 
   const filtering = (category, characteristic) => {
-    if (filteredAnnouncements.length == 0) {
-      setBrands([]);
-      setModels([]);
-      setColors([]);
-      setYears([]);
-      setFuels([]);
-    }
+
+    setBrands([])
+    setModels([])
+    setColors([])
+    setYears([])
+    setFuels([])
+
 
     if (category == "year") {
       if (filteredAnnouncements.length == 0) {
@@ -149,8 +125,11 @@ export const Home = () => {
       const newFiltered = listFiltered.filter((elem) => elem.price <= priceMax);
       listFiltered = newFiltered;
     }
-    setFilteredAnnouncements(listFiltered);
-  };
+
+    setFilteredAnnouncements(listFiltered)
+    setIsFiltered(true)
+  }
+
 
   return (
     <Flex h={"max-content"} w={"100%"}>
@@ -209,15 +188,9 @@ export const Home = () => {
         </Flex>
         <Flex flexDirection={"row"}>
           <Box display={{ base: "none", md: "flex" }}>
-            <NavFilters
-              filtering={filtering}
-              filteringPriceKm={filteringPriceKm}
-              brands={brands}
-              models={models}
-              colors={colors}
-              years={years}
-              fuels={fuels}
-            />
+
+            <NavFilters filtering={filtering} filteringPriceKm={filteringPriceKm} setFilteredAnnouncements={setFilteredAnnouncements} setIsFiltered={setIsFiltered} isFiltered={isFiltered} brands={brands} models={models} colors={colors} years={years} fuels={fuels} />
+
           </Box>
           <Flex
             wrap={{ base: "nowrap", md: "wrap" }}
@@ -280,15 +253,9 @@ export const Home = () => {
                 ))}
           </Flex>
         </Flex>
-        <ModalNavFilter
-          filtering={filtering}
-          filteringPriceKm={filteringPriceKm}
-          brands={brands}
-          models={models}
-          colors={colors}
-          years={years}
-          fuels={fuels}
-        />
+
+        <ModalNavFilter filtering={filtering} filteringPriceKm={filteringPriceKm} setFilteredAnnouncements={setFilteredAnnouncements} setIsFiltered={setIsFiltered} isFiltered={isFiltered} brands={brands} models={models} colors={colors} years={years} fuels={fuels} />
+
         <Flex
           justifyContent={"center"}
           alignItems={"center"}

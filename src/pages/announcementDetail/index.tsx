@@ -4,41 +4,22 @@ import { Header } from "../../components/header";
 import { Image } from "@chakra-ui/image";
 import { Button, Textarea, AspectRatio } from "@chakra-ui/react";
 import { ProfilePic } from "../../components/profilePic";
-import { EditAnnouncementModal } from "../../components/editAnnouncementModal";
 import { useAd } from "../../context/announcements.context";
 import { useState, useEffect } from "react";
 import { useParams } from "react-router-dom";
-
-interface iImages {
-  id: string;
-  img: string;
-}
-
-interface iAnnouncement {
-  id: string;
-  brand: string;
-  model: string;
-  year: string;
-  fuel: string;
-  odometer: string;
-  color: string;
-  fipe: string;
-  price: number;
-  description: string;
-  images: iImages[];
-  isPublished: boolean;
-  createdAt: Date;
-  updatedAt: Date;
-}
+import { iAnnouncement } from "../../context/announcements.context";
+import { useNavigate } from "react-router-dom";
 
 export const AnnouncementDetail = () => {
   const { id } = useParams();
   const { listAnnouncement } = useAd();
-  const [announcement, setAnnouncement] = useState<any>({});
+  const navigate = useNavigate();
+
+  const [announcement, setAnnouncement] = useState<iAnnouncement>({} as iAnnouncement);
 
   useEffect(() => {
     const getAnnouncement = async () => {
-      const response = await listAnnouncement(id!);
+      const response = await listAnnouncement(id);
       console.log(response);
       setAnnouncement(response);
     };
@@ -84,7 +65,7 @@ export const AnnouncementDetail = () => {
                 maxW={"540px"}
                 maxH={"280px"}
                 objectFit={{ base: "cover", md: "unset" }}
-                src={announcement.images?.[0].img}
+                src={announcement.images && announcement.images[0].img}
               />
             </Flex>
             <Flex
@@ -165,7 +146,7 @@ export const AnnouncementDetail = () => {
             >
               <Text textStyle={"heading_6_600"}>Fotos</Text>
               <Flex wrap={"wrap"} gap={2}>
-                {announcement.images?.map((img: iImages) => (
+                {announcement.images?.map((img) => (
                   <AspectRatio key={img.id} ratio={1} w={"100px"} h={"100px"}>
                     <Image w={"60%"} objectFit="contain" src={img.img} />
                   </AspectRatio>
@@ -183,14 +164,11 @@ export const AnnouncementDetail = () => {
               gap={4}
             >
               <ProfilePic user="Danilo Cardoso" isLarge={true} />
-              <Text textStyle={"heading_6_600"}>Danilo Cardoso</Text>
+              <Text textStyle={"heading_6_600"}>{announcement.user && announcement.user.fullName}</Text>
               <Text textStyle={"body_1_400"}>
-                Lorem ipsum dolor sit amet consectetur adipisicing elit. Hic
-                dolor odit esse. Reiciendis, laudantium. Necessitatibus
-                quibusdam eveniet velit blanditiis impedit deleniti tempora, non
-                ut enim illo provident rem accusantium omnis!
+                {announcement.user && announcement.user.bio}
               </Text>
-              <Button variant={"grey1"} size={"medium"}>
+              <Button variant={"grey1"} size={"medium"} onClick={()=> navigate(`/users/${announcement.user.id}`)}>
                 Ver todos anúncios
               </Button>
             </Flex>
