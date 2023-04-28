@@ -23,7 +23,7 @@ export interface IUser {
   bio: string;
   announcements: iAnnouncement[];
   address: IAddress;
-  isAdvertise?: boolean;
+  isAdvertiser: boolean;
 }
 
 interface IAddress {
