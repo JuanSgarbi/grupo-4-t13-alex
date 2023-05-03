@@ -1,23 +1,26 @@
 import { Box, Flex, Text } from "@chakra-ui/layout";
 import { Footer } from "../components/footer";
 import { Header } from "../components/header";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { CreateAnnouncementModal } from "../components/createAnnouncementModal";
 import { ProfilePic } from "../components/profilePic";
 import { CardAdvertisement } from "../components/cardAdvertisement";
 import { useUser } from "../context/user.context";
 import { Spinner } from "@chakra-ui/react";
 import { useNavigate } from "react-router-dom";
+import { iAnnouncement, useAd } from "../context/announcements.context";
 
 export const Profile = () => {
   const { user, isLogged } = useUser();
-  const navigate = useNavigate();
+  const { announcements } = useAd();
+  const [myAnnouncements, setMyAnnouncements] = useState<iAnnouncement[]>([]);
 
   useEffect(() => {
-    if (!isLogged) {
-      navigate("/login");
-    }
-  }, []);
+    const filteredAnnouncements = announcements.filter(
+      (el) => el.user.id === user.id
+    );
+    setMyAnnouncements(filteredAnnouncements);
+  }, [announcements]);
 
   return (
     <>
@@ -56,7 +59,6 @@ export const Profile = () => {
                   <Text fontWeight={"bold"}>{user.fullName}</Text>
 
                   {user.isAdvertiser ? (
-
                     <Text
                       fontSize={"0.8rem"}
                       fontWeight={"bold"}
@@ -82,15 +84,11 @@ export const Profile = () => {
                 </Flex>
                 <Text>{user.bio}</Text>
 
-
-                {
-                  user.isAdvertiser && (
-                    <Flex width={"30%"}>
-                      <CreateAnnouncementModal />
-                    </Flex>   
-                  )
-                }
-
+                {user.isAdvertiser && (
+                  <Flex width={"30%"}>
+                    <CreateAnnouncementModal />
+                  </Flex>
+                )}
               </Flex>
               <Flex
                 w={"100%"}
@@ -108,8 +106,8 @@ export const Profile = () => {
                 justifyContent={"stretch"}
                 mb={{ base: "220px", md: "150px" }}
               >
-                {user.announcements.length > 0 ? (
-                  user.announcements.map((ad): JSX.Element => {
+                {myAnnouncements.length > 0 ? (
+                  myAnnouncements.map((ad): JSX.Element => {
                     return (
                       <CardAdvertisement
                         key={ad.id}

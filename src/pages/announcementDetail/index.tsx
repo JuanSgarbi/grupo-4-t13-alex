@@ -7,25 +7,65 @@ import { ProfilePic } from "../../components/profilePic";
 import { useAd } from "../../context/announcements.context";
 import { useState, useEffect } from "react";
 import { useParams } from "react-router-dom";
-import { iAnnouncement } from "../../context/announcements.context";
+import { iAnnouncementDetail } from "../../context/announcements.context";
 import { useNavigate } from "react-router-dom";
+import { useUser } from "../../context/user.context";
 
 export const AnnouncementDetail = () => {
   const { id } = useParams();
-  const { listAnnouncement } = useAd();
+  const { listAnnouncement, createComment } = useAd();
+  const { isLogged, user } = useUser();
+  const [commentValue, setCommentValue] = useState("");
   const navigate = useNavigate();
 
-  const [announcement, setAnnouncement] = useState<iAnnouncement>(
-    {} as iAnnouncement
+  const [announcement, setAnnouncement] = useState<iAnnouncementDetail>(
+    {} as iAnnouncementDetail
   );
 
+  const getAnnouncement = async () => {
+    const response = await listAnnouncement(id);
+    setAnnouncement(response);
+  };
   useEffect(() => {
-    const getAnnouncement = async () => {
-      const response = await listAnnouncement(id);
-      setAnnouncement(response);
-    };
     getAnnouncement();
   }, []);
+
+  const tempoDecorrido = (dataString: string) => {
+    const data = new Date(dataString);
+    const agora = Date.now();
+    const diff = agora - data.getTime();
+    const umDia = 24 * 60 * 60 * 1000;
+
+    const anos = Math.floor(diff / (365 * umDia));
+    if (anos > 1) {
+      return `Há ${anos} anos`;
+    }
+
+    const meses = Math.floor(diff / (30 * umDia));
+    if (meses > 1) {
+      return `Há ${meses} meses`;
+    }
+
+    const semanas = Math.floor(diff / (7 * umDia));
+    if (semanas > 1) {
+      return `Há ${semanas} semanas`;
+    }
+
+    const dias = Math.floor(diff / umDia);
+    if (dias > 1) {
+      return `Há ${dias} dias`;
+    }
+
+    return "Hoje";
+  };
+
+  const comment = () => {
+    createComment({ description: commentValue }, id);
+    setTimeout(() => {
+      getAnnouncement();
+    }, 1500);
+    setCommentValue("");
+  };
 
   return (
     <>
@@ -91,6 +131,7 @@ export const AnnouncementDetail = () => {
                   justifyContent={"space-between"}
                   alignItems={"center"}
                   w={"110px"}
+                  gap={3}
                 >
                   <Text
                     textStyle={"body_2_500"}
@@ -111,10 +152,14 @@ export const AnnouncementDetail = () => {
                     {announcement.odometer}KM
                   </Text>
                 </Flex>
-                <Text textStyle={"heading_7_500"}>R${announcement.price}</Text>
+                <Text textStyle={"heading_7_500"}>
+                  R${announcement.price},00
+                </Text>
               </Flex>
               <Box>
-                <Button variant={"default"}>Comprar</Button>
+                <Button variant={isLogged ? "default" : "brandDisable"}>
+                  Comprar
+                </Button>
               </Box>
             </Flex>
             <Flex
@@ -164,7 +209,10 @@ export const AnnouncementDetail = () => {
               alignItems={"center"}
               gap={4}
             >
-              <ProfilePic user="Danilo Cardoso" isLarge={true} />
+              {announcement.user && (
+                <ProfilePic user={announcement.user.fullName} isLarge={true} />
+              )}
+
               <Text textStyle={"heading_6_600"}>
                 {announcement.user && announcement.user.fullName}
               </Text>
@@ -192,80 +240,53 @@ export const AnnouncementDetail = () => {
               gap={"2rem"}
             >
               <Text textStyle={"heading_6_600"}>Comentários</Text>
-              <Flex direction={"column"} gap={"1rem"}>
-                <Flex>
-                  <Flex flex="1" gap="4" alignItems="center">
-                    <ProfilePic user="Juan Sgarbi" isLarge={false} />
+              {announcement.comments && announcement.comments.length > 0 ? (
+                <>
+                  {announcement.comments.map((el) => {
+                    return (
+                      <Flex direction={"column"} gap={"1rem"}>
+                        <Flex>
+                          <Flex flex="1" gap="4" alignItems="center">
+                            <ProfilePic
+                              user={el.user.fullName}
+                              isLarge={false}
+                            />
 
-                    <Flex>
-                      <Text textStyle={"body_2_500"}>Juan Sgarbi</Text>
-                      <Text ml={"2"} textStyle={"body_2_400"} color={"grey.3"}>
-                        •
-                      </Text>
-                      <Text ml={"2"} textStyle={"body_2_400"} color={"grey.3"}>
-                        há 3 dias
-                      </Text>
-                    </Flex>
-                  </Flex>
-                </Flex>
+                            <Flex>
+                              <Text textStyle={"body_2_500"}>
+                                {el.user.fullName}
+                              </Text>
+                              <Text
+                                ml={"2"}
+                                textStyle={"body_2_400"}
+                                color={"grey.3"}
+                              >
+                                •
+                              </Text>
+                              <Text
+                                ml={"2"}
+                                textStyle={"body_2_400"}
+                                color={"grey.3"}
+                              >
+                                {tempoDecorrido(el.createdAt)}
+                              </Text>
+                            </Flex>
+                          </Flex>
+                        </Flex>
 
-                <Text>
-                  Lorem ipsum dolor sit amet consectetur adipisicing elit. Nam,
-                  dolorem, ipsum molestias illo veritatis alias explicabo
-                  architecto suscipit, in ullam sunt repellendus expedita quod
-                  cum facilis quaerat corrupti iste nostrum?
-                </Text>
-              </Flex>
-
-              <Flex direction={"column"} gap={"1rem"}>
-                <Flex>
-                  <Flex flex="1" gap="4" alignItems="center">
-                    <ProfilePic user="Danilo Cardoso" isLarge={false} />
-
-                    <Flex>
-                      <Text textStyle={"body_2_500"}>Danilo Cardoso</Text>
-                      <Text ml={"2"} textStyle={"body_2_400"} color={"grey.3"}>
-                        •
-                      </Text>
-                      <Text ml={"2"} textStyle={"body_2_400"} color={"grey.3"}>
-                        há 2 semanas
-                      </Text>
-                    </Flex>
-                  </Flex>
-                </Flex>
-
-                <Text>
-                  Lorem ipsum dolor sit amet consectetur adipisicing elit. Nam,
-                  dolorem, ipsum molestias illo veritatis alias explicabo
-                  architecto suscipit, in ullam sunt repellendus expedita quod
-                  cum facilis quaerat corrupti iste nostrum?
-                </Text>
-              </Flex>
-
-              <Flex direction={"column"} gap={"1rem"}>
-                <Flex>
-                  <Flex flex="1" gap="4" alignItems="center">
-                    <ProfilePic user="Gabriel Ogawa" isLarge={false} />
-
-                    <Flex>
-                      <Text textStyle={"body_2_500"}>Gabriel Ogawa</Text>
-                      <Text ml={"2"} textStyle={"body_2_400"} color={"grey.3"}>
-                        •
-                      </Text>
-                      <Text ml={"2"} textStyle={"body_2_400"} color={"grey.3"}>
-                        há 1 mês
-                      </Text>
-                    </Flex>
-                  </Flex>
-                </Flex>
-
-                <Text>
-                  Lorem ipsum dolor sit amet consectetur adipisicing elit. Nam,
-                  dolorem, ipsum molestias illo veritatis alias explicabo
-                  architecto suscipit, in ullam sunt repellendus expedita quod
-                  cum facilis quaerat corrupti iste nostrum?
-                </Text>
-              </Flex>
+                        <Text>{el.description}</Text>
+                      </Flex>
+                    );
+                  })}
+                </>
+              ) : (
+                <>
+                  <Text textStyle={"body_2_500"}>
+                    Este anúncio ainda não possui nenhum comentário, envie o
+                    primeiro!
+                  </Text>
+                </>
+              )}
             </Flex>
             <Flex
               bg={"grey.10"}
@@ -277,8 +298,12 @@ export const AnnouncementDetail = () => {
               gap={"2rem"}
             >
               <Flex alignItems={"center"} gap={4}>
-                <ProfilePic user="Juan Sgarbi" isLarge={false} />
-                <Text textStyle={"body_2_500"}>Juan Sgarbi</Text>
+                {isLogged && (
+                  <>
+                    <ProfilePic user={user.fullName} isLarge={false} />
+                    <Text textStyle={"body_2_500"}>{user.fullName}</Text>
+                  </>
+                )}
               </Flex>
               <Box
                 position={"relative"}
@@ -293,12 +318,17 @@ export const AnnouncementDetail = () => {
                   borderColor={"transparent"}
                   w={"100%"}
                   placeholder="Carro muito confortável, foi uma ótima experiência de compra..."
+                  onChange={(e) => setCommentValue(e.target.value)}
+                  value={commentValue}
                 />
                 <Button
                   position={"absolute"}
                   bottom={2}
                   right={2}
-                  variant={"default"}
+                  variant={isLogged ? "default" : "brandDisable"}
+                  onClick={
+                    isLogged ? () => comment() : () => navigate("/login")
+                  }
                 >
                   Comentar
                 </Button>
@@ -315,6 +345,7 @@ export const AnnouncementDetail = () => {
                   bg={"grey.7"}
                   p={"0 12px"}
                   borderRadius={"24px"}
+                  onClick={() => setCommentValue("Gostei muito!")}
                 >
                   Gostei muito!
                 </Button>
@@ -329,6 +360,7 @@ export const AnnouncementDetail = () => {
                   bg={"grey.7"}
                   p={"0 12px"}
                   borderRadius={"24px"}
+                  onClick={() => setCommentValue("Incírivel")}
                 >
                   Incírivel
                 </Button>
@@ -343,6 +375,9 @@ export const AnnouncementDetail = () => {
                   bg={"grey.7"}
                   p={"0 12px"}
                   borderRadius={"24px"}
+                  onClick={() =>
+                    setCommentValue("Recomendarei para meus amigos!")
+                  }
                 >
                   Recomendarei para meus amigos!
                 </Button>

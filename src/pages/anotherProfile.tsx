@@ -116,7 +116,7 @@ export const Users = () => {
                           isActive={ad.isPublished}
                           owner={userProfile.fullName}
                           price={`${ad.price}`}
-                          isHomePage={false}
+                          isHomePage={true}
                           image={ad.images[0]?.img}
                           isGoodBuy={ad.price <= ad.fipe ? true : false}
                           year={ad.year}

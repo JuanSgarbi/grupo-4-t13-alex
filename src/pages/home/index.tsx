@@ -9,20 +9,51 @@ import { CardAdvertisement } from "../../components/cardAdvertisement";
 import { useAd } from "../../context/announcements.context";
 
 export const Home = () => {
-
-
-  const [filteredAnnouncements, setFilteredAnnouncements] = useState([])
-  const [brands, setBrands] = useState(["General Motors", "Fiat", "Ford", "Honda", "Porsche", "Volkswagen"])
-  const [models, setModels] = useState(["Civic", "Corolla", "Cruze", "Fiat", "Gol", "Ka", "Onix", "Porsche 718"])
-  const [colors, setColors] = useState(["Azul", "Branca", "Cinza", "Prata", "Preta", "Verde"])
-  const [years, setYears] = useState(["2022", "2021", "2018", "2015", "2013", "2012", "2010"])
-  const [fuels, setFuels] = useState(["Diesel", "Etanol", "Gasolina", "Flex",])
-  const [isFiltered, setIsFiltered] = useState<boolean>(false)
-
+  const [filteredAnnouncements, setFilteredAnnouncements] = useState([]);
+  const [brands, setBrands] = useState([
+    "General Motors",
+    "Fiat",
+    "Ford",
+    "Honda",
+    "Porsche",
+    "Volkswagen",
+  ]);
+  const [models, setModels] = useState([
+    "Civic",
+    "Corolla",
+    "Cruze",
+    "Fiat",
+    "Gol",
+    "Ka",
+    "Onix",
+    "Porsche 718",
+  ]);
+  const [colors, setColors] = useState([
+    "Azul",
+    "Branca",
+    "Cinza",
+    "Prata",
+    "Preta",
+    "Verde",
+  ]);
+  const [years, setYears] = useState([
+    "2022",
+    "2021",
+    "2018",
+    "2015",
+    "2013",
+    "2012",
+    "2010",
+  ]);
+  const [fuels, setFuels] = useState(["Diesel", "Etanol", "Gasolina", "Flex"]);
+  const [isFiltered, setIsFiltered] = useState<boolean>(false);
 
   const { announcements } = useAd();
+  const [isActiveAnnounce, setIsActiveAnnounce] = useState([]);
 
   useEffect(() => {
+    const filter = announcements.filter((el) => el.isPublished);
+    setIsActiveAnnounce(filter);
     let listFiltered = announcements;
     if (filteredAnnouncements.length > 0) {
       listFiltered = filteredAnnouncements;
@@ -58,20 +89,23 @@ export const Home = () => {
       ) {
         setFuels([...fuels, elem.fuel]);
       }
-
-    })
-  },
-    [brands, models, colors, years, fuels, filteredAnnouncements]);
-
+    });
+  }, [
+    brands,
+    models,
+    colors,
+    years,
+    fuels,
+    filteredAnnouncements,
+    announcements,
+  ]);
 
   const filtering = (category, characteristic) => {
-
-    setBrands([])
-    setModels([])
-    setColors([])
-    setYears([])
-    setFuels([])
-
+    setBrands([]);
+    setModels([]);
+    setColors([]);
+    setYears([]);
+    setFuels([]);
 
     if (category == "year") {
       if (filteredAnnouncements.length == 0) {
@@ -126,10 +160,9 @@ export const Home = () => {
       listFiltered = newFiltered;
     }
 
-    setFilteredAnnouncements(listFiltered)
-    setIsFiltered(true)
-  }
-
+    setFilteredAnnouncements(listFiltered);
+    setIsFiltered(true);
+  };
 
   return (
     <Flex h={"max-content"} w={"100%"}>
@@ -188,9 +221,18 @@ export const Home = () => {
         </Flex>
         <Flex flexDirection={"row"}>
           <Box display={{ base: "none", md: "flex" }}>
-
-            <NavFilters filtering={filtering} filteringPriceKm={filteringPriceKm} setFilteredAnnouncements={setFilteredAnnouncements} setIsFiltered={setIsFiltered} isFiltered={isFiltered} brands={brands} models={models} colors={colors} years={years} fuels={fuels} />
-
+            <NavFilters
+              filtering={filtering}
+              filteringPriceKm={filteringPriceKm}
+              setFilteredAnnouncements={setFilteredAnnouncements}
+              setIsFiltered={setIsFiltered}
+              isFiltered={isFiltered}
+              brands={brands}
+              models={models}
+              colors={colors}
+              years={years}
+              fuels={fuels}
+            />
           </Box>
           <Flex
             wrap={{ base: "nowrap", md: "wrap" }}
@@ -228,7 +270,7 @@ export const Home = () => {
                   </Flex>
                 ))
               : !!announcements.length &&
-                announcements.map((advertisement) => (
+                isActiveAnnounce.map((advertisement) => (
                   <Flex
                     key={advertisement.id}
                     w={{ base: "100%", md: "50%", xl: "33%" }}
@@ -254,7 +296,18 @@ export const Home = () => {
           </Flex>
         </Flex>
 
-        <ModalNavFilter filtering={filtering} filteringPriceKm={filteringPriceKm} setFilteredAnnouncements={setFilteredAnnouncements} setIsFiltered={setIsFiltered} isFiltered={isFiltered} brands={brands} models={models} colors={colors} years={years} fuels={fuels} />
+        <ModalNavFilter
+          filtering={filtering}
+          filteringPriceKm={filteringPriceKm}
+          setFilteredAnnouncements={setFilteredAnnouncements}
+          setIsFiltered={setIsFiltered}
+          isFiltered={isFiltered}
+          brands={brands}
+          models={models}
+          colors={colors}
+          years={years}
+          fuels={fuels}
+        />
 
         <Flex
           justifyContent={"center"}

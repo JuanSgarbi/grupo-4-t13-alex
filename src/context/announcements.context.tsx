@@ -35,18 +35,35 @@ export interface iAnnouncement {
   user: IUser;
 }
 
+interface iUserSimple {
+  id: string;
+  fullName: string;
+}
+
+interface iComent {
+  id: string;
+  createdAt: string;
+  user: iUserSimple;
+  description: string;
+}
+
+export interface iAnnouncementDetail extends iAnnouncement {
+  comments: iComent[];
+}
+
 interface iContext {
   announcements: iAnnouncement[];
   getAnnouncements: () => Promise<void>;
   createAnnouncement: (payload: iAnnouncement) => Promise<void>;
   editAnnouncement: (id: string, payload: iAnnouncement) => Promise<void>;
   deleteAnnouncement: (id: string) => Promise<void>;
-  listAnnouncement: (id: string) => Promise<iAnnouncement>;
+  listAnnouncement: (id: string) => Promise<iAnnouncementDetail>;
   profileAnnouncements: iAnnouncement[];
   setAnnouncements: React.Dispatch<React.SetStateAction<iAnnouncement[]>>;
   setProfileAnnouncements: React.Dispatch<
     React.SetStateAction<iAnnouncement[]>
   >;
+  createComment: (payload: any, advertiserId: string) => Promise<void>;
 }
 
 export const AdContext = createContext({} as iContext);
@@ -114,15 +131,22 @@ export const AdProvider = ({
     async (id: string, payload: iAnnouncement) => {
       try {
         const { data } = await api.patch(`/advertise/${id}`, payload);
-        const { announcement } = data;
-        const newAnnouncements = announcement.map((announcement) => {
+
+        const newAnnouncements = announcements.map((announcement) => {
           if (announcement.id === id) {
-            return announcement;
+            return (announcement = { ...announcement, ...data });
           }
           return announcement;
         });
         setAnnouncements(newAnnouncements);
+        toast({
+          title: "Anúncio editado!",
+          status: "success",
+          duration: 2000,
+          isClosable: true,
+        });
       } catch (err) {
+        console.error(err);
         toast({
           title: "Erro ao carregar anúncios",
           description: "Verifique os campos inseridos e tente novamente!",
@@ -143,6 +167,12 @@ export const AdProvider = ({
           (announcement) => announcement.id !== id
         );
         setAnnouncements(newAnnouncements);
+        toast({
+          title: "Anúncio deletado!",
+          status: "success",
+          duration: 2000,
+          isClosable: true,
+        });
       } catch (err) {
         toast({
           title: "Erro ao carregar anúncios",
@@ -181,7 +211,7 @@ export const AdProvider = ({
 
     try {
       const { data } = (await api.get(`/advertise/${id}`)) satisfies {
-        data: iAnnouncement;
+        data: iAnnouncementDetail;
       };
 
       return data;
@@ -197,6 +227,27 @@ export const AdProvider = ({
     }
   }, []);
 
+  const createComment = async (payload: any, advertiserId: string) => {
+    try {
+      await api.post(`/advertise/${advertiserId}/comments`, payload);
+      toast({
+        title: "Comentário publicado!",
+        status: "success",
+        duration: 2000,
+        isClosable: true,
+      });
+    } catch (error) {
+      console.error(error);
+      toast({
+        title: "Erro ao comentar",
+        description: "Tente novamente!",
+        status: "error",
+        duration: 5000,
+        isClosable: true,
+      });
+    }
+  };
+
   return (
     <AdContext.Provider
       value={{
@@ -209,6 +260,7 @@ export const AdProvider = ({
         profileAnnouncements,
         setAnnouncements,
         setProfileAnnouncements,
+        createComment,
       }}
     >
       {children}

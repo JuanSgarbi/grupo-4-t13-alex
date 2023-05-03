@@ -145,7 +145,12 @@ export const CreateAnnouncementModal = () => {
         const { data } = await api.post("/advertise", formSchema);
         setIsModalCreate(false);
         setAnnouncements((prev) => [...prev, data]);
-        setProfileAnnouncements((prev) => [...prev, data]);
+        toast({
+          title: "Anúncio criado!",
+          status: "success",
+          duration: 2000,
+          isClosable: true,
+        });
         return data;
       } catch (error) {
         toast({
