@@ -305,6 +305,16 @@ const buttons = {
         borderColor: "grey.8",
       },
     },
+    link2: {
+      bg: "transparent",
+      borderColor: "transparent",
+      color: "grey.0",
+      fontWeight: "regular",
+      _hover: {
+        bg: "grey.8",
+        borderColor: "grey.8",
+      },
+    },
     brandDisable: {
       bg: "brand.3",
       borderColor: "brand.3",

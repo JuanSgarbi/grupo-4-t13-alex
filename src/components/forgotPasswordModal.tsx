@@ -68,7 +68,7 @@ export const ForgotPasswordModal = () => {
 
   return (
     <>
-      <Button variant={"link"} onClick={onOpen}>
+      <Button variant={"link2"} size={"small"} onClick={onOpen}>
         Esqueci minha senha
       </Button>
 

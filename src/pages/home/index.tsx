@@ -10,41 +10,10 @@ import { useAd } from "../../context/announcements.context";
 
 export const Home = () => {
   const [filteredAnnouncements, setFilteredAnnouncements] = useState([]);
-  const [brands, setBrands] = useState([
-    "General Motors",
-    "Fiat",
-    "Ford",
-    "Honda",
-    "Porsche",
-    "Volkswagen",
-  ]);
-  const [models, setModels] = useState([
-    "Civic",
-    "Corolla",
-    "Cruze",
-    "Fiat",
-    "Gol",
-    "Ka",
-    "Onix",
-    "Porsche 718",
-  ]);
-  const [colors, setColors] = useState([
-    "Azul",
-    "Branca",
-    "Cinza",
-    "Prata",
-    "Preta",
-    "Verde",
-  ]);
-  const [years, setYears] = useState([
-    "2022",
-    "2021",
-    "2018",
-    "2015",
-    "2013",
-    "2012",
-    "2010",
-  ]);
+  const [brands, setBrands] = useState([]);
+  const [models, setModels] = useState([]);
+  const [colors, setColors] = useState([]);
+  const [years, setYears] = useState([]);
   const [fuels, setFuels] = useState(["Diesel", "Etanol", "Gasolina", "Flex"]);
   const [isFiltered, setIsFiltered] = useState<boolean>(false);
 
@@ -69,10 +38,11 @@ export const Home = () => {
       }
       if (
         !models.some(
-          (model) => model.toLowerCase() === elem.model.toLowerCase()
+          (model) =>
+            model.toLowerCase() === elem.model.toLowerCase().split(" ")[0]
         )
       ) {
-        setModels([...models, elem.model]);
+        setModels([...models, elem.model.split(" ")[0]]);
       }
       if (
         !colors.some(
@@ -121,6 +91,13 @@ export const Home = () => {
           setFilteredAnnouncements(newFiltered);
         }
       }
+    } else if (category == "model") {
+      const filtereds = announcements.filter(
+        (elem) =>
+          elem[category].toLowerCase().split(" ")[0] ==
+          characteristic.toLowerCase()
+      );
+      setFilteredAnnouncements(filtereds);
     } else {
       if (filteredAnnouncements.length == 0) {
         const filtereds = announcements.filter(
@@ -146,22 +123,25 @@ export const Home = () => {
     if (kmMin != "") {
       const newFiltered = listFiltered.filter((elem) => elem.odometer >= kmMin);
       listFiltered = newFiltered;
+      setIsFiltered(true);
     }
     if (kmMax != "") {
       const newFiltered = listFiltered.filter((elem) => elem.odometer <= kmMax);
       listFiltered = newFiltered;
+      setIsFiltered(true);
     }
     if (priceMin != "") {
       const newFiltered = listFiltered.filter((elem) => elem.price >= priceMin);
       listFiltered = newFiltered;
+      setIsFiltered(true);
     }
     if (priceMax != "") {
       const newFiltered = listFiltered.filter((elem) => elem.price <= priceMax);
       listFiltered = newFiltered;
+      setIsFiltered(true);
     }
 
     setFilteredAnnouncements(listFiltered);
-    setIsFiltered(true);
   };
 
   return (

@@ -88,7 +88,7 @@ export const UpdateAddressModal = () => {
 
   return (
     <>
-      <Button variant={"link"} onClick={onOpen}>
+      <Button variant={"link2"} size={"small"} onClick={onOpen}>
         Editar endereço
       </Button>
 

@@ -69,7 +69,7 @@ export const UpdateUserModal = () => {
 
   return (
     <>
-      <Button variant={"link"} onClick={openModal}>
+      <Button variant={"link2"} size={"small"} onClick={openModal}>
         Editar perfil
       </Button>
 
