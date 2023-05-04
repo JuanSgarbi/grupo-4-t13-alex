@@ -64,6 +64,11 @@ interface iContext {
     React.SetStateAction<iAnnouncement[]>
   >;
   createComment: (payload: any, advertiserId: string) => Promise<void>;
+  page: number;
+  setPage: React.Dispatch<React.SetStateAction<number>>;
+  totalPages: number;
+  nextPage: boolean;
+  previusPage: boolean;
 }
 
 export const AdContext = createContext({} as iContext);
@@ -82,6 +87,9 @@ export const AdProvider = ({
     iAnnouncement[]
   >([]);
   const [page, setPage] = useState(1);
+  const [nextPage, setNextPage] = useState(false);
+  const [previusPage, setPreviusPage] = useState(false);
+  const [totalPages, setTotalPages] = useState(1)
 
   api.defaults.headers.common["Authorization"] = `Bearer ${localStorage.getItem(
     "@TOKEN"
@@ -90,13 +98,23 @@ export const AdProvider = ({
   useEffect(() => {
     getAnnouncements();
     if (user) setProfileAnnouncements(user.announcements);
-  }, []);
+  }, [page]);
 
   const getAnnouncements = useCallback(async () => {
     try {
       const { data } = await api.get(`/advertise?page=${page}`);
       setAnnouncements(Object.values(data.announcement));
-      setPage(data.page);
+      if (data.nextPage) {
+        setNextPage(true)
+      } else {
+        setNextPage(false)
+      }
+      if (data.previusPage) {
+        setPreviusPage(true)
+      } else {
+        setPreviusPage(false)
+      }
+      setTotalPages(data.totalPages)
     } catch (error) {
       console.log(error);
       toast({
@@ -107,7 +125,7 @@ export const AdProvider = ({
         isClosable: true,
       });
     }
-  }, []);
+  }, [page]);
 
   const createAnnouncement = useCallback(async (payload: iAnnouncement) => {
     try {
@@ -261,6 +279,11 @@ export const AdProvider = ({
         setAnnouncements,
         setProfileAnnouncements,
         createComment,
+        page,
+        setPage,
+        totalPages,
+        nextPage,
+        previusPage,
       }}
     >
       {children}

@@ -14,10 +14,10 @@ export const Home = () => {
   const [models, setModels] = useState([]);
   const [colors, setColors] = useState([]);
   const [years, setYears] = useState([]);
-  const [fuels, setFuels] = useState(["Diesel", "Etanol", "Gasolina", "Flex"]);
+  const [fuels, setFuels] = useState([]);
   const [isFiltered, setIsFiltered] = useState<boolean>(false);
 
-  const { announcements } = useAd();
+  const { announcements, page, setPage, totalPages, nextPage, previusPage } = useAd();
   const [isActiveAnnounce, setIsActiveAnnounce] = useState([]);
 
   useEffect(() => {
@@ -144,6 +144,14 @@ export const Home = () => {
     setFilteredAnnouncements(listFiltered);
   };
 
+  const setPageRender = (str) => {
+    if (str == "next") {
+      setPage(page + 1)
+    } else {
+      setPage(page - 1)
+    }
+  }
+
   return (
     <Flex h={"max-content"} w={"100%"}>
       <Header />
@@ -225,54 +233,54 @@ export const Home = () => {
             {" "}
             {filteredAnnouncements.length > 0
               ? filteredAnnouncements.map((advertisement) => (
-                  <Flex
+                <Flex
+                  key={advertisement.id}
+                  w={{ base: "100%", md: "50%", xl: "33%" }}
+                  flexDirection={"row"}
+                  justifyContent={"flex-end"}
+                  mb={"2rem"}
+                  minW={"33%"}
+                >
+                  <CardAdvertisement
                     key={advertisement.id}
-                    w={{ base: "100%", md: "50%", xl: "33%" }}
-                    flexDirection={"row"}
-                    justifyContent={"flex-end"}
-                    mb={"2rem"}
-                    minW={"33%"}
-                  >
-                    <CardAdvertisement
-                      key={advertisement.id}
-                      id={advertisement.id}
-                      title={advertisement.model}
-                      description={advertisement.description}
-                      owner={advertisement.user.fullName}
-                      km={advertisement.odometer}
-                      year={advertisement.year}
-                      price={advertisement.price.toString()}
-                      image={advertisement.images[0]?.img}
-                      isGoodBuy={advertisement.isPublished}
-                      isActive={true}
-                      isHomePage={true}
-                    />
-                  </Flex>
-                ))
+                    id={advertisement.id}
+                    title={advertisement.model}
+                    description={advertisement.description}
+                    owner={advertisement.user.fullName}
+                    km={advertisement.odometer}
+                    year={advertisement.year}
+                    price={advertisement.price.toString()}
+                    image={advertisement.images[0]?.img}
+                    isGoodBuy={advertisement.isPublished}
+                    isActive={true}
+                    isHomePage={true}
+                  />
+                </Flex>
+              ))
               : !!announcements.length &&
-                isActiveAnnounce.map((advertisement) => (
-                  <Flex
+              isActiveAnnounce.map((advertisement) => (
+                <Flex
+                  key={advertisement.id}
+                  w={{ base: "100%", md: "50%", xl: "33%" }}
+                  justifyContent={"flex-end"}
+                  mb={"2rem"}
+                >
+                  <CardAdvertisement
                     key={advertisement.id}
-                    w={{ base: "100%", md: "50%", xl: "33%" }}
-                    justifyContent={"flex-end"}
-                    mb={"2rem"}
-                  >
-                    <CardAdvertisement
-                      key={advertisement.id}
-                      id={advertisement.id}
-                      title={advertisement.model}
-                      description={advertisement.description}
-                      owner={advertisement.user.fullName}
-                      km={advertisement.odometer}
-                      year={advertisement.year}
-                      price={advertisement.price.toString()}
-                      image={advertisement.images[0]?.img}
-                      isGoodBuy={advertisement.isPublished}
-                      isActive={true}
-                      isHomePage={true}
-                    />
-                  </Flex>
-                ))}
+                    id={advertisement.id}
+                    title={advertisement.model}
+                    description={advertisement.description}
+                    owner={advertisement.user.fullName}
+                    km={advertisement.odometer}
+                    year={advertisement.year}
+                    price={advertisement.price.toString()}
+                    image={advertisement.images[0]?.img}
+                    isGoodBuy={advertisement.isPublished}
+                    isActive={true}
+                    isHomePage={true}
+                  />
+                </Flex>
+              ))}
           </Flex>
         </Flex>
 
@@ -297,13 +305,24 @@ export const Home = () => {
           gap={{ base: "1rem", md: "2rem" }}
           flexDirection={{ base: "column", md: "row" }}
         >
+          <Button
+            color={"brand.2"}
+            textStyle={"heading_5_600"}
+            variant={"link"}
+            isDisabled={!previusPage}
+            onClick={() => setPageRender("prev")}
+          >
+            {"< Anterior"}
+          </Button>
           <Text textStyle={"heading_5_600"} color={"grey.3"}>
-            1 de 2
+            {page} de {totalPages}
           </Text>
           <Button
             color={"brand.2"}
             textStyle={"heading_5_600"}
             variant={"link"}
+            isDisabled={!nextPage}
+            onClick={() => setPageRender("next")}
           >
             {"Seguinte >"}
           </Button>
