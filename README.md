@@ -1,6 +1,6 @@
-#Motors Shop
+# Motors Shop
 
-##Como rodar o projeto na sua máquina:
+## Como rodar o projeto na sua máquina:
 
 - Clone o projeto `git clone git@github.com:JuanSgarbi/grupo-4-t13-alex.git`
 - Rode `yarn install`
@@ -8,7 +8,7 @@
 - Pronto, o projeto irá abrir no navegador!
 
 
-##Bibliotecas utilizadas:
+## Bibliotecas utilizadas:
 
 - chakra-ui 
 - hookform/resolvers
@@ -23,14 +23,14 @@
 - yup
 
 
-##APIs: 
+## APIs: 
 
 - Back `https://github.com/DaniloCardoso93/Projeto-Back-Kart`
 - Fipe `https://kenzie-kars.herokuapp.com`
 - Cep `https://viacep.com.br/ws/`
 
 
-##Estrutura do projeto: 
+## Estrutura do projeto: 
 
 - `./src/assets`: Diretório onde ficam mídias estáticas usadas no projeto.
 - `./src/routes`: Definição das rotas, chamando a página atribuída a ela.
