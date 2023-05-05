@@ -41,7 +41,7 @@
 - `./src/style`: Estilos globais e variants do Chakra estão centralizados aqui.
 
 
-## Autores
+## Autores:
 
 - [Christian Lima](https://github.com/Christian-Lims)
 - [Danilo Cardoso](https://github.com/DaniloCardoso93)
