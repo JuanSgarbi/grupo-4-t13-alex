@@ -89,7 +89,7 @@ export const AdProvider = ({
   const [page, setPage] = useState(1);
   const [nextPage, setNextPage] = useState(false);
   const [previusPage, setPreviusPage] = useState(false);
-  const [totalPages, setTotalPages] = useState(1)
+  const [totalPages, setTotalPages] = useState(1);
 
   api.defaults.headers.common["Authorization"] = `Bearer ${localStorage.getItem(
     "@TOKEN"
@@ -105,16 +105,16 @@ export const AdProvider = ({
       const { data } = await api.get(`/advertise?page=${page}`);
       setAnnouncements(Object.values(data.announcement));
       if (data.nextPage) {
-        setNextPage(true)
+        setNextPage(true);
       } else {
-        setNextPage(false)
+        setNextPage(false);
       }
       if (data.previusPage) {
-        setPreviusPage(true)
+        setPreviusPage(true);
       } else {
-        setPreviusPage(false)
+        setPreviusPage(false);
       }
-      setTotalPages(data.totalPages)
+      setTotalPages(data.totalPages);
     } catch (error) {
       console.log(error);
       toast({
@@ -234,6 +234,7 @@ export const AdProvider = ({
 
       return data;
     } catch (err) {
+      console.error(err);
       toast({
         title: "Erro ao carregar anúncios",
         description: "Verifique o anúncio selecionado e tente novamente!",
