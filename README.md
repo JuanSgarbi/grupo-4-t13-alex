@@ -41,23 +41,9 @@
 - `./src/style`: Estilos globais e variants do Chakra estão centralizados aqui.
 
 
-motors-shop
-├── README.md
-├── node_modules
-├── package.json
-├── tsconfig.json
-├── tsconfig.node.json
-├── .gitignore
-├── vite.config.json
-├── yarn.lock
-└── src
-    ├── @types
-    ├── assets
-    ├── components
-    ├── context
-    ├── pages
-    ├── routes
-    ├── services
-    ├── style
-    ├── App.tsc
-    └── main.tsx
+## Autores
+
+- [Christian Lima](https://github.com/Christian-Lims)
+- [Danilo Cardoso](https://github.com/DaniloCardoso93)
+- [Felipe Holanda](https://github.com/Felipe-Holanda)
+- [Juan Sgarbi](https://github.com/juansgarbi)
