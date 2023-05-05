@@ -40,20 +40,32 @@ export const AnnouncementDetail = () => {
     if (anos > 1) {
       return `Há ${anos} anos`;
     }
+    if (anos == 1) {
+      return `Há ${anos} ano`;
+    }
 
     const meses = Math.floor(diff / (30 * umDia));
     if (meses > 1) {
       return `Há ${meses} meses`;
+    }
+    if (meses == 1) {
+      return `Há ${meses} mês`;
     }
 
     const semanas = Math.floor(diff / (7 * umDia));
     if (semanas > 1) {
       return `Há ${semanas} semanas`;
     }
+    if (semanas == 1) {
+      return `Há ${semanas} semana`;
+    }
 
     const dias = Math.floor(diff / umDia);
     if (dias > 1) {
       return `Há ${dias} dias`;
+    }
+    if (dias == 1) {
+      return `Há ${dias} dia`;
     }
 
     return "Hoje";
