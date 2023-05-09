@@ -136,7 +136,7 @@ export const Users = () => {
                 ) : (
                   <Flex
                     w={"100%"}
-                    h={"100px"}
+                    h={"200px"}
                     justifyContent={"center"}
                     alignItems={"center"}
                   >

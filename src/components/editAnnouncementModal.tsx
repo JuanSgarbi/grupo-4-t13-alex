@@ -334,7 +334,7 @@ export const EditAnnouncementModal = ({ idAnnouncement }: any) => {
                     variant={"warning"}
                     onClick={() => deleteAnnouncement(idAnnouncement)}
                   >
-                    Sim, excluir conta
+                    Sim, excluir anúncio
                   </Button>
                 </Flex>
               </ModalFooter>

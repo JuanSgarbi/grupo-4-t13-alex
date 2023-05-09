@@ -128,7 +128,7 @@ export const Profile = () => {
                 ) : (
                   <Flex
                     w={"100%"}
-                    h={"100px"}
+                    h={"200px"}
                     justifyContent={"center"}
                     alignItems={"center"}
                   >
