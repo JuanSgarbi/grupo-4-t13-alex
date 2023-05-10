@@ -159,32 +159,27 @@ export const Header = () => {
         isLogged ? (
           <Box
             position={"absolute"}
+            zIndex={"999"}
             right={5}
             top={"60px"}
             h={"max-content"}
             borderRadius={4}
             display={{ base: "flex", md: "none" }}
             flexDirection={"column"}
+            gap={3}
+            p={3}
             bg={"whiteFixed"}
           >
             <UpdateUserModal />
             <UpdateAddressModal />
             <Button
-              bg={"whiteFixed"}
-              variant={"link"}
-              border={"none"}
-              p={"10px"}
+              variant={"link2"}
+              size={"small"}
               onClick={() => navigate("/profile")}
             >
               Meus anúncios
             </Button>
-            <Button
-              bg={"whiteFixed"}
-              variant={"link"}
-              border={"none"}
-              p={"10px"}
-              onClick={logout}
-            >
+            <Button variant={"link2"} size={"small"} onClick={logout}>
               Sair
             </Button>
           </Box>
